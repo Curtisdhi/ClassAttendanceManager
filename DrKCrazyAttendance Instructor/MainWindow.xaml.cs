@@ -24,5 +24,31 @@ namespace DrKCrazyAttendance_Instructor
         {
             InitializeComponent();
         }
+
+        private void resetAddCourseForm()
+        {
+            chkEnableTardy.IsChecked = false;
+            chkMonday.IsChecked = false;
+            chkTuesday.IsChecked = false;
+            chkWednesday.IsChecked = false;
+            chkThursday.IsChecked = false;
+            chkFriday.IsChecked = false;
+            chkSaturday.IsChecked = false;
+            semesterChoice.SelectedIndex = 0;
+            txtCourse.Text = "";
+            txtSection.Text = "";
+            startDateTimePicker.Value = null;
+            endDateTimePicker.Value = null;
+        }
+
+        private void btnResetCourse_Click(object sender, RoutedEventArgs e)
+        {
+            resetAddCourseForm();
+        }
+
+        private void btnAddCourse_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
