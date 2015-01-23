@@ -1,0 +1,10 @@
+C:\Users\Evill3\Desktop\Project1_StudAtten\Code\Attendance Server 2.10 (in progress)\Template For New server\bin\Release\Template For New server.exe
+C:\Users\Evill3\Desktop\Project1_StudAtten\Code\Attendance Server 2.10 (in progress)\Template For New server\bin\Release\Template For New server.pdb
+C:\Users\Evill3\Desktop\Project1_StudAtten\Code\Attendance Server 2.10 (in progress)\Template For New server\bin\Release\Template For New server.xml
+C:\Users\Evill3\Desktop\Project1_StudAtten\Code\Attendance Server 2.10 (in progress)\Template For New server\obj\x86\Release\WindowsApplication1.AttendanceServer.resources
+C:\Users\Evill3\Desktop\Project1_StudAtten\Code\Attendance Server 2.10 (in progress)\Template For New server\obj\x86\Release\WindowsApplication1.DatabaseLogin.resources
+C:\Users\Evill3\Desktop\Project1_StudAtten\Code\Attendance Server 2.10 (in progress)\Template For New server\obj\x86\Release\WindowsApplication1.Resources.resources
+C:\Users\Evill3\Desktop\Project1_StudAtten\Code\Attendance Server 2.10 (in progress)\Template For New server\obj\x86\Release\Template For New server.vbproj.GenerateResource.Cache
+C:\Users\Evill3\Desktop\Project1_StudAtten\Code\Attendance Server 2.10 (in progress)\Template For New server\obj\x86\Release\Template For New server.exe
+C:\Users\Evill3\Desktop\Project1_StudAtten\Code\Attendance Server 2.10 (in progress)\Template For New server\obj\x86\Release\Template For New server.xml
+C:\Users\Evill3\Desktop\Project1_StudAtten\Code\Attendance Server 2.10 (in progress)\Template For New server\obj\x86\Release\Template For New server.pdb
