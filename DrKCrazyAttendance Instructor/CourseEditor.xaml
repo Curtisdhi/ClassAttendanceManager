@@ -1,0 +1,43 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="DrKCrazyAttendance_Instructor.CourseEditor"
+        Title="Course Editor" Height="321.429" Width="517.669">
+    <Grid Background="#FFEAEAEA" HorizontalAlignment="Right" Width="507" Height="288" VerticalAlignment="Top">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Label Content="Course:" HorizontalAlignment="Left" Margin="43,15,0,0" VerticalAlignment="Top" Height="26" Width="49"/>
+        <Label Content="Section:" HorizontalAlignment="Left" Margin="236,15,0,0" VerticalAlignment="Top" Height="26" Width="54"/>
+        <TextBox x:Name="txtCourse" HorizontalAlignment="Left" Height="23" Margin="97,17,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="128"/>
+        <TextBox x:Name="txtSection" HorizontalAlignment="Left" Height="23" Margin="295,18,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="64"/>
+        <GroupBox Header="Class Days" HorizontalAlignment="Left" Margin="388,58,0,0" VerticalAlignment="Top" Height="134" Width="109">
+            <StackPanel HorizontalAlignment="Left" Height="143" VerticalAlignment="Top" Width="80" Margin="10,10,0,-12">
+                <CheckBox x:Name="chkMonday" Content="Monday" HorizontalAlignment="Left" VerticalAlignment="Top" Height="16" Width="61"/>
+                <CheckBox x:Name="chkTuesday" Content="Tuesday" HorizontalAlignment="Left" VerticalAlignment="Top" Height="16" Width="61"/>
+                <CheckBox x:Name="chkWednesday" Content="Wednesday" HorizontalAlignment="Left" VerticalAlignment="Top" Height="16" Width="79"/>
+                <CheckBox x:Name="chkThursday" Content="Thursday" HorizontalAlignment="Left" VerticalAlignment="Top" Height="16" Width="69"/>
+                <CheckBox x:Name="chkFriday" Content="Friday" HorizontalAlignment="Left" VerticalAlignment="Top" Height="16" Width="61"/>
+                <CheckBox x:Name="chkSaturday" Content="Saturday" HorizontalAlignment="Left" VerticalAlignment="Top" Height="16" Width="67"/>
+            </StackPanel>
+        </GroupBox>
+        <Label Content="Start Date:" HorizontalAlignment="Left" Margin="24,46,0,0" VerticalAlignment="Top" Height="26" Width="68"/>
+        <Label Content="End Date:" HorizontalAlignment="Left" Margin="31,77,0,0" VerticalAlignment="Top" Height="26" Width="61"/>
+        <ComboBox x:Name="semesterChoice" HorizontalAlignment="Left" Margin="377,19,0,0" VerticalAlignment="Top" Width="120" ClipToBounds="True" SelectedIndex="0">
+            <ComboBoxItem Content="Semester" HorizontalAlignment="Left" Width="118"/>
+            <ComboBoxItem Content="Spring" HorizontalAlignment="Left" Width="118"/>
+            <ComboBoxItem Content="Summer" HorizontalAlignment="Left" Width="118"/>
+            <ComboBoxItem Content="Fall" HorizontalAlignment="Left" Width="118"/>
+        </ComboBox>
+        <xctk:DateTimePicker x:Name="startDateTimePicker" HorizontalAlignment="Left" Margin="97,52,0,0" VerticalAlignment="Top" Width="262" Minimum="2014-01-01"/>
+        <xctk:DateTimePicker x:Name="endDateTimePicker" HorizontalAlignment="Left" Margin="97,83,0,0" VerticalAlignment="Top" Width="262" Minimum="2014-01-01"/>
+        <Button x:Name="btnSave" Content="Save" HorizontalAlignment="Left" Margin="422,256,0,0" VerticalAlignment="Top" Width="75" IsDefault="True" Click="btnSave_Click"/>
+        <Button x:Name="btnResetAddCourse" Content="Reset" HorizontalAlignment="Left" Margin="342,256,0,0" VerticalAlignment="Top" Width="75" IsCancel="True" Click="btnResetCourse_Click"/>
+        <CheckBox x:Name="chkEnableTardy" Content="Enable Tardy Logging" HorizontalAlignment="Left" Margin="10,259,0,0" VerticalAlignment="Top"/>
+        <Label Content="Grace Period:" HorizontalAlignment="Left" Margin="10,236,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.425,0.538"/>
+        <xctk:TimeSpanUpDown x:Name="gracePeriodTS" HorizontalAlignment="Left" Margin="95,239,0,0" VerticalAlignment="Top" Width="79" IsEnabled="False" ToolTip="How long for the student has to &quot;sign in&quot; before being counted for being tardy "/>
+    </Grid>
+</Window>

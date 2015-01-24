@@ -25,28 +25,27 @@ namespace DrKCrazyAttendance_Instructor
             InitializeComponent();
         }
 
-        private void resetAddCourseForm()
+        private void menuSettings_Click(object sender, RoutedEventArgs e)
         {
-            chkEnableTardy.IsChecked = false;
-            chkMonday.IsChecked = false;
-            chkTuesday.IsChecked = false;
-            chkWednesday.IsChecked = false;
-            chkThursday.IsChecked = false;
-            chkFriday.IsChecked = false;
-            chkSaturday.IsChecked = false;
-            semesterChoice.SelectedIndex = 0;
-            txtCourse.Text = "";
-            txtSection.Text = "";
-            startDateTimePicker.Value = null;
-            endDateTimePicker.Value = null;
+
         }
 
-        private void btnResetCourse_Click(object sender, RoutedEventArgs e)
+        private void menuFile_Click(object sender, RoutedEventArgs e)
         {
-            resetAddCourseForm();
+
         }
 
-        private void btnAddCourse_Click(object sender, RoutedEventArgs e)
+        private void btnDelete_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnAdd_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
 
         }
