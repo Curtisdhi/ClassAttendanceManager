@@ -4,13 +4,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="DrkCrazyAttendance Manager" Height="346" Width="529" WindowStartupLocation="CenterScreen">
     <Grid Margin="0,0,2,0">
-        <Menu HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="521" Margin="0,0,-14,0">
+        <Menu HorizontalAlignment="Left" Height="28" VerticalAlignment="Top" Width="521" Margin="0,0,-2,0">
             <MenuItem x:Name="menuFile" Header="File" Click="menuFile_Click">
                 <MenuItem x:Name="menuClose" Header="Close" RenderTransformOrigin="0.846,0.625" Margin="0,0,-43,0"/>
             </MenuItem>
             <MenuItem x:Name="menuSettings" Header="Settings" Click="menuSettings_Click"/>
         </Menu>
-        <Grid HorizontalAlignment="Left" Width="521" Margin="0,0,-2,0" Height="297" VerticalAlignment="Bottom" Background="#FFEAEAEA">
+        <Grid HorizontalAlignment="Left" Width="521" Margin="0,0,-2,0" Height="288" VerticalAlignment="Bottom" Background="#FFEAEAEA">
             <ComboBox x:Name="semesterSearchChoice" HorizontalAlignment="Left" Margin="91,10,0,0" VerticalAlignment="Top" Width="100" ClipToBounds="True" SelectedIndex="0">
                 <ComboBoxItem Content="Semester" HorizontalAlignment="Left" Width="118"/>
                 <ComboBoxItem Content="Spring" HorizontalAlignment="Left" Width="118"/>
