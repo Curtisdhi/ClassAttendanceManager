@@ -8,7 +8,7 @@ namespace DrKCrazyAttendance_Instructor
 {
     class Course
     {
-        public Course(DayOfWeek[] days, string classroom, string courseName, string section,
+        public Course(List<DayOfWeek> days, string classroom, string courseName, string section,
             string semester, DateTime startDateTime, DateTime endDateTime, TimeSpan gracePeriod,
             bool logTardy)
         {
@@ -24,7 +24,7 @@ namespace DrKCrazyAttendance_Instructor
         }
 
         #region Properties
-        public DayOfWeek[] Days
+        public List<DayOfWeek> Days
         {
             get;
             set;
