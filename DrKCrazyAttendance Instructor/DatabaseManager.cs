@@ -7,7 +7,7 @@ using MySql.Data.MySqlClient;
 
 namespace DrKCrazyAttendance_Instructor
 {
-    class DatabaseManager
+    public class DatabaseManager
     {
         private string serverAddr;
         private string database;

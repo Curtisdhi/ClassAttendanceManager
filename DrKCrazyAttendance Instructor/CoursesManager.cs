@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DrKCrazyAttendance_Instructor
 {
-    class CourseManager
+    public class CourseManager
     {
         public CourseManager(string classroom)
         {
@@ -30,12 +30,21 @@ namespace DrKCrazyAttendance_Instructor
 
         public void Add(Course course)
         {
-            Courses.Add(course);
+            if (!Courses.Contains(course)) { 
+                Courses.Add(course);
+                MainWindow.Instance.lstCourses.Items.Add(course);
+            }
+            else
+            {
+                //refresh the list to display the updated item
+                MainWindow.Instance.lstCourses.Items.Refresh();
+            }
         }
 
         public void Remove(Course course)
         {
             Courses.Remove(course);
+            MainWindow.Instance.lstCourses.Items.Remove(course);
         }
 
         public void Update(Course course)

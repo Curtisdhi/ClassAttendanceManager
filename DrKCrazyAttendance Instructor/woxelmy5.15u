@@ -1,5 +1,4 @@
-﻿using DrKCrazyAttendance_Instructor.Properties;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,33 +20,13 @@ namespace DrKCrazyAttendance_Instructor
     /// </summary>
     public partial class MainWindow : Window
     {
-
         public MainWindow()
         {
             InitializeComponent();
-            Instance = this;
-
-            DatabaseManager = new DatabaseManager(Settings.Default.SqlServerAddr,
-                Settings.Default.SqlDatabase, Settings.Default.SqlUsername, 
-                Settings.Default.SqlPassword);
-            CourseManager = new CourseManager(Settings.Default.Classroom);
         }
 
         #region Properties
-        //For use as a singleton
-        public static MainWindow Instance
-        {
-            get;
-            private set;
-        }
-
         public CourseManager CourseManager
-        {
-            get;
-            private set;
-        }
-
-        public DatabaseManager DatabaseManager
         {
             get;
             private set;
@@ -60,33 +39,24 @@ namespace DrKCrazyAttendance_Instructor
             settings.Show();
         }
 
+        private void menuFile_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            if (lstCourses.SelectedItem != null)
-            {
-                CourseManager.Remove((Course)lstCourses.SelectedItem);
-            }
+
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            CourseEditor editor = new CourseEditor();
-            editor.Show();
+
         }
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
-            if (lstCourses.SelectedItem != null)
-            {
-                CourseEditor editor = new CourseEditor((Course)lstCourses.SelectedItem);
-                editor.Show();
-            }
-        }
 
-        private void menuClose_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
         }
     }
 }

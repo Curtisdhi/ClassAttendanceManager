@@ -76,7 +76,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Course.cs" />
-    <Compile Include="Courses.cs" />
+    <Compile Include="CoursesManager.cs" />
     <Compile Include="DatabaseManager.cs" />
     <Compile Include="Util\NativeMethods.cs" />
     <Compile Include="Settings.cs" />
