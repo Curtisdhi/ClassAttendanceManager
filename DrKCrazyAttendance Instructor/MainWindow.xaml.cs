@@ -27,7 +27,7 @@ namespace DrKCrazyAttendance_Instructor
 
         private void menuSettings_Click(object sender, RoutedEventArgs e)
         {
-            Settings settings = new Settings();
+            SettingsForm settings = new SettingsForm();
             settings.Show();
         }
 

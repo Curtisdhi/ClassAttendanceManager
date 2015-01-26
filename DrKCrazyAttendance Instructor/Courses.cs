@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace DrKCrazyAttendance_Instructor
 {
-    class Courses
+    class CourseManager
     {
-        public Courses(string classroom)
+        public CourseManager(string classroom)
         {
             FetchAll(classroom);
         }
