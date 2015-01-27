@@ -60,6 +60,7 @@
                         <GridViewColumn Header="Course" Width="90" DisplayMemberBinding="{Binding CourseName}"/>
                         <GridViewColumn Header="Section" DisplayMemberBinding="{Binding Section}"/>
                         <GridViewColumn Header="Days"  DisplayMemberBinding="{Binding FriendlyDays}" Width="75"/>
+                        <GridViewColumn Header="Semester"  DisplayMemberBinding="{Binding Semester}" Width="55"/>
                         <GridViewColumn Header="Year"  DisplayMemberBinding="{Binding Year}" Width="50"/>
                         <GridViewColumn Header="Start Time"  DisplayMemberBinding="{Binding StartTime, StringFormat=\{0:d\}}" Width="75"/>
                         <GridViewColumn Header="End Time"  DisplayMemberBinding="{Binding EndTime, StringFormat=\{0:d\}}" Width="75"/>

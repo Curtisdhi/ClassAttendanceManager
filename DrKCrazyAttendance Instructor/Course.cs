@@ -8,16 +8,21 @@ namespace DrKCrazyAttendance_Instructor
 {
     public class Course
     {
-        public Course(string classroom)
+        public Course()
         {
-            this.ClassRoom = classroom;
             Days = new List<DayOfWeek>();
         }
 
-        public Course(List<DayOfWeek> days, string classroom, string courseName, string section,
-            string semester, DateTime startDate, DateTime endDate, DateTime startTime,
-            DateTime endTime, TimeSpan gracePeriod, bool logTardy)
+        public Course(string classroom) : this()
         {
+            this.ClassRoom = classroom;
+        }
+
+        public Course(int id, string classroom, string courseName, string section,
+            string semester, List<DayOfWeek> days, DateTime startDate, DateTime endDate, DateTime startTime,
+            DateTime endTime, bool logTardy, TimeSpan gracePeriod)
+        {
+            this.Id = id;
             this.Days = days;
             this.ClassRoom = classroom;
             this.CourseName = courseName;
@@ -32,6 +37,11 @@ namespace DrKCrazyAttendance_Instructor
         }
 
         #region Properties
+        public int Id
+        {
+            get;
+            private set;
+        }
         public List<DayOfWeek> Days
         {
             get;
@@ -141,6 +151,36 @@ namespace DrKCrazyAttendance_Instructor
             set;
         }
         #endregion
+
+        public static List<DayOfWeek> GetDaysFromFriendly(string fDays)
+        {
+            List<DayOfWeek> days = new List<DayOfWeek>();
+            foreach (char day in fDays)
+            {
+                switch (day)
+                {
+                    case 'M':
+                        days.Add(DayOfWeek.Monday);
+                        break;
+                    case 'T':
+                        days.Add(DayOfWeek.Tuesday);
+                        break;
+                    case 'W':
+                        days.Add(DayOfWeek.Wednesday);
+                        break;
+                    case 'R':
+                        days.Add(DayOfWeek.Thursday);
+                        break;
+                    case 'F':
+                        days.Add(DayOfWeek.Friday);
+                        break;
+                    case 'S':
+                        days.Add(DayOfWeek.Saturday);
+                        break;
+                }
+            }
+            return days;
+        }
 
         
     }

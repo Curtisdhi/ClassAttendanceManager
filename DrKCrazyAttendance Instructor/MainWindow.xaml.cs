@@ -26,10 +26,6 @@ namespace DrKCrazyAttendance_Instructor
         {
             InitializeComponent();
             Instance = this;
-
-            DatabaseManager = new DatabaseManager(Settings.Default.SqlServerAddr,
-                Settings.Default.SqlDatabase, Settings.Default.SqlUsername, 
-                Settings.Default.SqlPassword);
             CourseManager = new CourseManager(Settings.Default.Classroom);
         }
 
@@ -42,12 +38,6 @@ namespace DrKCrazyAttendance_Instructor
         }
 
         public CourseManager CourseManager
-        {
-            get;
-            private set;
-        }
-
-        public DatabaseManager DatabaseManager
         {
             get;
             private set;

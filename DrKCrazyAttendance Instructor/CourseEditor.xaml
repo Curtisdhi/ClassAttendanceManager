@@ -39,9 +39,17 @@
         <xctk:TimeSpanUpDown x:Name="gracePeriodTS" HorizontalAlignment="Left" Margin="118,172,0,0" VerticalAlignment="Top" Width="79" IsEnabled="False" ToolTip="How long for the student has to &quot;sign in&quot; before being counted for being tardy "/>
         <Label Content="Start Time:" HorizontalAlignment="Left" Margin="24,71,0,0" VerticalAlignment="Top" Height="26" Width="68"/>
         <Label Content="End Time:" HorizontalAlignment="Left" Margin="198,71,0,0" VerticalAlignment="Top" Height="26" Width="61"/>
-        <xctk:TimePicker x:Name="startTimePicker" HorizontalAlignment="Left" Margin="97,77,0,0" VerticalAlignment="Top" Width="100"/>
-        <DatePicker x:Name="startDatePicker" HorizontalAlignment="Left" Margin="97,48,0,0" VerticalAlignment="Top" Width="100"/>
-        <DatePicker x:Name="endDatePicker" HorizontalAlignment="Left" Margin="259,47,0,0" VerticalAlignment="Top" Width="100"/>
-        <xctk:TimePicker x:Name="endTimePicker" HorizontalAlignment="Left" Margin="259,77,0,0" VerticalAlignment="Top" Width="100"/>
+        <xctk:TimePicker x:Name="startTimePicker" HorizontalAlignment="Left" Margin="97,77,0,0" VerticalAlignment="Top" Width="100" Background="White"/>
+        <DatePicker x:Name="startDatePicker" HorizontalAlignment="Left" Margin="97,48,0,0" VerticalAlignment="Top" Width="100" FirstDayOfWeek="Monday">
+            <DatePicker.BlackoutDates>
+                <CalendarDateRange End="2014-12-31" Start="1900-01-01"/>
+            </DatePicker.BlackoutDates>
+        </DatePicker>
+        <DatePicker x:Name="endDatePicker" HorizontalAlignment="Left" Margin="259,47,0,0" VerticalAlignment="Top" Width="100" FirstDayOfWeek="Monday">
+            <DatePicker.BlackoutDates>
+                <CalendarDateRange End="2014-12-31" Start="1900-01-01"/>
+            </DatePicker.BlackoutDates>
+        </DatePicker>
+        <xctk:TimePicker x:Name="endTimePicker" HorizontalAlignment="Left" Margin="259,77,0,0" VerticalAlignment="Top" Width="100" Background="White"/>
     </Grid>
 </Window>

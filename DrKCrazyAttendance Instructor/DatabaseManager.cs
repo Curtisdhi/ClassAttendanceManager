@@ -3,26 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MySql.Data.MySqlClient; 
+using MySql.Data.MySqlClient;
+using DrKCrazyAttendance_Instructor.Properties; 
 
 namespace DrKCrazyAttendance_Instructor
 {
     public class DatabaseManager
     {
-        private string serverAddr;
-        private string database;
-        private string username;
-        private string password;
-        public DatabaseManager(string serverAddr, string database, string username, string password)
+        public static MySqlConnection Connect()
         {
-            this.database = database;
-            this.username = username;
-            this.password = password;
-        }
+            string serverAddr = Settings.Default.SqlServerAddr;
+            string database = Settings.Default.SqlDatabase;
+            string username = Settings.Default.SqlUsername;
+            string password = Settings.Default.SqlPassword;
 
-        public MySqlConnection Connect()
-        {
-            string cs = string.Format("server={0};userid={1};password={2};database={3}",
+            /* 
+             * Requires "Convert Zero Datetime=True" to properly convert Date and Time sql types to .net Datetime
+             * http://stackoverflow.com/questions/5754822/unable-to-convert-mysql-date-time-value-to-system-datetime
+             */
+            string cs = string.Format("server={0};userid={1};password={2};database={3};Convert Zero Datetime=True",
                 serverAddr, username, password, database);
             MySqlConnection connection = new MySqlConnection(cs);
 
