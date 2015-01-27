@@ -20,7 +20,12 @@
         </GroupBox>
         <Label Content="Security Pin:" HorizontalAlignment="Left" Margin="10,187,0,0" VerticalAlignment="Top"/>
         <PasswordBox x:Name="txtPin" HorizontalAlignment="Left" Margin="84,191,0,0" VerticalAlignment="Top" Width="68"/>
-        <Button x:Name="btnUnlock" Content="Unlock" HorizontalAlignment="Left" Margin="157,191,0,0" VerticalAlignment="Top" Width="49" Click="btnUnlock_Click"/>
+        <Button x:Name="btnUnlock" HorizontalAlignment="Left" Margin="157,188,0,0" VerticalAlignment="Top" Width="76" Click="btnUnlock_Click" Height="23">
+            <Grid Height="15" Width="66">
+                <Image x:Name="uacImage" HorizontalAlignment="Left" Height="16" VerticalAlignment="Top" Width="16"/>
+                <Label Content="Unlock" Margin="16,0,5,0" VerticalAlignment="Top" Height="15" Padding="5,0"/>
+            </Grid>
+        </Button>
         <Button x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Left" Margin="110,219,0,0" VerticalAlignment="Top" Width="76" IsCancel="True" Click="btnCancel_Click"/>
         <Button x:Name="btnSave" Margin="191,218,0,0" VerticalAlignment="Top" Width="91" HorizontalAlignment="Left" UseLayoutRounding="False" FontStretch="Condensed" RenderTransformOrigin="0.5,0.5" Height="23" Click="btnSave_Click" Content="Save Settings"/>
 

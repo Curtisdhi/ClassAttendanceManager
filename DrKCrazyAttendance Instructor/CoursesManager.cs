@@ -92,19 +92,60 @@ namespace DrKCrazyAttendance_Instructor
                 MainWindow.Instance.lstCourses.Items.Add(course);
 
                 //insert into db
-                MySqlConnection conn = null;
-                using (conn = DatabaseManager.Connect())
-                {
-                    try
-                    {
-                        conn.Open();
-                        MySqlCommand cmd = new MySqlCommand();
-                        cmd.Connection = conn;
-                        cmd.CommandText = "INSERT INTO Courses(classroom, name, section, semester, days," +
-                        "startDate, endDate, startTime, endTime, logTardy, gracePeriod) VALUES (@class, @name, @section," +
-                        "@semester, @days, @startDate, @endDate, @startTime, @endTime, @logTardy, @gracePeriod)";
-                        cmd.Prepare();
+                string query = "INSERT INTO Courses(classroom, name, section, semester, days," +
+                    "startDate, endDate, startTime, endTime, logTardy, gracePeriod) VALUES (@class, @name, @section," +
+                    "@semester, @days, @startDate, @endDate, @startTime, @endTime, @logTardy, @gracePeriod)";
+                ExecuteCourseQuery(course, query);
+                
+            }
+            else
+            {
+                //if the course already exists, we need to go update it.
+                Update(course);
+            }
+        }
 
+        public void Remove(Course course)
+        {
+            Courses.Remove(course);
+            MainWindow.Instance.lstCourses.Items.Remove(course);
+            string query = "DELETE FROM Courses WHERE id=@id";
+            ExecuteCourseQuery(course, query, false);
+        }
+
+        public void Update(Course course)
+        {
+            //refresh the list to display the updated item
+            MainWindow.Instance.lstCourses.Items.Refresh();
+
+            string query = "UPDATE Courses SET classroom=@class, name=@name, section=@section, semester=@semester,"+
+                "days=@days, startDate=@startDate, endDate=@endDate, startTime=@startTime, endTime=@endTime,"+
+                "logTardy=@logTardy, gracePeriod=@gracePeriod WHERE id=@id";
+            ExecuteCourseQuery(course, query);
+
+        }
+
+        private void ExecuteCourseQuery(Course course, string query) {
+            ExecuteCourseQuery(course, query, true);
+        }
+
+        private void ExecuteCourseQuery(Course course, string query, bool persist)
+        {
+            MySqlConnection conn = null;
+            using (conn = DatabaseManager.Connect())
+            {
+                try
+                {
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand();
+                    cmd.Connection = conn;
+                    cmd.CommandText = query;
+                    cmd.Prepare();
+
+                    if (course.Id != 0)
+                        cmd.Parameters.AddWithValue("@id", course.Id);
+                    if (persist)
+                    {
                         cmd.Parameters.AddWithValue("@class", course.ClassRoom);
                         cmd.Parameters.AddWithValue("@name", course.CourseName);
                         cmd.Parameters.AddWithValue("@section", course.Section);
@@ -116,29 +157,15 @@ namespace DrKCrazyAttendance_Instructor
                         cmd.Parameters.AddWithValue("@endTime", course.EndTime);
                         cmd.Parameters.AddWithValue("@logTardy", course.LogTardy);
                         cmd.Parameters.AddWithValue("@gracePeriod", course.GracePeriod);
-                        cmd.ExecuteNonQuery();
                     }
-                    catch (Exception) { 
-                        /*ignore*/ 
-                    }
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                    /*ignore*/
                 }
             }
-            else
-            {
-                //refresh the list to display the updated item
-                MainWindow.Instance.lstCourses.Items.Refresh();
-            }
-        }
-
-        public void Remove(Course course)
-        {
-            Courses.Remove(course);
-            MainWindow.Instance.lstCourses.Items.Remove(course);
-        }
-
-        public void Update(Course course)
-        {
-
         }
 
         public Course GetCourse(string courseName, string section)
