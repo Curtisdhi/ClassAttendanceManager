@@ -1,5 +1,4 @@
-﻿using DrKCrazyAttendance_Instructor.Properties;
-using DrKCrazyAttendance_Instructor.Util;
+﻿using DrKCrazyAttendance.Properties;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrKCrazyAttendance Instruct
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrKCrazyAttendance Student", "DrKCrazyAttendance Student\DrKCrazyAttendance Student.csproj", "{B315A352-3BBE-4985-B0D5-7AEC8C043F4C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrKCrazyAttendance", "DrKCrazyAttendance\DrKCrazyAttendance.csproj", "{4388B4E1-93B9-4777-B55E-517460A07859}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{B315A352-3BBE-4985-B0D5-7AEC8C043F4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B315A352-3BBE-4985-B0D5-7AEC8C043F4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B315A352-3BBE-4985-B0D5-7AEC8C043F4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4388B4E1-93B9-4777-B55E-517460A07859}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4388B4E1-93B9-4777-B55E-517460A07859}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4388B4E1-93B9-4777-B55E-517460A07859}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4388B4E1-93B9-4777-B55E-517460A07859}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

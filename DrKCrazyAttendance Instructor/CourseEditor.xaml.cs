@@ -1,4 +1,5 @@
-﻿using DrKCrazyAttendance_Instructor.Properties;
+﻿using DrKCrazyAttendance;
+using DrKCrazyAttendance.Properties;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,15 +22,19 @@ namespace DrKCrazyAttendance_Instructor
     public partial class CourseEditor : Window
     {
         private Course course;
+        private bool editing;
 
         public CourseEditor()
         {
             InitializeComponent();
             course = new Course(Settings.Default.Classroom);
+            editing = false;
         }
 
         public CourseEditor(Course course) {
             InitializeComponent();
+            editing = true;
+
             this.course = course;
             txtCourse.Text = course.CourseName;
             txtSection.Text = course.Section;
@@ -156,6 +161,11 @@ namespace DrKCrazyAttendance_Instructor
                 course.Days.Add(DayOfWeek.Saturday);
 
             MainWindow.Instance.CourseManager.Add(course);
+            if (editing)
+                MainWindow.Instance.lstCourses.Items.Refresh();
+            else
+                MainWindow.Instance.lstCourses.Items.Add(course);
+
             Close();
         }
 

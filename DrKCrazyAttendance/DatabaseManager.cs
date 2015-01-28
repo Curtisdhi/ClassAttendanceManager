@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
-using DrKCrazyAttendance_Instructor.Properties; 
+using DrKCrazyAttendance.Properties; 
 
-namespace DrKCrazyAttendance_Instructor
+namespace DrKCrazyAttendance
 {
     public class DatabaseManager
     {

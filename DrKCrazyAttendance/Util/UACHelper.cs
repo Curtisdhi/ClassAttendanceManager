@@ -14,9 +14,9 @@ using System.Windows.Media.Imaging;
 
 //Code used from
 //https://code.msdn.microsoft.com/windowsapps/CSUACSelfElevation-644673d3/
-namespace DrKCrazyAttendance_Instructor.Util
+namespace DrKCrazyAttendance.Util
 {
-    class UACHelper
+    public class UACHelper
     {
         #region Helper Functions for Admin Privileges and Elevation Status 
  
@@ -34,7 +34,7 @@ namespace DrKCrazyAttendance_Instructor.Util
         /// When any native Windows API call fails, the function throws a Win32Exception  
         /// with the last error code. 
         /// </exception> 
-        internal static bool IsUserInAdminGroup() 
+        public static bool IsUserInAdminGroup() 
         { 
             bool fInAdminGroup = false; 
             SafeTokenHandle hToken = null; 
@@ -164,7 +164,7 @@ namespace DrKCrazyAttendance_Instructor.Util
         /// account that is a member of the local Administrators group and it is  
         /// elevated. Returns false if the token does not. 
         /// </returns> 
-        internal static bool IsRunAsAdmin() 
+        public static bool IsRunAsAdmin() 
         { 
             WindowsIdentity id = WindowsIdentity.GetCurrent(); 
             WindowsPrincipal principal = new WindowsPrincipal(id); 
@@ -196,7 +196,7 @@ namespace DrKCrazyAttendance_Instructor.Util
         /// Level == High). In other words, it is not safe to say if the process is  
         /// elevated based on elevation type. Instead, we should use TokenElevation.  
         /// </remarks> 
-        internal static bool IsProcessElevated() 
+        public static bool IsProcessElevated() 
         { 
             bool fIsElevated = false; 
             SafeTokenHandle hToken = null; 
@@ -296,7 +296,7 @@ namespace DrKCrazyAttendance_Instructor.Util
         /// When any native Windows API call fails, the function throws a Win32Exception  
         /// with the last error code. 
         /// </exception> 
-        internal static int GetProcessIntegrityLevel() 
+        public static int GetProcessIntegrityLevel() 
         { 
             int IL = -1; 
             SafeTokenHandle hToken = null; 

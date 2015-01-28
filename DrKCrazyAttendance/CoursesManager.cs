@@ -1,4 +1,4 @@
-﻿using DrKCrazyAttendance_Instructor.Properties;
+﻿using DrKCrazyAttendance.Properties;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient; 
 
-namespace DrKCrazyAttendance_Instructor
+namespace DrKCrazyAttendance
 {
     public class CourseManager
     {
@@ -50,7 +50,6 @@ namespace DrKCrazyAttendance_Instructor
                         {
                             Course course = GetCourseFromReader(rdr);
                             Courses.Add(course);
-                            MainWindow.Instance.lstCourses.Items.Add(course);
                         }
                     }
                 }
@@ -89,7 +88,6 @@ namespace DrKCrazyAttendance_Instructor
         {
             if (!Courses.Contains(course)) { 
                 Courses.Add(course);
-                MainWindow.Instance.lstCourses.Items.Add(course);
 
                 //insert into db
                 string query = "INSERT INTO Courses(classroom, name, section, semester, days," +
@@ -108,7 +106,6 @@ namespace DrKCrazyAttendance_Instructor
         public void Remove(Course course)
         {
             Courses.Remove(course);
-            MainWindow.Instance.lstCourses.Items.Remove(course);
             string query = "DELETE FROM Courses WHERE id=@id";
             ExecuteCourseQuery(course, query, false);
         }
@@ -116,8 +113,6 @@ namespace DrKCrazyAttendance_Instructor
         public void Update(Course course)
         {
             //refresh the list to display the updated item
-            MainWindow.Instance.lstCourses.Items.Refresh();
-
             string query = "UPDATE Courses SET classroom=@class, name=@name, section=@section, semester=@semester,"+
                 "days=@days, startDate=@startDate, endDate=@endDate, startTime=@startTime, endTime=@endTime,"+
                 "logTardy=@logTardy, gracePeriod=@gracePeriod WHERE id=@id";

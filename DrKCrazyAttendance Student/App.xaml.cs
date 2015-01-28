@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace DrKCrazyAttendance_Student
+namespace DrKCrazyAttendance.Student
 {
     /// <summary>
     /// Interaction logic for App.xaml

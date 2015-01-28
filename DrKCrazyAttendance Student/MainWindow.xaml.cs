@@ -1,4 +1,4 @@
-﻿using DrKCrazyAttendance_Student.Util;
+﻿using DrKCrazyAttendance.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -15,7 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace DrKCrazyAttendance_Student
+namespace DrKCrazyAttendance.Student
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

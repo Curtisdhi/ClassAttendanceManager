@@ -1,4 +1,5 @@
-﻿using DrKCrazyAttendance_Instructor.Properties;
+﻿using DrKCrazyAttendance;
+using DrKCrazyAttendance.Properties;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,10 @@ namespace DrKCrazyAttendance_Instructor
             InitializeComponent();
             Instance = this;
             CourseManager = new CourseManager(Settings.Default.Classroom);
+            foreach (Course c in CourseManager.Courses)
+            {
+                lstCourses.Items.Add(c);
+            }
         }
 
         #region Properties
@@ -55,7 +60,9 @@ namespace DrKCrazyAttendance_Instructor
         {
             if (lstCourses.SelectedItem != null)
             {
-                CourseManager.Remove((Course)lstCourses.SelectedItem);
+                Course course = (Course)lstCourses.SelectedItem;
+                CourseManager.Remove(course);
+                lstCourses.Items.Remove(course);
             }
         }
 

@@ -1,5 +1,4 @@
-﻿using DrKCrazyAttendance_Instructor.Properties;
-using DrKCrazyAttendance_Student.Util;
+﻿using DrKCrazyAttendance.Properties;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -15,7 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace DrKCrazyAttendance_Student
+namespace DrKCrazyAttendance.Student
 {
     /// <summary>
     /// Interaction logic for Settings.xaml
