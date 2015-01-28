@@ -15,14 +15,18 @@ namespace DrKCrazyAttendance_Student
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            if (e.Args.Length > 0)
+            MainWindow mainWindow = new MainWindow();
+            mainWindow.Visibility = Visibility.Hidden;
+            foreach (string arg in e.Args)
             {
-                if (e.Args[0].ToLower().Equals("settings"))
+                switch (arg.ToLower())
                 {
-                    //remember we have to cast into our mainwindow class.
-                    ((MainWindow)MainWindow).OpenSettings();
+                    case "settings":
+                        mainWindow.OpenSettings();
+                        break;
                 }
             }
         }
+
     }
 }

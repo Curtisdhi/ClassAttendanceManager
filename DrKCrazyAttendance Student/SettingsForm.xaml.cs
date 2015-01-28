@@ -46,7 +46,22 @@ namespace DrKCrazyAttendance_Student
                     Settings.Default.SqlPassword = txtDbPassword.Password;
                 
                 Settings.Default.Save();
-                this.Close();
+
+                //Restart our app in unelevated priviledges
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.UseShellExecute = true;
+                startInfo.WorkingDirectory = Environment.CurrentDirectory;
+                startInfo.FileName = System.Reflection.Assembly.GetExecutingAssembly().Location;
+                try
+                {
+                    Process p = Process.Start(startInfo);
+                    this.Close();
+                    App.Current.MainWindow.Close();
+                }
+                catch (System.ComponentModel.Win32Exception)
+                {
+                    MessageBox.Show("Warning! Unable to restart program unelevated. Please manually restart.");
+                }
             }
             else
             {

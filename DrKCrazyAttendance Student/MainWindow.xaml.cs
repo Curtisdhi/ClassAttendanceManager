@@ -43,10 +43,11 @@ namespace DrKCrazyAttendance_Student
                 try
                 {
                     Process p = Process.Start(startInfo);
+                    this.Close();
                 }
                 catch (System.ComponentModel.Win32Exception)
                 {
-                    return;
+                    MessageBox.Show("Warning! Unable to restart program with elevated privledges.");
                 }
             }
             else
@@ -56,10 +57,8 @@ namespace DrKCrazyAttendance_Student
                     settingsForm = new SettingsForm();
                     settingsForm.Show();
                 }
-                else
-                {
-                    settingsForm.Focus();
-                }
+
+                settingsForm.Focus();
             }
         }
 
