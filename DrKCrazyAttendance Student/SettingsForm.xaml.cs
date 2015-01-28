@@ -1,5 +1,5 @@
 ﻿using DrKCrazyAttendance_Instructor.Properties;
-using DrKCrazyAttendance_Instructor.Util;
+using DrKCrazyAttendance_Student.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -15,7 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace DrKCrazyAttendance_Instructor
+namespace DrKCrazyAttendance_Student
 {
     /// <summary>
     /// Interaction logic for Settings.xaml
@@ -56,52 +56,31 @@ namespace DrKCrazyAttendance_Instructor
 
         private void btnUnlock_Click(object sender, RoutedEventArgs e)
         {
-            if (!UACHelper.IsProcessElevated())
+            if (txtPin.Password.Equals(Settings.Default.SecurityPin))
             {
-                ProcessStartInfo startInfo = new ProcessStartInfo();
-                startInfo.UseShellExecute = true;
-                startInfo.WorkingDirectory = Environment.CurrentDirectory;
-                startInfo.FileName = System.Reflection.Assembly.GetExecutingAssembly().Location;
-                startInfo.Verb = "runas";
-                try
-                {
-                    Process p = Process.Start(startInfo);
-                }
-                catch (System.ComponentModel.Win32Exception)
-                {
-                    return;
-                }
+                locked = false;
+                txtClassroom.IsEnabled = true;
+                txtDatabase.IsEnabled = true;
+                txtDbPassword.IsEnabled = true;
+                txtDbUsername.IsEnabled = true;
+                txtDbServerAddr.IsEnabled = true;
+
+                txtDbServerAddr.Text = Settings.Default.SqlServerAddr;
+                txtDatabase.Text = Settings.Default.SqlDatabase;
+                txtDbUsername.Text = Settings.Default.SqlUsername;
+
+                txtPin.IsEnabled = false;
+                btnUnlock.IsEnabled = false;
             }
             else
             {
-                if (txtPin.Password.Equals(Settings.Default.SecurityPin))
-                {
-                    locked = false;
-                    txtClassroom.IsEnabled = true;
-                    txtDatabase.IsEnabled = true;
-                    txtDbPassword.IsEnabled = true;
-                    txtDbUsername.IsEnabled = true;
-                    txtDbServerAddr.IsEnabled = true;
-
-                    txtDbServerAddr.Text = Settings.Default.SqlServerAddr;
-                    txtDatabase.Text = Settings.Default.SqlDatabase;
-                    txtDbUsername.Text = Settings.Default.SqlUsername;
-
-                    txtPin.IsEnabled = false;
-                    btnUnlock.IsEnabled = false;
-                }
-                else
-                {
-                    MessageBox.Show("The security pin you entered doesn't match.");
-                }
+                MessageBox.Show("The security pin you entered doesn't match.");
             }
-            
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             txtClassroom.Text = Settings.Default.Classroom;
-            uacImage.Source = UACHelper.getUACShield();
         }
 
     }

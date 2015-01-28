@@ -1,5 +1,7 @@
-﻿using System;
+﻿using DrKCrazyAttendance_Student.Util;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,16 +15,68 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace DrKCrazyAttendance
+namespace DrKCrazyAttendance_Student
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
+        private SettingsForm settingsForm;
+
         public MainWindow()
         {
             InitializeComponent();
         }
+
+        public void OpenSettings()
+        {
+            if (!UACHelper.IsProcessElevated())
+            {
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.UseShellExecute = true;
+                startInfo.WorkingDirectory = Environment.CurrentDirectory;
+                startInfo.FileName = System.Reflection.Assembly.GetExecutingAssembly().Location;
+                startInfo.Verb = "runas";
+                //add this to tell our program to auto open settings form
+                startInfo.Arguments = "settings"; 
+                try
+                {
+                    Process p = Process.Start(startInfo);
+                }
+                catch (System.ComponentModel.Win32Exception)
+                {
+                    return;
+                }
+            }
+            else
+            {
+                if (settingsForm == null)
+                {
+                    settingsForm = new SettingsForm();
+                    settingsForm.Show();
+                }
+                else
+                {
+                    settingsForm.Focus();
+                }
+            }
+        }
+
+        private void MenuItem_Settings_Click(object sender, RoutedEventArgs e)
+        {
+            OpenSettings();
+        }
+
+        private void MenuItem_Attendance_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            uacImage.Source = UACHelper.getUACShield();
+        }
+
     }
 }

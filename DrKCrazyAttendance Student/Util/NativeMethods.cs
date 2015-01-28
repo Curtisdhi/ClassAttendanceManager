@@ -21,7 +21,7 @@ using Microsoft.Win32.SafeHandles;
 #endregion
 
 
-namespace DrKCrazyAttendance_Instructor.Util
+namespace DrKCrazyAttendance_Student.Util
 {
     /// <summary> 
     /// The TOKEN_INFORMATION_CLASS enumeration type contains values that  

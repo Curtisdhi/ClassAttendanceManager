@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 
 //Code used from
 //https://code.msdn.microsoft.com/windowsapps/CSUACSelfElevation-644673d3/
-namespace DrKCrazyAttendance_Instructor.Util
+namespace DrKCrazyAttendance_Student.Util
 {
     class UACHelper
     {
