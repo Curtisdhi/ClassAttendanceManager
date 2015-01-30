@@ -1,1 +1,13 @@
 E:\Dropbox\Programming\VB\DrKCrazyAttendance\Student\bin\Debug\Student.exe.config
+E:\Dropbox\Programming\VB\DrKCrazyAttendance\Student\bin\Debug\Student.exe
+E:\Dropbox\Programming\VB\DrKCrazyAttendance\Student\bin\Debug\Student.pdb
+E:\Dropbox\Programming\VB\DrKCrazyAttendance\Student\bin\Debug\Student.xml
+E:\Dropbox\Programming\VB\DrKCrazyAttendance\Student\bin\Debug\MySql.Data.dll
+E:\Dropbox\Programming\VB\DrKCrazyAttendance\Student\obj\Debug\Student.vbprojResolveAssemblyReference.cache
+E:\Dropbox\Programming\VB\DrKCrazyAttendance\Student\obj\Debug\Student.Form1.resources
+E:\Dropbox\Programming\VB\DrKCrazyAttendance\Student\obj\Debug\Student.Resources.resources
+E:\Dropbox\Programming\VB\DrKCrazyAttendance\Student\obj\Debug\Student.RegisterUser.resources
+E:\Dropbox\Programming\VB\DrKCrazyAttendance\Student\obj\Debug\Student.vbproj.GenerateResource.Cache
+E:\Dropbox\Programming\VB\DrKCrazyAttendance\Student\obj\Debug\Student.exe
+E:\Dropbox\Programming\VB\DrKCrazyAttendance\Student\obj\Debug\Student.xml
+E:\Dropbox\Programming\VB\DrKCrazyAttendance\Student\obj\Debug\Student.pdb
