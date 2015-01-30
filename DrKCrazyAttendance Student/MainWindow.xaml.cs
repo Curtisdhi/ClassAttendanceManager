@@ -1,4 +1,5 @@
-﻿using DrKCrazyAttendance.Util;
+﻿using DrKCrazyAttendance.Properties;
+using DrKCrazyAttendance.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -27,6 +28,13 @@ namespace DrKCrazyAttendance.Student
         public MainWindow()
         {
             InitializeComponent();
+            Instance = this;
+        }
+
+        public static MainWindow Instance
+        {
+            get;
+            private set;
         }
 
         public void OpenSettings()

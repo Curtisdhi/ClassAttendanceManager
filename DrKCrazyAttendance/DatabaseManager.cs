@@ -27,5 +27,36 @@ namespace DrKCrazyAttendance
 
             return connection;
         }
+
+        public static MySqlDataReader GetDataReaderFromQuery(string query, Dictionary<string, Object> parameters)
+        {
+            MySqlConnection conn;
+            MySqlCommand cmd;
+            MySqlDataReader rdr = null;
+
+            using (conn = DatabaseManager.Connect())
+            {
+                try
+                {
+                    conn.Open();
+                    using (cmd = new MySqlCommand(query, conn))
+                    {
+                        foreach (string key in parameters.Keys)
+                        {
+                            cmd.Parameters.AddWithValue(key, parameters[key]);
+                        }
+                        cmd.Prepare();
+                        rdr = cmd.ExecuteReader();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
+            }
+            return rdr;
+        }
+        
     }
+
 }

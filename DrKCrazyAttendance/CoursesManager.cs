@@ -10,14 +10,25 @@ namespace DrKCrazyAttendance
 {
     public class CourseManager
     {
-        public CourseManager(string classroom)
+        private static CourseManager instance;
+
+        private CourseManager(string classroom)
         {
             FetchAll(classroom);
-            
-       
         }
 
         #region properties
+        public static CourseManager Instance
+        {
+            get {
+                if (instance == null)
+                {
+                    instance = new CourseManager(Settings.Default.Classroom);
+                }
+                return instance;
+            }
+        }
+
         public List<Course> Courses
         {
             get;
@@ -168,6 +179,18 @@ namespace DrKCrazyAttendance
             foreach (Course course in Courses)
             {
                 if (course.CourseName.Equals(courseName) && course.Section.Equals(section))
+                {
+                    return course;
+                }
+            }
+            return null;
+        }
+
+        public Course GetCourse(int id)
+        {
+            foreach (Course course in Courses)
+            {
+                if (course.Id == id)
                 {
                     return course;
                 }
