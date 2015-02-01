@@ -1,5 +1,7 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,7 +21,7 @@ namespace DrKCrazyAttendance
         }
 
         public Course(int id, string classroom, string courseName, string section,
-            string semester, List<DayOfWeek> days, DateTime startDate, DateTime endDate, DateTime startTime,
+            string instructor, List<DayOfWeek> days, DateTime startDate, DateTime endDate, DateTime startTime,
             DateTime endTime, bool logTardy, TimeSpan gracePeriod)
         {
             this.Id = id;
@@ -27,7 +29,7 @@ namespace DrKCrazyAttendance
             this.ClassRoom = classroom;
             this.CourseName = courseName;
             this.Section = section;
-            this.Semester = semester;
+            this.Instructor = instructor;
             this.StartDate = startDate;
             this.EndDate = endDate;
             this.StartTime = startTime;
@@ -42,6 +44,7 @@ namespace DrKCrazyAttendance
             get;
             private set;
         }
+
         public List<DayOfWeek> Days
         {
             get;
@@ -102,13 +105,13 @@ namespace DrKCrazyAttendance
             set;
         }
 
-        public string Section
+        public string Instructor
         {
             get;
             set;
         }
 
-        public string Semester
+        public string Section
         {
             get;
             set;
@@ -182,6 +185,117 @@ namespace DrKCrazyAttendance
             return days;
         }
 
+        #region Sql methods
+        public static List<Course> GetCoursesByClassroom(string classroom)
+        {
+            List<Course> courses = new List<Course>();
+
+            string query = "SELECT * FROM Courses WHERE classroom = @class";
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters.Add("@class", classroom);
+
+            DataTable table = DatabaseManager.GetDataTableFromQuery(query, parameters);
+            foreach (DataRow row in table.Rows)
+            {
+                Course course = GetCourseFromRow(row);
+                courses.Add(course);
+            }
+            
+            return courses;
+        }
+
+        public static Course GetCourseFromRow(DataRow row)
+        {
+            int id = (int)row["id"];
+            string cRoom = row["classroom"].ToString();
+            string courseName = row["name"].ToString();
+            string section = row["section"].ToString();
+            string instructor = row["instructor"].ToString();
+            //Convert freindly days into list of days
+            List<DayOfWeek> days = Course.GetDaysFromFriendly(row["days"].ToString());
+
+            DateTime startDate = DateTime.Parse(row["startDate"].ToString());
+            DateTime endDate = DateTime.Parse(row["endDate"].ToString());
+            DateTime startTime = DateTime.Parse(row["startTime"].ToString());
+            DateTime endTime = DateTime.Parse(row["endTime"].ToString());
+            bool logTardy = bool.Parse(row["logTardy"].ToString());
+            TimeSpan gracePeriod = TimeSpan.Parse(row["gracePeriod"].ToString());
+
+            return new Course(id, cRoom, courseName, section, instructor, days,
+                startDate, endDate, startTime, endTime, logTardy, gracePeriod);
+        }
+
+        public Dictionary<string, object> GetQueryParameters()
+        {
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            if (Id != 0)
+                parameters.Add("@id", Id);
+            parameters.Add("@class", ClassRoom);
+            parameters.Add("@name", CourseName);
+            parameters.Add("@section", Section);
+            parameters.Add("@days", FriendlyDays);
+            parameters.Add("@startDate", StartDate);
+            parameters.Add("@endDate", EndDate);
+            parameters.Add("@startTime", StartTime);
+            parameters.Add("@endTime", EndTime);
+            parameters.Add("@logTardy", LogTardy);
+            parameters.Add("@gracePeriod", GracePeriod);
+            return parameters;
+        }
+
+        public static void Add(List<Course> courses)
+        {
+            List<Dictionary<string, object>> parameters = new List<Dictionary<string,object>>();
+            //insert into db
+            string query = "INSERT INTO Courses(classroom, name, section, semester, days," +
+                "startDate, endDate, startTime, endTime, logTardy, gracePeriod) VALUES (@class, @name, @section," +
+                "@semester, @days, @startDate, @endDate, @startTime, @endTime, @logTardy, @gracePeriod)";
+            foreach (Course course in courses)
+            {
+                parameters.Add(course.GetQueryParameters());
+            }
+            DatabaseManager.ExecuteQuery(query, parameters);
+
+        }
+
+        public static void Remove(List<Course> courses)
+        {
+            List<Dictionary<string, object>> parameters = new List<Dictionary<string, object>>();
+            string query = "DELETE FROM Courses WHERE id=@id";
+            foreach (Course course in courses)
+            {
+                Dictionary<string, object> param = new Dictionary<string, object>();
+                parameters.Add(param);
+                param.Add("@id", course.Id);
+            }
+            DatabaseManager.ExecuteQuery(query, parameters);
+        }
+
+        public static void Update(List<Course> courses)
+        {
+            List<Dictionary<string, object>> parameters = new List<Dictionary<string, object>>();
+            //refresh the list to display the updated item
+            string query = "UPDATE Courses SET classroom=@class, name=@name, section=@section, semester=@semester," +
+                "days=@days, startDate=@startDate, endDate=@endDate, startTime=@startTime, endTime=@endTime," +
+                "logTardy=@logTardy, gracePeriod=@gracePeriod WHERE id=@id";
+            foreach (Course course in courses)
+            {
+                parameters.Add(course.GetQueryParameters());
+            }
+            DatabaseManager.ExecuteQuery(query, parameters);
+
+        }
+
+        public Course GetCourse(string courseName, string section)
+        {
+            return null;
+        }
+
+        public Course GetCourse(int id)
+        {
+            return null;
+        }
+        #endregion
         
     }
 }

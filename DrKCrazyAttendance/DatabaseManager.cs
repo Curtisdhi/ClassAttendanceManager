@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
-using DrKCrazyAttendance.Properties; 
+using DrKCrazyAttendance.Properties;
+using System.Data; 
 
 namespace DrKCrazyAttendance
 {
@@ -41,11 +42,11 @@ namespace DrKCrazyAttendance
                     conn.Open();
                     using (cmd = new MySqlCommand(query, conn))
                     {
+                        cmd.Prepare();
                         foreach (string key in parameters.Keys)
                         {
                             cmd.Parameters.AddWithValue(key, parameters[key]);
                         }
-                        cmd.Prepare();
                         rdr = cmd.ExecuteReader();
                     }
                 }
@@ -56,7 +57,62 @@ namespace DrKCrazyAttendance
             }
             return rdr;
         }
-        
+
+        public static DataTable GetDataTableFromQuery(string query, Dictionary<string, Object> parameters) 
+        {
+            MySqlDataReader rdr = GetDataReaderFromQuery(query, parameters);
+            DataTable table = new DataTable();
+            table.Load(rdr);
+            return table;
+        }
+
+        public static bool ExecuteQuery(string query, List<Dictionary<string, Object>> parameters)
+        {
+            bool success = false;
+            MySqlConnection conn = null;
+            MySqlCommand cmd = null;
+            MySqlTransaction tr = null; 
+            using (conn = DatabaseManager.Connect())
+            {
+                try
+                {
+                    conn.Open();
+                    tr = conn.BeginTransaction();
+                    using (cmd = new MySqlCommand(query, conn))
+                    {
+                        cmd.Prepare();
+                        cmd.Transaction = tr;
+                        //we use a list of dictionarys to allow different sets of parameters. 
+                        //Such in the event we are given the job of updating several queries in one time.
+                        foreach (Dictionary<string, Object> param in parameters)
+                        {
+                            foreach (string key in param.Keys)
+                            {
+                                cmd.Parameters.AddWithValue(key, param[key]);
+                            }
+                            cmd.ExecuteNonQuery();
+                        }
+                        tr.Commit();
+
+                    }
+                }
+                catch (MySqlException ex)
+                {
+                    try
+                    {
+                        if (tr != null)
+                            tr.Rollback();
+                    }
+                    catch (MySqlException ex1)
+                    {
+                        Console.WriteLine("Error: {0}", ex1.ToString());
+                    }
+
+                    Console.WriteLine("Error: {0}", ex.ToString());
+                }
+            }
+            return success;
+        }
     }
 
 }
