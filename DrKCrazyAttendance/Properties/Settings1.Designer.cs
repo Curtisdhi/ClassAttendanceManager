@@ -94,5 +94,17 @@ namespace DrKCrazyAttendance.Properties {
                 this["SecurityPin"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Instructor {
+            get {
+                return ((string)(this["Instructor"]));
+            }
+            set {
+                this["Instructor"] = value;
+            }
+        }
     }
 }

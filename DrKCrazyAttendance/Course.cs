@@ -15,9 +15,9 @@ namespace DrKCrazyAttendance
             Days = new List<DayOfWeek>();
         }
 
-        public Course(string classroom) : this()
+        public Course(string instructor) : this()
         {
-            this.ClassRoom = classroom;
+            this.Instructor = instructor;
         }
 
         public Course(int id, string classroom, string courseName, string section,
@@ -186,27 +186,52 @@ namespace DrKCrazyAttendance
         }
 
         #region Sql methods
-        public static List<Course> GetCoursesByClassroom(string classroom)
+        public Course GetCourse(string courseName, string section)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Course GetCourse(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static List<Course> GetCoursesByInstructor(string instructor)
         {
             List<Course> courses = new List<Course>();
 
+            string query = "SELECT * FROM Courses WHERE intructor = @instructor";
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters.Add("@intructor", instructor);
+
+            DataTable table = DatabaseManager.GetDataTableFromQuery(query, parameters);
+            return GetCoursesFromTable(table);
+        }
+
+        public static List<Course> GetCoursesByClassroom(string classroom)
+        {
             string query = "SELECT * FROM Courses WHERE classroom = @class";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("@class", classroom);
 
             DataTable table = DatabaseManager.GetDataTableFromQuery(query, parameters);
+
+            return GetCoursesFromTable(table);
+        }
+
+        public static List<Course> GetCoursesFromTable(DataTable table)
+        {
+            List<Course> courses = new List<Course>();
             foreach (DataRow row in table.Rows)
             {
-                Course course = GetCourseFromRow(row);
-                courses.Add(course);
+                courses.Add(GetCourseFromRow(row));
             }
-            
             return courses;
         }
 
         public static Course GetCourseFromRow(DataRow row)
         {
-            int id = (int)row["id"];
+            int id = int.Parse(row["id"].ToString());
             string cRoom = row["classroom"].ToString();
             string courseName = row["name"].ToString();
             string section = row["section"].ToString();
@@ -232,6 +257,7 @@ namespace DrKCrazyAttendance
                 parameters.Add("@id", Id);
             parameters.Add("@class", ClassRoom);
             parameters.Add("@name", CourseName);
+            parameters.Add("@instructor", Instructor);
             parameters.Add("@section", Section);
             parameters.Add("@days", FriendlyDays);
             parameters.Add("@startDate", StartDate);
@@ -241,6 +267,13 @@ namespace DrKCrazyAttendance
             parameters.Add("@logTardy", LogTardy);
             parameters.Add("@gracePeriod", GracePeriod);
             return parameters;
+        }
+
+        public static void Add(Course course)
+        {
+            List<Course> courses = new List<Course>();
+            courses.Add(course);
+            Add(courses);
         }
 
         public static void Add(List<Course> courses)
@@ -255,7 +288,13 @@ namespace DrKCrazyAttendance
                 parameters.Add(course.GetQueryParameters());
             }
             DatabaseManager.ExecuteQuery(query, parameters);
+        }
 
+        public static void Remove(Course course)
+        {
+            List<Course> courses = new List<Course>();
+            courses.Add(course);
+            Remove(courses);
         }
 
         public static void Remove(List<Course> courses)
@@ -269,6 +308,13 @@ namespace DrKCrazyAttendance
                 param.Add("@id", course.Id);
             }
             DatabaseManager.ExecuteQuery(query, parameters);
+        }
+
+        public static void Update(Course course)
+        {
+            List<Course> courses = new List<Course>();
+            courses.Add(course);
+            Update(courses);
         }
 
         public static void Update(List<Course> courses)
@@ -286,14 +332,19 @@ namespace DrKCrazyAttendance
 
         }
 
-        public Course GetCourse(string courseName, string section)
+        public static List<string> GetClassrooms()
         {
-            return null;
-        }
-
-        public Course GetCourse(int id)
-        {
-            return null;
+            List<string> classrooms = new List<string>();
+            string query = "SELECT classroom FROM Courses";
+            MySqlDataReader rdr = null;
+            using (rdr = DatabaseManager.GetDataReaderFromQuery(query))
+            {
+                while (rdr.Read())
+                {
+                    classrooms.Add(rdr.GetString(0));
+                }
+            }
+            return classrooms;
         }
         #endregion
         

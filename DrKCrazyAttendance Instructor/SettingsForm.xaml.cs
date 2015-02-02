@@ -37,7 +37,7 @@ namespace DrKCrazyAttendance_Instructor
         {
             if (!locked)
             {
-                Settings.Default.Classroom = txtClassroom.Text;
+                Settings.Default.Instructor = txtInstructor.Text;
                 Settings.Default.SqlServerAddr = txtDbServerAddr.Text;
                 Settings.Default.SqlDatabase = txtDatabase.Text;
                 Settings.Default.SqlUsername = txtDbUsername.Text;
@@ -58,7 +58,7 @@ namespace DrKCrazyAttendance_Instructor
             if (txtPin.Password.Equals(Settings.Default.SecurityPin))
             {
                 locked = false;
-                txtClassroom.IsEnabled = true;
+                txtInstructor.IsEnabled = true;
                 txtDatabase.IsEnabled = true;
                 txtDbPassword.IsEnabled = true;
                 txtDbUsername.IsEnabled = true;
@@ -79,7 +79,7 @@ namespace DrKCrazyAttendance_Instructor
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            txtClassroom.Text = Settings.Default.Classroom;
+            txtInstructor.Text = Settings.Default.Instructor;
         }
 
     }

@@ -27,7 +27,7 @@ namespace DrKCrazyAttendance_Instructor
         public CourseEditor()
         {
             InitializeComponent();
-            course = new Course(Settings.Default.Classroom);
+            course = new Course(Settings.Default.Instructor);
             editing = false;
         }
 
@@ -44,16 +44,6 @@ namespace DrKCrazyAttendance_Instructor
             endTimePicker.Value = course.EndTime;
             chkEnableTardy.IsChecked = course.LogTardy;
             gracePeriodTS.Value = course.GracePeriod;
-
-            foreach (Object o in semesterChoice.Items)
-            {
-                ComboBoxItem s = (ComboBoxItem)o;
-                if (s.Content.Equals(course.Semester))
-                {
-                    semesterChoice.SelectedItem = s;
-                    break;
-                }
-            }
 
             foreach (DayOfWeek day in course.Days)
             {
@@ -91,7 +81,6 @@ namespace DrKCrazyAttendance_Instructor
             chkThursday.IsChecked = false;
             chkFriday.IsChecked = false;
             chkSaturday.IsChecked = false;
-            semesterChoice.SelectedIndex = 0;
             txtCourse.Text = "";
             txtSection.Text = "";
             startDatePicker.SelectedDate = null;
@@ -141,8 +130,6 @@ namespace DrKCrazyAttendance_Instructor
             course.StartTime = GetDateTime(startTimePicker.Value);
             course.EndTime = GetDateTime(endTimePicker.Value);
 
-            course.Semester = ((ComboBoxItem)semesterChoice.SelectedItem).Content.ToString();
-
             course.GracePeriod = GetTimeSpan(gracePeriodTS.Value);
             course.LogTardy = IsChecked(chkEnableTardy);
 
@@ -160,7 +147,6 @@ namespace DrKCrazyAttendance_Instructor
             if (IsChecked(chkSaturday))
                 course.Days.Add(DayOfWeek.Saturday);
 
-            MainWindow.Instance.CourseManager.Add(course);
             if (editing)
                 MainWindow.Instance.lstCourses.Items.Refresh();
             else

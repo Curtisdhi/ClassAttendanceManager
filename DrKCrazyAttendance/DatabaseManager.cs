@@ -29,6 +29,11 @@ namespace DrKCrazyAttendance
             return connection;
         }
 
+        public static MySqlDataReader GetDataReaderFromQuery(string query)
+        {
+            return GetDataReaderFromQuery(query, new Dictionary<string, object>());
+        }
+
         public static MySqlDataReader GetDataReaderFromQuery(string query, Dictionary<string, Object> parameters)
         {
             MySqlConnection conn;

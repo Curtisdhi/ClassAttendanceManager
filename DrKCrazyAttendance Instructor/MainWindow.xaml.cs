@@ -27,11 +27,6 @@ namespace DrKCrazyAttendance_Instructor
         {
             InitializeComponent();
             Instance = this;
-            CourseManager = new CourseManager(Settings.Default.Classroom);
-            foreach (Course c in CourseManager.Courses)
-            {
-                lstCourses.Items.Add(c);
-            }
         }
 
         #region Properties
@@ -42,11 +37,6 @@ namespace DrKCrazyAttendance_Instructor
             private set;
         }
 
-        public CourseManager CourseManager
-        {
-            get;
-            private set;
-        }
         #endregion
 
         private void menuSettings_Click(object sender, RoutedEventArgs e)
@@ -61,7 +51,7 @@ namespace DrKCrazyAttendance_Instructor
             if (lstCourses.SelectedItem != null)
             {
                 Course course = (Course)lstCourses.SelectedItem;
-                CourseManager.Remove(course);
+                Course.Remove(course);
                 lstCourses.Items.Remove(course);
             }
         }
@@ -84,6 +74,16 @@ namespace DrKCrazyAttendance_Instructor
         private void menuClose_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            List<Course> courses = Course.GetCoursesByInstructor(Settings.Default.Instructor);
+            foreach (Course c in courses)
+            {
+                lstCourses.Items.Add(c);
+            }
+            Attendance.GetAttendancesByInstructor(Settings.Default.Instructor);
         }
     }
 }
