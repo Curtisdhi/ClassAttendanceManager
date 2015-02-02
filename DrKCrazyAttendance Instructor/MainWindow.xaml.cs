@@ -31,8 +31,8 @@ namespace DrKCrazyAttendance_Instructor
             InitializeComponent();
             Instance = this;
 
-            string query = @"SELECT DISTINCT classroom, name, section FROM Courses 
-                                GROUP BY classroom, name, section";
+            //I couldn't find a better solution.
+            string query = @"SELECT DISTINCT classroom FROM Courses";
             MySqlDataReader rdr = null;
             using (rdr = DatabaseManager.GetDataReaderFromQuery(query))
             {
@@ -41,8 +41,54 @@ namespace DrKCrazyAttendance_Instructor
                     while (rdr.Read())
                     {
                         classroomCombo.Items.Add(rdr.GetString(0));
-                        courseCombo.Items.Add(rdr.GetString(1));
-                        sectionCombo.Items.Add(rdr.GetString(2));
+                    }
+                }
+                catch (MySqlException ex)
+                {
+                    Console.WriteLine("Mysql Error {0}", ex);
+                }
+            }
+
+            query = @"SELECT DISTINCT name FROM Courses";
+            using (rdr = DatabaseManager.GetDataReaderFromQuery(query))
+            {
+                try
+                {
+                    while (rdr.Read())
+                    {
+                        courseCombo.Items.Add(rdr.GetString(0));
+                    }
+                }
+                catch (MySqlException ex)
+                {
+                    Console.WriteLine("Mysql Error {0}", ex);
+                }
+            }
+
+            query = @"SELECT DISTINCT section FROM Courses";
+            using (rdr = DatabaseManager.GetDataReaderFromQuery(query))
+            {
+                try
+                {
+                    while (rdr.Read())
+                    {
+                        sectionCombo.Items.Add(rdr.GetString(0));
+                    }
+                }
+                catch (MySqlException ex)
+                {
+                    Console.WriteLine("Mysql Error {0}", ex);
+                }
+            }
+
+            query = @"SELECT DISTINCT days FROM Courses";
+            using (rdr = DatabaseManager.GetDataReaderFromQuery(query))
+            {
+                try
+                {
+                    while (rdr.Read())
+                    {
+                        daysCombo.Items.Add(rdr.GetString(0));
                     }
                 }
                 catch (MySqlException ex)

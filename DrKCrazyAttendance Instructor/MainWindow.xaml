@@ -25,24 +25,23 @@
             </ListView>
             <DockPanel Height="37" LastChildFill="False" Margin="17,-5,17,0" VerticalAlignment="Top" HorizontalAlignment="Right">
                 <Grid Height="37" Width="488">
-                    <ComboBox x:Name="classroomCombo" HorizontalAlignment="Left" Margin="32,10,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="0" IsEditable="True">
-                        <ComboBoxItem Content="Classroom" IsEnabled="False"/>
+                    <ComboBox x:Name="classroomCombo" HorizontalAlignment="Left" Margin="23,10,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="0" IsEditable="True">
+                        <ComboBoxItem Content="Classroom" Background="{x:Null}" Foreground="#FF6E6E6E"/>
+                        <Separator Margin="0" Width="92"/>
                     </ComboBox>
-                    <ComboBox x:Name="courseCombo" HorizontalAlignment="Left" Margin="157,10,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="0" IsEditable="True">
-                        <ComboBoxItem Content="Course" IsSelected="True" IsEnabled="False"/>
+                    <ComboBox x:Name="courseCombo" HorizontalAlignment="Left" Margin="148,10,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="0" IsEditable="True">
+                        <ComboBoxItem Content="Course" IsSelected="True" Foreground="#FF6E6E6E"/>
+                        <Separator Margin="0" Width="92"/>
                     </ComboBox>
-                    <ComboBox x:Name="sectionCombo" HorizontalAlignment="Left" Margin="282,10,0,0" VerticalAlignment="Top" Width="70" SelectedIndex="0" IsEditable="True">
-                        <ComboBoxItem Content="Section" IsEnabled="False"/>
+                    <ComboBox x:Name="sectionCombo" HorizontalAlignment="Left" Margin="273,10,0,0" VerticalAlignment="Top" Width="70" SelectedIndex="0" IsEditable="True">
+                        <ComboBoxItem Content="Section" Foreground="#FF6E6E6E"/>
+                        <Separator Margin="0" Width="92"/>
                     </ComboBox>
-                    <ComboBox x:Name="daysCombo" HorizontalAlignment="Left" Margin="357,10,0,0" VerticalAlignment="Top" Width="100" SelectedIndex="0" IsEditable="True">
-                        <ComboBoxItem Content="Days" IsSelected="True" IsEnabled="False"/>
-                        <ComboBoxItem Content="MTWR"/>
-                        <ComboBoxItem Content="MW"/>
-                        <ComboBoxItem Content="TR"/>
-                        <ComboBoxItem Content="F"/>
-                        <ComboBoxItem Content="S"/>
+                    <ComboBox x:Name="daysCombo" HorizontalAlignment="Left" Margin="348,10,0,0" VerticalAlignment="Top" Width="100" SelectedIndex="0" IsEditable="True">
+                        <ComboBoxItem Content="Days" IsSelected="True" Foreground="#FF6E6E6E"/>
+                        <Separator/>
                     </ComboBox>
-                    <Button x:Name="btnSearch" HorizontalAlignment="Left" Margin="462,11,0,0" VerticalAlignment="Top" Width="24" Height="24">
+                    <Button x:Name="btnSearch" HorizontalAlignment="Left" Margin="453,11,0,0" VerticalAlignment="Top" Width="24" Height="24">
                         <Image Height="16" Width="16" Source="images/find.png"/>
                     </Button>
                 </Grid>
