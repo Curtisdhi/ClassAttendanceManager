@@ -2,64 +2,73 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="DrkCrazyAttendance Manager" Height="346" Width="529" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" Icon="icon.ico" Loaded="Window_Loaded" Closing="Window_Closing">
+        Title="DrkCrazyAttendance Manager" Height="346" Width="529" WindowStartupLocation="CenterScreen" Icon="icon.ico" Loaded="Window_Loaded" Closing="Window_Closing">
     <Grid Margin="0,0,2,0">
-        <Menu HorizontalAlignment="Left" Height="28" VerticalAlignment="Top" Width="521" Margin="0,0,-2,0">
+        <Menu Height="28" VerticalAlignment="Top" Margin="0,0,-2,0">
             <MenuItem x:Name="menuFile" Header="File">
-                <MenuItem x:Name="menuClose" Header="Close" RenderTransformOrigin="0.846,0.625" Margin="0,0,-43,0" Click="menuClose_Click"/>
+                <MenuItem x:Name="menuClose" Header="Close" RenderTransformOrigin="0.846,0.625" Click="menuClose_Click"/>
             </MenuItem>
             <MenuItem x:Name="menuSettings" Header="Settings" Click="menuSettings_Click"/>
         </Menu>
-        <Grid HorizontalAlignment="Left" Width="521" Margin="0,0,-2,0" Height="288" VerticalAlignment="Bottom" Background="#FFEAEAEA">
-            <ComboBox x:Name="yearSearchChoice" HorizontalAlignment="Left" Margin="17,10,0,0" VerticalAlignment="Top" Width="69" SelectedIndex="0">
-                <ComboBoxItem Content="Year" HorizontalAlignment="Left" Width="88"/>
-            </ComboBox>
-            <Label Content="Course:" HorizontalAlignment="Left" Margin="196,7,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.263,0.654"/>
-            <TextBox x:Name="txtCourseSearch" HorizontalAlignment="Left" Height="23" Margin="250,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90"/>
-            <Label Content="Section:" HorizontalAlignment="Left" Margin="357,7,0,0" VerticalAlignment="Top"/>
-            <TextBox x:Name="txtSectionSearch" HorizontalAlignment="Left" Height="23" Margin="414,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90"/>
-            <Button x:Name="btnAdd" Content="Add" HorizontalAlignment="Left" Margin="429,239,0,0" VerticalAlignment="Top" Width="75" Click="btnAdd_Click">
-                <Button.Background>
-                    <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
-                        <GradientStop Color="#FFF3F3F3"/>
-                        <GradientStop Color="#FFEBEBEB" Offset="0.5"/>
-                        <GradientStop Color="#FFDDDDDD" Offset="0.5"/>
-                        <GradientStop Color="#FFCDCDCD" Offset="1"/>
-                    </LinearGradientBrush>
-                </Button.Background>
-            </Button>
-            <Button x:Name="btnEdit" Content="Edit" HorizontalAlignment="Left" Margin="349,239,0,0" VerticalAlignment="Top" Width="75" Click="btnEdit_Click">
-                <Button.Background>
-                    <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-                        <GradientStop Color="#FFF3F3F3"/>
-                        <GradientStop Color="#FFEBEBEB" Offset="0.5"/>
-                        <GradientStop Color="#FFDDDDDD" Offset="0.5"/>
-                        <GradientStop Color="#FFCDCDCD" Offset="1"/>
-                    </LinearGradientBrush>
-                </Button.Background>
-            </Button>
-            <Button x:Name="btnDelete" Content="Delete" HorizontalAlignment="Left" Margin="269,239,0,0" VerticalAlignment="Top" Width="75" Click="btnDelete_Click">
-                <Button.Background>
-                    <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
-                        <GradientStop Color="#FFF3F3F3" Offset="0"/>
-                        <GradientStop Color="#FFEBEBEB" Offset="0.5"/>
-                        <GradientStop Color="#FFDDDDDD" Offset="0.5"/>
-                        <GradientStop Color="#FFCF6D6D" Offset="1"/>
-                    </LinearGradientBrush>
-                </Button.Background>
-            </Button>
-            <ListView x:Name="lstCourses" HorizontalAlignment="Left" Height="197" Margin="17,37,0,0" VerticalAlignment="Top" Width="487">
+        <Grid Margin="0,28,-2,0" Background="#FFEAEAEA" Height="Auto">
+            <ListView x:Name="lstCourses" Margin="17,37,17,54">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Course" Width="90" DisplayMemberBinding="{Binding CourseName}"/>
+                        <GridViewColumn Header="Classroom" DisplayMemberBinding="{Binding Classroom}" Width="70"/>
+                        <GridViewColumn Header="Course" Width="100" DisplayMemberBinding="{Binding CourseName}"/>
                         <GridViewColumn Header="Section" DisplayMemberBinding="{Binding Section}"/>
-                        <GridViewColumn Header="Days"  DisplayMemberBinding="{Binding FriendlyDays}" Width="75"/>
+                        <GridViewColumn Header="Days"  DisplayMemberBinding="{Binding FriendlyDays}" Width="65"/>
                         <GridViewColumn Header="Year"  DisplayMemberBinding="{Binding Year}" Width="50"/>
                         <GridViewColumn Header="Start Time"  DisplayMemberBinding="{Binding StartTime, StringFormat=\{0:h:mmtt\}}" Width="75"/>
                         <GridViewColumn Header="End Time"  DisplayMemberBinding="{Binding EndTime, StringFormat=\{0:h:mmtt\}}" Width="75"/>
                     </GridView>
                 </ListView.View>
             </ListView>
+            <DockPanel Height="37" LastChildFill="False" Margin="17,-5,17,0" VerticalAlignment="Top">
+                <Grid Height="37" Width="488">
+                    <Label Content="Course:" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="-0.263,0.654" Margin="77,8,0,0"/>
+                    <Label Content="Section:" HorizontalAlignment="Left" Margin="221,8,0,0" VerticalAlignment="Top"/>
+                    <TextBox x:Name="txtCourseSearch" HorizontalAlignment="Left" Height="23" Margin="131,8,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90"/>
+                    <TextBox x:Name="txtSectionSearch" HorizontalAlignment="Left" Height="23" Margin="273,8,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" RenderTransformOrigin="0.767,0.391"/>
+                    <ComboBox x:Name="yearSearchChoice" HorizontalAlignment="Left" VerticalAlignment="Top" Width="69" SelectedIndex="0" Margin="0,10,0,0">
+                        <ComboBoxItem Content="Year" HorizontalAlignment="Left" Width="88"/>
+                    </ComboBox>
+                </Grid>
+            </DockPanel>
+            <DockPanel Height="44" LastChildFill="False" Margin="0,0,17,0" VerticalAlignment="Bottom" Width="487" HorizontalAlignment="Right">
+                <Grid Margin="0,0,0,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="29" Width="489">
+                    <Button x:Name="btnAdd" Content="Add" HorizontalAlignment="Left" Margin="414,0,0,0" VerticalAlignment="Top" Width="75" Click="btnAdd_Click">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                                <GradientStop Color="#FFF3F3F3"/>
+                                <GradientStop Color="#FFEBEBEB" Offset="0.5"/>
+                                <GradientStop Color="#FFDDDDDD" Offset="0.5"/>
+                                <GradientStop Color="#FFCDCDCD" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+                    <Button x:Name="btnEdit" Content="Edit" HorizontalAlignment="Left" Margin="334,0,0,0" VerticalAlignment="Top" Width="75" Click="btnEdit_Click" RenderTransformOrigin="0.88,0.478">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                                <GradientStop Color="#FFF3F3F3"/>
+                                <GradientStop Color="#FFEBEBEB" Offset="0.5"/>
+                                <GradientStop Color="#FFDDDDDD" Offset="0.5"/>
+                                <GradientStop Color="#FFCDCDCD" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+                    <Button x:Name="btnDelete" Content="Delete" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="btnDelete_Click" RenderTransformOrigin="0.107,0.87" Margin="254,0,0,0">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                                <GradientStop Color="#FFF3F3F3" Offset="0"/>
+                                <GradientStop Color="#FFEBEBEB" Offset="0.5"/>
+                                <GradientStop Color="#FFDDDDDD" Offset="0.5"/>
+                                <GradientStop Color="#FFCF6D6D" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+                </Grid>
+            </DockPanel>
         </Grid>
 
     </Grid>

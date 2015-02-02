@@ -32,7 +32,7 @@ namespace DrKCrazyAttendance_Instructor
             List<string> classrooms = Course.GetClassrooms();
             foreach (string classroom in classrooms)
             {
-                classroomChoice.Items.Add(classrooms);
+                classroomChoice.Items.Add(classroom);
             }
         }
 
@@ -78,9 +78,9 @@ namespace DrKCrazyAttendance_Instructor
             List<string> classrooms = Course.GetClassrooms();
             foreach (string classroom in classrooms)
             {
-                classroomChoice.Items.Add(classrooms);
+                classroomChoice.Items.Add(classroom);
             }
-            classroomChoice.SelectedIndex = classroomChoice.Items.IndexOf(course.ClassRoom);
+            classroomChoice.SelectedIndex = classroomChoice.Items.IndexOf(course.Classroom);
 
         }
 

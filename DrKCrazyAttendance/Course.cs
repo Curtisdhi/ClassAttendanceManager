@@ -26,7 +26,7 @@ namespace DrKCrazyAttendance
         {
             this.Id = id;
             this.Days = days;
-            this.ClassRoom = classroom;
+            this.Classroom = classroom;
             this.CourseName = courseName;
             this.Section = section;
             this.Instructor = instructor;
@@ -93,7 +93,7 @@ namespace DrKCrazyAttendance
             }
         }
 
-        public string ClassRoom
+        public string Classroom
         {
             get;
             set;
@@ -255,7 +255,7 @@ namespace DrKCrazyAttendance
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             if (Id != 0)
                 parameters.Add("@id", Id);
-            parameters.Add("@class", ClassRoom);
+            parameters.Add("@class", Classroom);
             parameters.Add("@name", CourseName);
             parameters.Add("@instructor", Instructor);
             parameters.Add("@section", Section);
