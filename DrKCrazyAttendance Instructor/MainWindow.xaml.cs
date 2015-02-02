@@ -22,6 +22,8 @@ namespace DrKCrazyAttendance_Instructor
     /// </summary>
     public partial class MainWindow : Window
     {
+        private SettingsForm settingsForm;
+        private CourseEditor editor;
 
         public MainWindow()
         {
@@ -39,10 +41,20 @@ namespace DrKCrazyAttendance_Instructor
 
         #endregion
 
+        public void LoadCourses()
+        {
+            lstCourses.Items.Clear();
+            List<Course> courses = Course.GetCoursesByInstructor(Settings.Default.Instructor);
+            foreach (Course c in courses)
+            {
+                lstCourses.Items.Add(c);
+            }
+        }
+
         private void menuSettings_Click(object sender, RoutedEventArgs e)
         {
-            SettingsForm settings = new SettingsForm();
-            settings.Show();
+            settingsForm = new SettingsForm();
+            settingsForm.Show();
         }
 
 
@@ -58,7 +70,7 @@ namespace DrKCrazyAttendance_Instructor
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            CourseEditor editor = new CourseEditor();
+            editor = new CourseEditor();
             editor.Show();
         }
 
@@ -66,7 +78,7 @@ namespace DrKCrazyAttendance_Instructor
         {
             if (lstCourses.SelectedItem != null)
             {
-                CourseEditor editor = new CourseEditor((Course)lstCourses.SelectedItem);
+                editor = new CourseEditor((Course)lstCourses.SelectedItem);
                 editor.Show();
             }
         }
@@ -78,12 +90,26 @@ namespace DrKCrazyAttendance_Instructor
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            List<Course> courses = Course.GetCoursesByInstructor(Settings.Default.Instructor);
-            foreach (Course c in courses)
-            {
-                lstCourses.Items.Add(c);
-            }
+            LoadCourses();
             Attendance.GetAttendancesByInstructor(Settings.Default.Instructor);
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (settingsForm != null && settingsForm.IsVisible)
+            {
+                var confirmResult = MessageBox.Show("Are you sure to close the program without saving the settings?",
+                                        "Confirm", MessageBoxButton.YesNo);
+                if (confirmResult == MessageBoxResult.Yes)
+                {
+                    settingsForm.Close();
+                }
+                else
+                {
+                    //cancel if the user doesn't confirm
+                    e.Cancel = true;
+                }
+            }
         }
     }
 }

@@ -66,7 +66,7 @@ namespace DrKCrazyAttendance
         #region Sql Methods
         public static List<Attendance> GetAttendancesByClassroom(string classroom)
         {
-            string query = @"SELECT FROM Attendances AS a 
+            string query = @"SELECT * FROM Attendances AS a 
                 INNER JOIN Courses AS c 
                     ON a.courseId = c.id
                 INNER JOIN Students AS s
@@ -81,7 +81,7 @@ namespace DrKCrazyAttendance
 
         public static List<Attendance> GetAttendancesByInstructor(string instructor)
         {
-            string query = @"SELECT FROM Attendances AS a 
+            string query = @"SELECT * FROM Attendances AS a 
                 INNER JOIN Courses AS c 
                     ON a.courseId = c.id
                 INNER JOIN Students AS s
@@ -95,7 +95,7 @@ namespace DrKCrazyAttendance
         }
 
         public static List<Attendance> GetAttendancesByCourseId(int courseId) {
-            string query = @"SELECT FROM Attendances AS a 
+            string query = @"SELECT * FROM Attendances AS a 
                 INNER JOIN Courses AS c 
                     ON a.courseId = c.id
                 INNER JOIN Students AS s
@@ -110,7 +110,7 @@ namespace DrKCrazyAttendance
 
         public static List<Attendance> GetAttendancesByStudentId(int studentId)
         {
-            string query = @"SELECT FROM Attendances AS a 
+            string query = @"SELECT * FROM Attendances AS a 
                 INNER JOIN Courses AS c 
                     ON a.courseId = c.id
                 INNER JOIN Students AS s

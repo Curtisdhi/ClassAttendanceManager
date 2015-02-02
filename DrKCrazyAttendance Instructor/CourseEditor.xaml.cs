@@ -29,6 +29,11 @@ namespace DrKCrazyAttendance_Instructor
             InitializeComponent();
             course = new Course(Settings.Default.Instructor);
             editing = false;
+            List<string> classrooms = Course.GetClassrooms();
+            foreach (string classroom in classrooms)
+            {
+                classroomChoice.Items.Add(classrooms);
+            }
         }
 
         public CourseEditor(Course course) {
@@ -69,6 +74,13 @@ namespace DrKCrazyAttendance_Instructor
                         break;
                 }
             }
+
+            List<string> classrooms = Course.GetClassrooms();
+            foreach (string classroom in classrooms)
+            {
+                classroomChoice.Items.Add(classrooms);
+            }
+            classroomChoice.SelectedIndex = classroomChoice.Items.IndexOf(course.ClassRoom);
 
         }
 

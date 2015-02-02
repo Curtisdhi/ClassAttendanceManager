@@ -200,9 +200,9 @@ namespace DrKCrazyAttendance
         {
             List<Course> courses = new List<Course>();
 
-            string query = "SELECT * FROM Courses WHERE intructor = @instructor";
+            string query = "SELECT * FROM Courses WHERE instructor = @instructor";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
-            parameters.Add("@intructor", instructor);
+            parameters.Add("@instructor", instructor);
 
             DataTable table = DatabaseManager.GetDataTableFromQuery(query, parameters);
             return GetCoursesFromTable(table);
@@ -335,13 +335,20 @@ namespace DrKCrazyAttendance
         public static List<string> GetClassrooms()
         {
             List<string> classrooms = new List<string>();
-            string query = "SELECT classroom FROM Courses";
+            string query = "SELECT DISTINCT classroom FROM Courses";
             MySqlDataReader rdr = null;
             using (rdr = DatabaseManager.GetDataReaderFromQuery(query))
             {
-                while (rdr.Read())
+                try
                 {
-                    classrooms.Add(rdr.GetString(0));
+                    while (rdr.Read())
+                    {
+                        classrooms.Add(rdr.GetString(0));
+                    }
+                }
+                catch (MySqlException ex)
+                {
+                    Console.WriteLine("Mysql Error {0}", ex);
                 }
             }
             return classrooms;

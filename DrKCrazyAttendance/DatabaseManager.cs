@@ -40,34 +40,35 @@ namespace DrKCrazyAttendance
             MySqlCommand cmd;
             MySqlDataReader rdr = null;
 
-            using (conn = DatabaseManager.Connect())
+            conn = DatabaseManager.Connect();
+            try
             {
-                try
+                conn.Open();
+                cmd = new MySqlCommand(query, conn);
+                cmd.Prepare();
+                foreach (string key in parameters.Keys)
                 {
-                    conn.Open();
-                    using (cmd = new MySqlCommand(query, conn))
-                    {
-                        cmd.Prepare();
-                        foreach (string key in parameters.Keys)
-                        {
-                            cmd.Parameters.AddWithValue(key, parameters[key]);
-                        }
-                        rdr = cmd.ExecuteReader();
-                    }
+                    cmd.Parameters.AddWithValue(key, parameters[key]);
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex);
-                }
+                rdr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            
             return rdr;
         }
 
         public static DataTable GetDataTableFromQuery(string query, Dictionary<string, Object> parameters) 
         {
-            MySqlDataReader rdr = GetDataReaderFromQuery(query, parameters);
             DataTable table = new DataTable();
-            table.Load(rdr);
+            MySqlDataReader rdr = null;
+            using (rdr = GetDataReaderFromQuery(query, parameters))
+            {
+                table.Load(rdr);
+            }
+            
             return table;
         }
 
