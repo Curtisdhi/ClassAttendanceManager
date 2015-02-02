@@ -160,9 +160,15 @@ namespace DrKCrazyAttendance_Instructor
                 course.Days.Add(DayOfWeek.Saturday);
 
             if (editing)
+            {
                 MainWindow.Instance.lstCourses.Items.Refresh();
+                Course.Update(course);
+            }
             else
+            {
                 MainWindow.Instance.lstCourses.Items.Add(course);
+                Course.Add(course);
+            }
 
             Close();
         }

@@ -1,5 +1,6 @@
 ﻿using DrKCrazyAttendance;
 using DrKCrazyAttendance.Properties;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +30,26 @@ namespace DrKCrazyAttendance_Instructor
         {
             InitializeComponent();
             Instance = this;
+
+            string query = @"SELECT DISTINCT classroom, name, section FROM Courses 
+                                GROUP BY classroom, name, section";
+            MySqlDataReader rdr = null;
+            using (rdr = DatabaseManager.GetDataReaderFromQuery(query))
+            {
+                try
+                {
+                    while (rdr.Read())
+                    {
+                        classroomCombo.Items.Add(rdr.GetString(0));
+                        courseCombo.Items.Add(rdr.GetString(1));
+                        sectionCombo.Items.Add(rdr.GetString(2));
+                    }
+                }
+                catch (MySqlException ex)
+                {
+                    Console.WriteLine("Mysql Error {0}", ex);
+                }
+            }
         }
 
         #region Properties
@@ -91,7 +112,8 @@ namespace DrKCrazyAttendance_Instructor
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             LoadCourses();
-            Attendance.GetAttendancesByInstructor(Settings.Default.Instructor);
+
+            //Attendance.GetAttendancesByInstructor(Settings.Default.Instructor);
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -111,5 +133,6 @@ namespace DrKCrazyAttendance_Instructor
                 }
             }
         }
+
     }
 }

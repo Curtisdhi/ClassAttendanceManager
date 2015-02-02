@@ -18,21 +18,33 @@
                         <GridViewColumn Header="Course" Width="100" DisplayMemberBinding="{Binding CourseName}"/>
                         <GridViewColumn Header="Section" DisplayMemberBinding="{Binding Section}"/>
                         <GridViewColumn Header="Days"  DisplayMemberBinding="{Binding FriendlyDays}" Width="65"/>
-                        <GridViewColumn Header="Year"  DisplayMemberBinding="{Binding Year}" Width="50"/>
                         <GridViewColumn Header="Start Time"  DisplayMemberBinding="{Binding StartTime, StringFormat=\{0:h:mmtt\}}" Width="75"/>
                         <GridViewColumn Header="End Time"  DisplayMemberBinding="{Binding EndTime, StringFormat=\{0:h:mmtt\}}" Width="75"/>
                     </GridView>
                 </ListView.View>
             </ListView>
-            <DockPanel Height="37" LastChildFill="False" Margin="17,-5,17,0" VerticalAlignment="Top">
+            <DockPanel Height="37" LastChildFill="False" Margin="17,-5,17,0" VerticalAlignment="Top" HorizontalAlignment="Right">
                 <Grid Height="37" Width="488">
-                    <Label Content="Course:" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="-0.263,0.654" Margin="77,8,0,0"/>
-                    <Label Content="Section:" HorizontalAlignment="Left" Margin="221,8,0,0" VerticalAlignment="Top"/>
-                    <TextBox x:Name="txtCourseSearch" HorizontalAlignment="Left" Height="23" Margin="131,8,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90"/>
-                    <TextBox x:Name="txtSectionSearch" HorizontalAlignment="Left" Height="23" Margin="273,8,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" RenderTransformOrigin="0.767,0.391"/>
-                    <ComboBox x:Name="yearSearchChoice" HorizontalAlignment="Left" VerticalAlignment="Top" Width="69" SelectedIndex="0" Margin="0,10,0,0">
-                        <ComboBoxItem Content="Year" HorizontalAlignment="Left" Width="88"/>
+                    <ComboBox x:Name="classroomCombo" HorizontalAlignment="Left" Margin="32,10,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="0" IsEditable="True">
+                        <ComboBoxItem Content="Classroom" IsEnabled="False"/>
                     </ComboBox>
+                    <ComboBox x:Name="courseCombo" HorizontalAlignment="Left" Margin="157,10,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="0" IsEditable="True">
+                        <ComboBoxItem Content="Course" IsSelected="True" IsEnabled="False"/>
+                    </ComboBox>
+                    <ComboBox x:Name="sectionCombo" HorizontalAlignment="Left" Margin="282,10,0,0" VerticalAlignment="Top" Width="70" SelectedIndex="0" IsEditable="True">
+                        <ComboBoxItem Content="Section" IsEnabled="False"/>
+                    </ComboBox>
+                    <ComboBox x:Name="daysCombo" HorizontalAlignment="Left" Margin="357,10,0,0" VerticalAlignment="Top" Width="100" SelectedIndex="0" IsEditable="True">
+                        <ComboBoxItem Content="Days" IsSelected="True" IsEnabled="False"/>
+                        <ComboBoxItem Content="MTWR"/>
+                        <ComboBoxItem Content="MW"/>
+                        <ComboBoxItem Content="TR"/>
+                        <ComboBoxItem Content="F"/>
+                        <ComboBoxItem Content="S"/>
+                    </ComboBox>
+                    <Button x:Name="btnSearch" HorizontalAlignment="Left" Margin="462,11,0,0" VerticalAlignment="Top" Width="24" Height="24">
+                        <Image Height="16" Width="16" Source="images/find.png"/>
+                    </Button>
                 </Grid>
             </DockPanel>
             <DockPanel Height="44" LastChildFill="False" Margin="0,0,17,0" VerticalAlignment="Bottom" Width="487" HorizontalAlignment="Right">
