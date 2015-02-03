@@ -24,13 +24,15 @@ namespace DrKCrazyAttendance_Instructor
     public partial class MainWindow : Window
     {
         private SettingsForm settingsForm;
+        private About about;
         private CourseEditor editor;
+        private AttendanceReport attendanceReport;
 
         public MainWindow()
         {
             InitializeComponent();
             Instance = this;
-
+            
             //I couldn't find a better solution.
             string query = @"SELECT DISTINCT classroom FROM Courses";
             MySqlDataReader rdr = null;
@@ -177,6 +179,29 @@ namespace DrKCrazyAttendance_Instructor
                     //cancel if the user doesn't confirm
                     e.Cancel = true;
                 }
+            }
+            if (about != null)
+            {
+                about.Close();
+            }
+        }
+
+        private void mnuAbout_Click(object sender, RoutedEventArgs e)
+        {
+            if (about == null)
+            {
+                about = new About();
+            }
+            about.Show();
+        }
+
+        private void btnReport_Click(object sender, RoutedEventArgs e)
+        {
+            if (lstCourses.SelectedItem != null)
+            {
+                Course course = (Course)lstCourses.SelectedItem;
+                attendanceReport = new AttendanceReport(course);
+                attendanceReport.Show();
             }
         }
 

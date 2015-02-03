@@ -2,8 +2,8 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="DrKCrazyAttendance_Instructor.CourseEditor"
-        Title="Course Editor" Height="259.429" Width="517.669" Icon="icon.ico">
-    <Grid Background="#FFEAEAEA" Margin="0,0,0,1" HorizontalAlignment="Right" Width="507" Height="228" VerticalAlignment="Bottom">
+        Title="Course Editor" Height="260" Width="520" MinHeight="260" MinWidth="520" Icon="icon.ico" ResizeMode="CanMinimize">
+    <Grid Margin="0,0,0,1" HorizontalAlignment="Right" Width="507" Height="228" VerticalAlignment="Bottom">
         <Grid.RowDefinitions>
             <RowDefinition/>
         </Grid.RowDefinitions>
