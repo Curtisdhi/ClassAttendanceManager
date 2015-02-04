@@ -140,9 +140,19 @@ namespace DrKCrazyAttendance
             {
                 Console.WriteLine(col.ColumnName);
             }
-            /*int id = int.Parse(row["id"].ToString());
-            Course course = Course.GetCourseFromRow();
-            Student student = new Student(int.Parse(row["studentId"].ToString()), row["students.username"].ToString());
+            /* get course from sql query */
+            //Convert freindly days into list of days
+            List<DayOfWeek> days = Course.GetDaysFromFriendly(row["days"].ToString());
+            Course course = new Course(int.Parse(row["id1"].ToString()), 
+                row["classroom"].ToString(), row["name"].ToString(), row["section"].ToString(), 
+                row["instructor"].ToString(), days,
+                DateTime.Parse(row["startDate"].ToString()), DateTime.Parse(row["endDate"].ToString()), 
+                DateTime.Parse(row["startTime"].ToString()), DateTime.Parse(row["endTime"].ToString()), 
+                bool.Parse(row["logTardy"].ToString()), TimeSpan.Parse(row["gracePeriod"].ToString())
+                );
+
+            /* get student from sql query */
+            Student student = new Student(int.Parse(row["id2"].ToString()), row["username"].ToString());
             attendance = new Attendance(int.Parse(row["id"].ToString()), 
                 course, 
                 student, 
@@ -150,7 +160,7 @@ namespace DrKCrazyAttendance
                 DateTime.Parse(row["timeLog"].ToString()), 
                 bool.Parse(row["isTardy"].ToString())
                 );
-            */
+            
             return attendance;
         }
         #endregion

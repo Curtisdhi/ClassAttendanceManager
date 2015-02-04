@@ -188,10 +188,11 @@ namespace DrKCrazyAttendance_Instructor
 
         private void mnuAbout_Click(object sender, RoutedEventArgs e)
         {
-            if (about == null)
+            if (about != null)
             {
-                about = new About();
+                about.Close();
             }
+            about = new About();
             about.Show();
         }
 

@@ -75,6 +75,7 @@
     <Compile Include="AttendanceReport.xaml.cs">
       <DependentUpon>AttendanceReport.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AttendanceViewModel.cs" />
     <Compile Include="SettingsForm.xaml.cs">
       <DependentUpon>SettingsForm.xaml</DependentUpon>
     </Compile>
