@@ -136,10 +136,10 @@ namespace DrKCrazyAttendance
         public static Attendance GetAttendanceFromDataRow(DataRow row) 
         {
             Attendance attendance = null;
-            foreach (DataColumn col in row.Table.Columns)
+            /*foreach (DataColumn col in row.Table.Columns)
             {
                 Console.WriteLine(col.ColumnName);
-            }
+            }*/
             /* get course from sql query */
             //Convert freindly days into list of days
             List<DayOfWeek> days = Course.GetDaysFromFriendly(row["days"].ToString());

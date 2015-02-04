@@ -155,6 +155,19 @@ namespace DrKCrazyAttendance
         }
         #endregion
 
+        #region Methods
+        //gets every datetime with in the range of start and end dates
+        public DateTime[] GetClassMeetings()
+        {
+            int numberOfDays = EndDate.Subtract(StartDate).Days + 1;
+            DateTime[] dates = Enumerable.Range(0, numberOfDays)
+                      .Select(i => StartDate.AddDays(i))
+                      .Where(d => Days.Contains(d.DayOfWeek))
+                      .ToArray<DateTime>();
+            return dates;
+        }
+        #endregion
+
         public static List<DayOfWeek> GetDaysFromFriendly(string fDays)
         {
             List<DayOfWeek> days = new List<DayOfWeek>();
@@ -186,20 +199,43 @@ namespace DrKCrazyAttendance
         }
 
         #region Sql methods
-        public Course GetCourse(string courseName, string section)
+        public Course GetCourse(string name, string section)
         {
-            throw new NotImplementedException();
+            Course course = null;
+
+            string query = "SELECT * FROM Courses WHERE name = @ name AND section = @section";
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters.Add("@name", name);
+            parameters.Add("@section", section);
+
+            DataTable table = DatabaseManager.GetDataTableFromQuery(query, parameters);
+            List<Course> courses = GetCoursesFromTable(table);
+            if (courses.Count > 0)
+            {
+                course = courses[0];
+            }
+            return course;
         }
 
         public Course GetCourse(int id)
         {
-            throw new NotImplementedException();
+            Course course = null;
+
+            string query = "SELECT * FROM Courses WHERE id = @id";
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters.Add("@id", id);
+
+            DataTable table = DatabaseManager.GetDataTableFromQuery(query, parameters);
+            List<Course> courses = GetCoursesFromTable(table);
+            if (courses.Count > 0)
+            {
+                course = courses[0];
+            }
+            return course;
         }
 
         public static List<Course> GetCoursesByInstructor(string instructor)
         {
-            List<Course> courses = new List<Course>();
-
             string query = "SELECT * FROM Courses WHERE instructor = @instructor";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("@instructor", instructor);

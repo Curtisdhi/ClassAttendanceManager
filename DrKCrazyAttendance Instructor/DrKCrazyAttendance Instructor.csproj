@@ -132,6 +132,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="capstone.sql" />
+    <None Include="Resources\checkMark.bmp" />
+    <Resource Include="images\checkmark.png" />
     <Resource Include="images\floppy.png" />
     <Resource Include="images\delete.png" />
     <Resource Include="images\printer.png" />
