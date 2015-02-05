@@ -3,14 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        
-        <DataGridTemplateColumn x:Key="attendanceCheckmark">
-            <DataGridTemplateColumn.CellTemplate>
-                <DataTemplate>
-                    <Image Width="12" Height="12" Source="images/checkmark.png"/>
-                </DataTemplate>
-            </DataGridTemplateColumn.CellTemplate>
-        </DataGridTemplateColumn>
-        
+
+        <DataTemplate x:Key="attendanceCheckmark">
+            <Image x:Name="image" Width="12" Height="12" Visibility="{Binding Path=Value}" Source="images/checkmark.png"/>
+        </DataTemplate>
+
     </Application.Resources>
 </Application>

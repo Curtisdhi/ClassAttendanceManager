@@ -76,6 +76,7 @@
       <DependentUpon>AttendanceReport.xaml</DependentUpon>
     </Compile>
     <Compile Include="AttendanceViewModel.cs" />
+    <Compile Include="CustomBoundColumn.cs" />
     <Compile Include="SettingsForm.xaml.cs">
       <DependentUpon>SettingsForm.xaml</DependentUpon>
     </Compile>
@@ -132,7 +133,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="capstone.sql" />
-    <None Include="Resources\checkMark.bmp" />
     <Resource Include="images\checkmark.png" />
     <Resource Include="images\floppy.png" />
     <Resource Include="images\delete.png" />
