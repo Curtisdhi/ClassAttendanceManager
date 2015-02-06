@@ -67,7 +67,8 @@ namespace DrKCrazyAttendance_Instructor
                 bool attended = false;
                 if (a < attends.Length)
                 {
-                    attended = meetings[i] == attends[a];
+                    //Compare only the dates
+                    attended = meetings[i].Date.Equals(attends[a].Date);
                     if (attended)
                     {
                         //if true, the student attended this date, so advance.
