@@ -5,7 +5,12 @@
     <Application.Resources>
 
         <DataTemplate x:Key="attendanceCheckmark">
-            <Image x:Name="image" Width="12" Height="12" Visibility="{Binding Path=Value}" Source="images/checkmark.png"/>
+            <Image x:Name="image" Width="12" Height="12" Visibility="Hidden" Source="images/checkmark.png"/>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Path=Value}" Value="True">
+                    <Setter TargetName="image" Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+            </DataTemplate.Triggers>
         </DataTemplate>
 
     </Application.Resources>

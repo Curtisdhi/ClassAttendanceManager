@@ -1,6 +1,7 @@
 ﻿using DrKCrazyAttendance;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -37,7 +38,7 @@ namespace DrKCrazyAttendance_Instructor
             private set;
         }
 
-        public Dictionary<string, bool> AttendsToCourse
+        public ObservableCollection<Property> AttendsToCourse
         {
             get;
             private set;
@@ -54,9 +55,9 @@ namespace DrKCrazyAttendance_Instructor
 
         //get a boolean array that represents the relationship between the course meetings
         //and the student's attendance datetimes.
-        public Dictionary<string, bool> GetAttendsToCourse()
+        public ObservableCollection<Property> GetAttendsToCourse()
         {
-            Dictionary<string, bool> attendance = new Dictionary<string, bool>();
+            ObservableCollection<Property> attendance = new ObservableCollection<Property>();
             DateTime[] meetings = Course.GetClassMeetings();
             //this array is assumed to be in order, but is never be assumed
             //to be the same length as classmeetings.
@@ -75,7 +76,7 @@ namespace DrKCrazyAttendance_Instructor
                         a++;
                     }
                 }
-                attendance.Add(meetings[i].ToString(), attended);
+                attendance.Add(new Property(meetings[i].ToString(), attended));
             }
             return attendance;
         }
