@@ -21,7 +21,7 @@ namespace DrKCrazyAttendance_Instructor
     /// </summary>
     public partial class SettingsForm : Window
     {
-        private bool locked;
+        private bool locked = true;
 
         public SettingsForm()
         {
