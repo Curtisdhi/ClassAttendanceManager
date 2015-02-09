@@ -33,45 +33,31 @@ namespace DrKCrazyAttendance_Instructor
             InitializeComponent();
             Instance = this;
 
-            //I couldn't find a better solution.
-            string query = @"SELECT DISTINCT classroom FROM Courses";
-            MySqlDataReader rdr = null;
-            using (rdr = DatabaseManager.GetDataReaderFromQuery(query))
+            List<string> classrooms = Course.GetClassrooms();
+            foreach (string classroom in classrooms)
             {
-                if (rdr != null)
-                {
-                    try
-                    {
-                        while (rdr.Read())
-                        {
-                            classroomCombo.Items.Add(rdr.GetString(0));
-                        }
-                    }
-                    catch (MySqlException ex)
-                    {
-                        Console.WriteLine("Mysql Error {0}", ex);
-                    }
-                }
+                classroomCombo.Items.Add(classroom);
             }
 
-            query = @"SELECT DISTINCT days FROM Courses";
-            using (rdr = DatabaseManager.GetDataReaderFromQuery(query))
-            {
-                if (rdr != null)
-                {
-                    try
-                    {
-                        while (rdr.Read())
-                        {
-                            daysCombo.Items.Add(rdr.GetString(0));
-                        }
-                    }
-                    catch (MySqlException ex)
-                    {
-                        Console.WriteLine("Mysql Error {0}", ex);
-                    }
-                }
-            }
+           string query = @"SELECT DISTINCT days FROM Courses ORDER BY days";
+           MySqlDataReader rdr = null;
+           using (rdr = DatabaseManager.GetDataReaderFromQuery(query))
+           {
+               if (rdr != null)
+               {
+                   try
+                   {
+                       while (rdr.Read())
+                       {
+                           daysCombo.Items.Add(rdr.GetString(0));
+                       }
+                   }
+                   catch (MySqlException ex)
+                   {
+                       Console.WriteLine("Mysql Error {0}", ex);
+                   }
+               }
+           }
         }
 
         #region Properties
@@ -195,6 +181,15 @@ namespace DrKCrazyAttendance_Instructor
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void ListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (lstCourses.SelectedItem != null)
+            {
+                editor = new CourseEditor((Course)lstCourses.SelectedItem);
+                editor.Show();
+            }
         }
 
     }

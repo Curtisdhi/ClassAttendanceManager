@@ -228,7 +228,7 @@ namespace DrKCrazyAttendance
             return course;
         }
 
-        public Course GetCourse(int id)
+        public Course GetCourse(long id)
         {
             Course course = null;
 
@@ -247,7 +247,7 @@ namespace DrKCrazyAttendance
 
         public static List<Course> GetCoursesByInstructor(string instructor)
         {
-            string query = @"SELECT * FROM Courses WHERE instructor = @instructor";
+            string query = @"SELECT * FROM Courses WHERE instructor = @instructor ORDER BY classroom, name, section";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("@instructor", instructor);
 
@@ -257,7 +257,7 @@ namespace DrKCrazyAttendance
 
         public static List<Course> GetCoursesByClassroom(string classroom)
         {
-            string query = @"SELECT * FROM Courses WHERE classroom = @class";
+            string query = @"SELECT * FROM Courses WHERE classroom = @class ORDER BY name, section";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("@class", classroom);
 
@@ -382,7 +382,7 @@ namespace DrKCrazyAttendance
         public static List<string> GetClassrooms()
         {
             List<string> classrooms = new List<string>();
-            string query = @"SELECT DISTINCT classroom FROM Courses";
+            string query = @"SELECT DISTINCT classroom FROM Courses ORDER BY classroom";
             MySqlDataReader rdr = null;
             using (rdr = DatabaseManager.GetDataReaderFromQuery(query))
             {

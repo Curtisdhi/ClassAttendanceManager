@@ -13,7 +13,7 @@
             <MenuItem x:Name="mnuAbout" Header="About" Click="mnuAbout_Click"/>
         </Menu>
         <Grid Margin="0,28,-2,0" Height="Auto">
-            <ListView x:Name="lstCourses" Margin="17,37,17,54">
+            <ListView x:Name="lstCourses" Margin="17,37,17,54" MouseDoubleClick="ListView_MouseDoubleClick">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Classroom" DisplayMemberBinding="{Binding Classroom}" Width="70"/>
