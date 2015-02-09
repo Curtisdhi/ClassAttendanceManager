@@ -11,7 +11,6 @@ using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-
 //Code used from
 //https://code.msdn.microsoft.com/windowsapps/CSUACSelfElevation-644673d3/
 namespace DrKCrazyAttendance.Util

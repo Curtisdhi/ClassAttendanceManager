@@ -32,7 +32,9 @@ namespace DrKCrazyAttendance_Instructor
         {
             InitializeComponent();
             Instance = this;
-            
+            /**
+             * 
+             * 
             //I couldn't find a better solution.
             string query = @"SELECT DISTINCT classroom FROM Courses";
             MySqlDataReader rdr = null;
@@ -97,7 +99,7 @@ namespace DrKCrazyAttendance_Instructor
                 {
                     Console.WriteLine("Mysql Error {0}", ex);
                 }
-            }
+            }*/
         }
 
         #region Properties
