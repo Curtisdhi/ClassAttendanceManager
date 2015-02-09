@@ -326,9 +326,10 @@ namespace DrKCrazyAttendance
         public static void Add(List<Course> courses)
         {
             //insert into db
-            string query = @"INSERT INTO Courses(classroom, name, section, days,
-                startDate, endDate, startTime, endTime, logTardy, gracePeriod) VALUES (@class, @name, @section, @days, 
-                @startDate, @endDate, @startTime, @endTime, @logTardy, @gracePeriod)";
+            string query = @"INSERT INTO Courses(classroom, name, section, instructor, days, 
+                startDate, endDate, startTime, endTime, logTardy, gracePeriod) VALUES 
+                (@class, @name, @section, @instructor, @days, @startDate, @endDate, @startTime, 
+                @endTime, @logTardy, @gracePeriod)";
             foreach (Course course in courses)
             {
                 //set the id to the last inserted id
@@ -367,7 +368,7 @@ namespace DrKCrazyAttendance
         {
             List<Dictionary<string, object>> parameters = new List<Dictionary<string, object>>();
             //refresh the list to display the updated item
-            string query = @"UPDATE Courses SET classroom=@class, name=@name, section=@section,
+            string query = @"UPDATE Courses SET classroom=@class, name=@name, section=@section, instructor=@instructor,
                 days=@days, startDate=@startDate, endDate=@endDate, startTime=@startTime, endTime=@endTime,
                 logTardy=@logTardy, gracePeriod=@gracePeriod WHERE id=@id";
             foreach (Course course in courses)

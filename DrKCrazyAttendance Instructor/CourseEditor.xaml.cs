@@ -148,6 +148,7 @@ namespace DrKCrazyAttendance_Instructor
             }
             course.CourseName = txtCourse.Text;
             course.Section = txtSection.Text;
+
             course.StartDate = GetDateTime(startDatePicker.SelectedDate);
             course.EndDate = GetDateTime(endDatePicker.SelectedDate);
             course.StartTime = GetDateTime(startTimePicker.Value);
