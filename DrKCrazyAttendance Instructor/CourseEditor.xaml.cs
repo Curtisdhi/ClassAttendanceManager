@@ -38,7 +38,9 @@ namespace DrKCrazyAttendance_Instructor
 
         public CourseEditor(Course course) {
             InitializeComponent();
-            editing = true;
+            //if course id is 0, must be not be persisted.
+            if (course.Id != 0)
+                editing = true;
 
             this.course = course;
             txtCourse.Text = course.CourseName;
@@ -93,6 +95,7 @@ namespace DrKCrazyAttendance_Instructor
             chkThursday.IsChecked = false;
             chkFriday.IsChecked = false;
             chkSaturday.IsChecked = false;
+            classroomChoice.SelectedIndex = -1;
             txtCourse.Text = "";
             txtSection.Text = "";
             startDatePicker.SelectedDate = null;
@@ -135,6 +138,14 @@ namespace DrKCrazyAttendance_Instructor
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
+            if (classroomChoice.SelectedItem == null)
+            {
+                course.Classroom = classroomChoice.Text;
+            }
+            else
+            {
+                course.Classroom = classroomChoice.SelectedItem.ToString();
+            }
             course.CourseName = txtCourse.Text;
             course.Section = txtSection.Text;
             course.StartDate = GetDateTime(startDatePicker.SelectedDate);

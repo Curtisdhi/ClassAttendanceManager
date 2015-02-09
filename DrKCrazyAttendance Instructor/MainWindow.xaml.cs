@@ -32,42 +32,46 @@ namespace DrKCrazyAttendance_Instructor
         {
             InitializeComponent();
             Instance = this;
-            /**
-             * 
-             * 
+
             //I couldn't find a better solution.
             string query = @"SELECT DISTINCT classroom FROM Courses";
             MySqlDataReader rdr = null;
             using (rdr = DatabaseManager.GetDataReaderFromQuery(query))
             {
-                try
+                if (rdr != null)
                 {
-                    while (rdr.Read())
+                    try
                     {
-                        classroomCombo.Items.Add(rdr.GetString(0));
+                        while (rdr.Read())
+                        {
+                            classroomCombo.Items.Add(rdr.GetString(0));
+                        }
                     }
-                }
-                catch (MySqlException ex)
-                {
-                    Console.WriteLine("Mysql Error {0}", ex);
+                    catch (MySqlException ex)
+                    {
+                        Console.WriteLine("Mysql Error {0}", ex);
+                    }
                 }
             }
 
             query = @"SELECT DISTINCT days FROM Courses";
             using (rdr = DatabaseManager.GetDataReaderFromQuery(query))
             {
-                try
+                if (rdr != null)
                 {
-                    while (rdr.Read())
+                    try
                     {
-                        daysCombo.Items.Add(rdr.GetString(0));
+                        while (rdr.Read())
+                        {
+                            daysCombo.Items.Add(rdr.GetString(0));
+                        }
+                    }
+                    catch (MySqlException ex)
+                    {
+                        Console.WriteLine("Mysql Error {0}", ex);
                     }
                 }
-                catch (MySqlException ex)
-                {
-                    Console.WriteLine("Mysql Error {0}", ex);
-                }
-            }*/
+            }
         }
 
         #region Properties
@@ -173,6 +177,18 @@ namespace DrKCrazyAttendance_Instructor
                 Course course = (Course)lstCourses.SelectedItem;
                 attendanceReport = new AttendanceReport(course);
                 attendanceReport.Show();
+            }
+        }
+
+        private void btnClone_Click(object sender, RoutedEventArgs e)
+        {
+            if (lstCourses.SelectedItem != null)
+            {
+                Course course = (Course)lstCourses.SelectedItem;
+                Course cloneCourse = new Course(course);
+
+                editor = new CourseEditor(cloneCourse);
+                editor.Show();
             }
         }
 

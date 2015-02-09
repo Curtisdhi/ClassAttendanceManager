@@ -11,7 +11,7 @@ namespace DrKCrazyAttendance
     public class Attendance
     {
 
-        public Attendance(int id, Course course, Student student, string computerIPv4, DateTime timeLog, bool isTardy) 
+        public Attendance(long id, Course course, Student student, string computerIPv4, DateTime timeLog, bool isTardy) 
         {
             this.Id = id;
             this.Course = course;
@@ -27,7 +27,7 @@ namespace DrKCrazyAttendance
         }
 
         #region properties
-        public int Id
+        public long Id
         {
             get;
             private set;
@@ -94,7 +94,7 @@ namespace DrKCrazyAttendance
             return GetAttendancesFromTable(table);
         }
 
-        public static List<Attendance> GetAttendancesByCourseId(int courseId) {
+        public static List<Attendance> GetAttendancesByCourseId(long courseId) {
             string query = @"SELECT * FROM Attendances AS a 
                 INNER JOIN Courses AS c 
                     ON a.courseId = c.id
@@ -108,7 +108,7 @@ namespace DrKCrazyAttendance
             return GetAttendancesFromTable(table);
         }
 
-        public static List<Attendance> GetAttendancesByStudentId(int studentId)
+        public static List<Attendance> GetAttendancesByStudentId(long studentId)
         {
             string query = @"SELECT * FROM Attendances AS a 
                 INNER JOIN Courses AS c 

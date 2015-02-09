@@ -14,14 +14,14 @@ namespace DrKCrazyAttendance
         {
 
         }
-        public Student(int id, string username)
+        public Student(long id, string username)
         {
             this.Id = id;
             this.Username = username;
         }
 
         #region properties
-        public int Id
+        public long Id
         {
             get;
             private set;
@@ -35,7 +35,7 @@ namespace DrKCrazyAttendance
         #endregion
 
         #region Sql Methods
-        public static List<Student> GetStudentsByCourse(int courseId) {
+        public static List<Student> GetStudentsByCourse(long courseId) {
             List<Student> students = new List<Student>();
             string query = @"SELECT FROM Students AS s
                                 INNER JOIN Attendance AS a
@@ -71,7 +71,7 @@ namespace DrKCrazyAttendance
             return student;
         }
 
-        public static Student GetStudent(int id)
+        public static Student GetStudent(long id)
         {
             Student student = null;
             string query = "SELECT FROM Students WHERE id=@id";

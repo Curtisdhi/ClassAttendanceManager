@@ -20,7 +20,7 @@ namespace DrKCrazyAttendance
             this.Instructor = instructor;
         }
 
-        public Course(int id, string classroom, string courseName, string section,
+        public Course(long id, string classroom, string courseName, string section,
             string instructor, List<DayOfWeek> days, DateTime startDate, DateTime endDate, DateTime startTime,
             DateTime endTime, bool logTardy, TimeSpan gracePeriod)
         {
@@ -38,8 +38,19 @@ namespace DrKCrazyAttendance
             this.LogTardy = logTardy;
         }
 
+        /// <summary>
+        /// Clones a Course object
+        /// </summary>
+        /// <param name="course"></param>
+        public Course(Course course) : this(0, course.Classroom, course.CourseName, course.Section,
+            course.Instructor, new List<DayOfWeek>(course.Days), course.StartDate, course.EndDate,
+            course.StartTime, course.EndTime, course.LogTardy, course.GracePeriod)
+        {
+
+        }
+
         #region Properties
-        public int Id
+        public long Id
         {
             get;
             private set;
@@ -203,7 +214,7 @@ namespace DrKCrazyAttendance
         {
             Course course = null;
 
-            string query = "SELECT * FROM Courses WHERE name = @ name AND section = @section";
+            string query = @"SELECT * FROM Courses WHERE name = @name AND section = @section";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("@name", name);
             parameters.Add("@section", section);
@@ -221,7 +232,7 @@ namespace DrKCrazyAttendance
         {
             Course course = null;
 
-            string query = "SELECT * FROM Courses WHERE id = @id";
+            string query = @"SELECT * FROM Courses WHERE id = @id";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("@id", id);
 
@@ -236,7 +247,7 @@ namespace DrKCrazyAttendance
 
         public static List<Course> GetCoursesByInstructor(string instructor)
         {
-            string query = "SELECT * FROM Courses WHERE instructor = @instructor";
+            string query = @"SELECT * FROM Courses WHERE instructor = @instructor";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("@instructor", instructor);
 
@@ -246,7 +257,7 @@ namespace DrKCrazyAttendance
 
         public static List<Course> GetCoursesByClassroom(string classroom)
         {
-            string query = "SELECT * FROM Courses WHERE classroom = @class";
+            string query = @"SELECT * FROM Courses WHERE classroom = @class";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("@class", classroom);
 
@@ -314,16 +325,15 @@ namespace DrKCrazyAttendance
 
         public static void Add(List<Course> courses)
         {
-            List<Dictionary<string, object>> parameters = new List<Dictionary<string,object>>();
             //insert into db
-            string query = "INSERT INTO Courses(classroom, name, section, semester, days," +
-                "startDate, endDate, startTime, endTime, logTardy, gracePeriod) VALUES (@class, @name, @section," +
-                "@semester, @days, @startDate, @endDate, @startTime, @endTime, @logTardy, @gracePeriod)";
+            string query = @"INSERT INTO Courses(classroom, name, section, days,
+                startDate, endDate, startTime, endTime, logTardy, gracePeriod) VALUES (@class, @name, @section, @days, 
+                @startDate, @endDate, @startTime, @endTime, @logTardy, @gracePeriod)";
             foreach (Course course in courses)
             {
-                parameters.Add(course.GetQueryParameters());
+                //set the id to the last inserted id
+                course.Id = DatabaseManager.ExecuteQuery(query, course.GetQueryParameters());
             }
-            DatabaseManager.ExecuteQuery(query, parameters);
         }
 
         public static void Remove(Course course)
@@ -336,7 +346,7 @@ namespace DrKCrazyAttendance
         public static void Remove(List<Course> courses)
         {
             List<Dictionary<string, object>> parameters = new List<Dictionary<string, object>>();
-            string query = "DELETE FROM Courses WHERE id=@id";
+            string query = @"DELETE FROM Courses WHERE id=@id";
             foreach (Course course in courses)
             {
                 Dictionary<string, object> param = new Dictionary<string, object>();
@@ -357,9 +367,9 @@ namespace DrKCrazyAttendance
         {
             List<Dictionary<string, object>> parameters = new List<Dictionary<string, object>>();
             //refresh the list to display the updated item
-            string query = "UPDATE Courses SET classroom=@class, name=@name, section=@section, semester=@semester," +
-                "days=@days, startDate=@startDate, endDate=@endDate, startTime=@startTime, endTime=@endTime," +
-                "logTardy=@logTardy, gracePeriod=@gracePeriod WHERE id=@id";
+            string query = @"UPDATE Courses SET classroom=@class, name=@name, section=@section,
+                days=@days, startDate=@startDate, endDate=@endDate, startTime=@startTime, endTime=@endTime,
+                logTardy=@logTardy, gracePeriod=@gracePeriod WHERE id=@id";
             foreach (Course course in courses)
             {
                 parameters.Add(course.GetQueryParameters());
@@ -371,7 +381,7 @@ namespace DrKCrazyAttendance
         public static List<string> GetClassrooms()
         {
             List<string> classrooms = new List<string>();
-            string query = "SELECT DISTINCT classroom FROM Courses";
+            string query = @"SELECT DISTINCT classroom FROM Courses";
             MySqlDataReader rdr = null;
             using (rdr = DatabaseManager.GetDataReaderFromQuery(query))
             {

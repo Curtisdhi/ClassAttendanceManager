@@ -66,12 +66,56 @@ namespace DrKCrazyAttendance
             MySqlDataReader rdr = null;
             using (rdr = GetDataReaderFromQuery(query, parameters))
             {
-                table.Load(rdr);
+                if (rdr != null)
+                {
+                    table.Load(rdr);
+                }
             }
             
             return table;
         }
 
+        /// <summary>
+        /// Executes a single query
+        /// </summary>
+        /// <param name="query">Sql query</param>
+        /// <param name="parameters">Query parameters</param>
+        /// <returns>last inserted id if the query was an insert.</returns>
+        public static long ExecuteQuery(string query, Dictionary<string, Object> parameters)
+        {
+            long id = 0;
+            MySqlConnection conn = null;
+            MySqlCommand cmd = null;
+            using (conn = DatabaseManager.Connect())
+            {
+                try
+                {
+                    conn.Open();
+                    using (cmd = new MySqlCommand(query, conn))
+                    {
+                        cmd.Prepare();
+                        foreach (string key in parameters.Keys)
+                        {
+                            cmd.Parameters.AddWithValue(key, parameters[key]);
+                        }
+                        cmd.ExecuteNonQuery();
+                        id = cmd.LastInsertedId;
+                    }
+                }
+                catch (MySqlException ex)
+                {
+                    Console.WriteLine("Error: {0}", ex.ToString());
+                }
+            }
+            return id;
+        }
+
+        /// <summary>
+        /// Executes multiple queries
+        /// </summary>
+        /// <param name="query">Sql query</param>
+        /// <param name="parameters">Query parameters</param>
+        /// <returns>Query success</returns>
         public static bool ExecuteQuery(string query, List<Dictionary<string, Object>> parameters)
         {
             bool success = false;
@@ -98,8 +142,8 @@ namespace DrKCrazyAttendance
                             }
                             cmd.ExecuteNonQuery();
                         }
+                        success = true;
                         tr.Commit();
-
                     }
                 }
                 catch (MySqlException ex)
