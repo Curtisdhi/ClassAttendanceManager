@@ -1,0 +1,111 @@
+﻿using DrKCrazyAttendance_Instructor.Properties;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using MySql.Data.MySqlClient; 
+
+namespace DrKCrazyAttendance_Instructor
+{
+    public class CourseManager
+    {
+        private DatabaseManager dbManager;
+
+        public CourseManager(string classroom)
+        {
+            dbManager = new DatabaseManager(Settings.Default.SqlServerAddr,
+                Settings.Default.SqlDatabase, Settings.Default.SqlUsername, 
+                Settings.Default.SqlPassword);
+            try
+            {
+                FetchAll(classroom);
+            }
+            catch (Exception) { /*ignore*/ }
+       
+        }
+
+        #region properties
+        public List<Course> Courses
+        {
+            get;
+            private set;
+        }
+        #endregion
+        
+        #region methods
+        public List<Course> FetchAll(string classroom)
+        {
+            Courses = new List<Course>();
+
+            MySqlConnection conn = null;
+            MySqlDataReader rdr = null;
+            using (conn = dbManager.Connect())
+            {
+                conn.Open();
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.Connection = conn;
+                cmd.CommandText = "SELECT * FROM Courses WHERE classroom = @class";
+                cmd.Prepare();
+
+                cmd.Parameters.AddWithValue("@class", classroom);
+                cmd.ExecuteNonQuery();
+
+                using (rdr = cmd.ExecuteReader())
+                {
+                    while (rdr.Read())
+                    {
+                        List<DayOfWeek> days = new List<DayOfWeek>();
+                        
+                        Course course = new Course(rdr.GetInt32(0), rdr.GetString(1), 
+                            rdr.GetString(2), rdr.GetString(3), days, rdr.GetDateTime(5),
+                            rdr.GetDateTime(6), rdr.GetDateTime(7), rdr.GetDateTime(8),
+                            rdr.GetTimeSpan(9), rdr.GetBoolean(10)
+                            );
+                        
+                    }
+                }
+            }
+
+            return Courses;
+        }
+
+        public void Add(Course course)
+        {
+            if (!Courses.Contains(course)) { 
+                Courses.Add(course);
+                MainWindow.Instance.lstCourses.Items.Add(course);
+            }
+            else
+            {
+                //refresh the list to display the updated item
+                MainWindow.Instance.lstCourses.Items.Refresh();
+            }
+        }
+
+        public void Remove(Course course)
+        {
+            Courses.Remove(course);
+            MainWindow.Instance.lstCourses.Items.Remove(course);
+        }
+
+        public void Update(Course course)
+        {
+
+        }
+
+        public Course GetCourse(string courseName, string section)
+        {
+            foreach (Course course in Courses)
+            {
+                if (course.CourseName.Equals(courseName) && course.Section.Equals(section))
+                {
+                    return course;
+                }
+            }
+            return null;
+        }
+        #endregion
+
+    }
+}
