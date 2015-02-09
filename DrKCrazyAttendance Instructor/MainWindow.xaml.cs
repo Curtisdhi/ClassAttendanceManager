@@ -53,38 +53,6 @@ namespace DrKCrazyAttendance_Instructor
                 }
             }
 
-            query = @"SELECT DISTINCT name FROM Courses";
-            using (rdr = DatabaseManager.GetDataReaderFromQuery(query))
-            {
-                try
-                {
-                    while (rdr.Read())
-                    {
-                        courseCombo.Items.Add(rdr.GetString(0));
-                    }
-                }
-                catch (MySqlException ex)
-                {
-                    Console.WriteLine("Mysql Error {0}", ex);
-                }
-            }
-
-            query = @"SELECT DISTINCT section FROM Courses";
-            using (rdr = DatabaseManager.GetDataReaderFromQuery(query))
-            {
-                try
-                {
-                    while (rdr.Read())
-                    {
-                        sectionCombo.Items.Add(rdr.GetString(0));
-                    }
-                }
-                catch (MySqlException ex)
-                {
-                    Console.WriteLine("Mysql Error {0}", ex);
-                }
-            }
-
             query = @"SELECT DISTINCT days FROM Courses";
             using (rdr = DatabaseManager.GetDataReaderFromQuery(query))
             {
@@ -206,6 +174,11 @@ namespace DrKCrazyAttendance_Instructor
                 attendanceReport = new AttendanceReport(course);
                 attendanceReport.Show();
             }
+        }
+
+        private void btnSearch_Click(object sender, RoutedEventArgs e)
+        {
+
         }
 
     }
