@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DrKCrazyAttendance
 {
-    public class Course
+    public class Course : IDataErrorInfo
     {
         public Course()
         {
@@ -401,6 +402,41 @@ namespace DrKCrazyAttendance
             return classrooms;
         }
         #endregion
-        
+
+        #region IDataError
+        string IDataErrorInfo.Error { 
+            get { throw new NotImplementedException(); } 
+        }
+
+        string IDataErrorInfo.this[string propertyName]
+        {
+            get
+            {
+                string result = null;
+                switch (propertyName.ToLower()) { 
+                    case "classroom":
+                        if (string.IsNullOrWhiteSpace(Classroom))
+                        {
+                            result = "Classroom is required";
+                        }
+                        break;
+                    case "name":
+                        if (string.IsNullOrWhiteSpace(CourseName))
+                        {
+                            result = "Course name is required";
+                        }
+                        break;
+                    case "section":
+                        if (string.IsNullOrWhiteSpace(Section))
+                        {
+                            result = "Section is required";
+                        }
+                        break;
+                }
+
+                return result;
+            }
+        }
+        #endregion
     }
 }

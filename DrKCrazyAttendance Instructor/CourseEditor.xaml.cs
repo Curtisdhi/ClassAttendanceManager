@@ -21,13 +21,12 @@ namespace DrKCrazyAttendance_Instructor
     /// </summary>
     public partial class CourseEditor : Window
     {
-        private Course course;
         private bool editing;
 
         public CourseEditor()
         {
             InitializeComponent();
-            course = new Course(Settings.Default.Instructor);
+            Course = new Course(Settings.Default.Instructor);
             editing = false;
             List<string> classrooms = Course.GetClassrooms();
             foreach (string classroom in classrooms)
@@ -38,21 +37,22 @@ namespace DrKCrazyAttendance_Instructor
 
         public CourseEditor(Course course) {
             InitializeComponent();
+            this.Course = course;
+            this.DataContext = this;
             //if course id is 0, must be not be persisted.
-            if (course.Id != 0)
+            if (Course.Id != 0)
                 editing = true;
 
-            this.course = course;
-            txtCourse.Text = course.CourseName;
-            txtSection.Text = course.Section;
-            startDatePicker.SelectedDate = course.StartDate;
-            endDatePicker.SelectedDate = course.EndDate;
-            startTimePicker.Value = course.StartTime;
-            endTimePicker.Value = course.EndTime;
-            chkEnableTardy.IsChecked = course.LogTardy;
-            gracePeriodTS.Value = course.GracePeriod;
+            //txtCourse.Text = Course.CourseName;
+            /*txtSection.Text = Course.Section;
+            startDatePicker.SelectedDate = Course.StartDate;
+            endDatePicker.SelectedDate = Course.EndDate;
+            startTimePicker.Value = Course.StartTime;
+            endTimePicker.Value = Course.EndTime;
+            chkEnableTardy.IsChecked = Course.LogTardy;
+            gracePeriodTS.Value = Course.GracePeriod;*/
 
-            foreach (DayOfWeek day in course.Days)
+            foreach (DayOfWeek day in Course.Days)
             {
                 switch (day)
                 {
@@ -82,9 +82,17 @@ namespace DrKCrazyAttendance_Instructor
             {
                 classroomChoice.Items.Add(classroom);
             }
-            classroomChoice.SelectedIndex = classroomChoice.Items.IndexOf(course.Classroom);
+            //classroomChoice.SelectedIndex = classroomChoice.Items.IndexOf(Course.Classroom);
 
         }
+
+        #region Properties
+        public Course Course
+        {
+            get;
+            private set;
+        }
+        #endregion
 
         private void resetForm()
         {
@@ -136,58 +144,61 @@ namespace DrKCrazyAttendance_Instructor
             return timeSpan;
         }
 
+
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
             if (classroomChoice.SelectedItem == null)
             {
-                course.Classroom = classroomChoice.Text;
+                Course.Classroom = classroomChoice.Text;
             }
             else
             {
-                course.Classroom = classroomChoice.SelectedItem.ToString();
+                Course.Classroom = classroomChoice.SelectedItem.ToString();
             }
-            course.CourseName = txtCourse.Text;
-            course.Section = txtSection.Text;
+            Course.CourseName = txtCourse.Text;
+            Course.Section = txtSection.Text;
 
-            course.StartDate = GetDateTime(startDatePicker.SelectedDate);
-            course.EndDate = GetDateTime(endDatePicker.SelectedDate);
-            course.StartTime = GetDateTime(startTimePicker.Value);
-            course.EndTime = GetDateTime(endTimePicker.Value);
+            Course.StartDate = GetDateTime(startDatePicker.SelectedDate);
+            Course.EndDate = GetDateTime(endDatePicker.SelectedDate);
+            Course.StartTime = GetDateTime(startTimePicker.Value);
+            Course.EndTime = GetDateTime(endTimePicker.Value);
 
-            course.GracePeriod = GetTimeSpan(gracePeriodTS.Value);
-            course.LogTardy = IsChecked(chkEnableTardy);
+            Course.GracePeriod = GetTimeSpan(gracePeriodTS.Value);
+            Course.LogTardy = IsChecked(chkEnableTardy);
 
-            course.Days.Clear();
+            Course.Days.Clear();
             if (IsChecked(chkMonday))
-                course.Days.Add(DayOfWeek.Monday);
+                Course.Days.Add(DayOfWeek.Monday);
             if (IsChecked(chkTuesday))
-                course.Days.Add(DayOfWeek.Tuesday);
+                Course.Days.Add(DayOfWeek.Tuesday);
             if (IsChecked(chkWednesday))
-                course.Days.Add(DayOfWeek.Wednesday);
+                Course.Days.Add(DayOfWeek.Wednesday);
             if (IsChecked(chkThursday))
-                course.Days.Add(DayOfWeek.Thursday);
+                Course.Days.Add(DayOfWeek.Thursday);
             if (IsChecked(chkFriday))
-                course.Days.Add(DayOfWeek.Friday);
+                Course.Days.Add(DayOfWeek.Friday);
             if (IsChecked(chkSaturday))
-                course.Days.Add(DayOfWeek.Saturday);
+                Course.Days.Add(DayOfWeek.Saturday);
 
             if (editing)
             {
                 MainWindow.Instance.lstCourses.Items.Refresh();
-                Course.Update(course);
+                Course.Update(Course);
             }
             else
             {
-                MainWindow.Instance.lstCourses.Items.Add(course);
-                Course.Add(course);
+                MainWindow.Instance.lstCourses.Items.Add(Course);
+                Course.Add(Course);
             }
 
             Close();
+
         }
 
         private void chkEnableTardy_Click(object sender, RoutedEventArgs e)
         {
             gracePeriodTS.IsEnabled = IsChecked(chkEnableTardy);
         }
+
     }
 }
