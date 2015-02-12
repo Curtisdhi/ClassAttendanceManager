@@ -22,6 +22,8 @@ namespace DrKCrazyAttendance_Instructor
     public partial class CourseEditor : Window
     {
         private bool editing;
+        private Course course;
+        private Course originalCourse;
 
         public CourseEditor()
         {
@@ -89,32 +91,43 @@ namespace DrKCrazyAttendance_Instructor
         #region Properties
         public Course Course
         {
-            get;
-            private set;
+            get { return course; }
+            private set {
+                course = value;
+                //clone the course so we have the original values to
+                //revert back to in the even the user doesn't save.
+                //Note in the event something bad happening, this won't be
+                //explictly persisted to the DB until the user "saves"
+                originalCourse = new Course(value);
+            }
         }
         #endregion
 
-        private void resetForm()
+        private void ResetForm()
         {
-            chkEnableTardy.IsChecked = false;
-            chkMonday.IsChecked = false;
-            chkTuesday.IsChecked = false;
-            chkWednesday.IsChecked = false;
-            chkThursday.IsChecked = false;
-            chkFriday.IsChecked = false;
-            chkSaturday.IsChecked = false;
-            classroomChoice.SelectedIndex = -1;
-            txtCourse.Text = "";
-            txtSection.Text = "";
-            startDatePicker.SelectedDate = null;
-            endDatePicker.SelectedDate = null;
-            startTimePicker.Value = null;
-            endTimePicker.Value = null;
+            //Note that "originalCourse" will be a empty default if this form is in
+            //non editing mode, but will contain the original values in editing mode.
+            chkEnableTardy.IsChecked = originalCourse.LogTardy;
+            chkMonday.IsChecked = originalCourse.Days.Contains(DayOfWeek.Monday);
+            chkTuesday.IsChecked = originalCourse.Days.Contains(DayOfWeek.Tuesday);
+            chkWednesday.IsChecked = originalCourse.Days.Contains(DayOfWeek.Wednesday);
+            chkThursday.IsChecked = originalCourse.Days.Contains(DayOfWeek.Thursday);
+            chkFriday.IsChecked = originalCourse.Days.Contains(DayOfWeek.Friday);
+            chkSaturday.IsChecked = originalCourse.Days.Contains(DayOfWeek.Saturday);
+            txtCourse.Text = originalCourse.CourseName;
+            txtSection.Text = originalCourse.Section;
+            startDatePicker.SelectedDate = (DateTime?)originalCourse.StartDate;
+            endDatePicker.SelectedDate = (DateTime?)originalCourse.EndDate;
+            startTimePicker.Value = (DateTime?)originalCourse.StartTime;
+            endTimePicker.Value = (DateTime?)originalCourse.EndTime;
+
+            classroomChoice.SelectedIndex = classroomChoice.Items.IndexOf(originalCourse.Classroom);
+
         }
 
         private void btnResetCourse_Click(object sender, RoutedEventArgs e)
         {
-            resetForm();
+            ResetForm();
         }
 
         /*
@@ -147,7 +160,7 @@ namespace DrKCrazyAttendance_Instructor
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            if (classroomChoice.SelectedItem == null)
+            /*if (classroomChoice.SelectedItem == null)
             {
                 Course.Classroom = classroomChoice.Text;
             }
@@ -164,8 +177,9 @@ namespace DrKCrazyAttendance_Instructor
             Course.EndTime = GetDateTime(endTimePicker.Value);
 
             Course.GracePeriod = GetTimeSpan(gracePeriodTS.Value);
-            Course.LogTardy = IsChecked(chkEnableTardy);
+            Course.LogTardy = IsChecked(chkEnableTardy);*/
 
+            //the checkboxes aren't binded, so we must manually deal with it
             Course.Days.Clear();
             if (IsChecked(chkMonday))
                 Course.Days.Add(DayOfWeek.Monday);
@@ -182,7 +196,7 @@ namespace DrKCrazyAttendance_Instructor
 
             if (editing)
             {
-                MainWindow.Instance.lstCourses.Items.Refresh();
+                //update in the DB
                 Course.Update(Course);
             }
             else
@@ -198,6 +212,12 @@ namespace DrKCrazyAttendance_Instructor
         private void chkEnableTardy_Click(object sender, RoutedEventArgs e)
         {
             gracePeriodTS.IsEnabled = IsChecked(chkEnableTardy);
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            //reset the course to the original settings before closing!
+            ResetForm();
         }
 
     }

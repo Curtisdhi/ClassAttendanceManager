@@ -19,6 +19,8 @@ namespace DrKCrazyAttendance
         public Course(string instructor) : this()
         {
             this.Instructor = instructor;
+            StartDate = DateTime.Now;
+            EndDate = DateTime.Now;
         }
 
         public Course(long id, string classroom, string courseName, string section,
