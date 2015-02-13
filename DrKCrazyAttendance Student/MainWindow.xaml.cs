@@ -44,7 +44,7 @@ namespace DrKCrazyAttendance_Student
             Settings.Default.SqlServerAddr = "www.projectgxp.com";
             Settings.Default.SqlPassword = "SYM4GMmlzHmpoGenV4yb";
             string userName = Environment.UserName;
-            Student student = Student.GetStudent("Dylan");
+            Student student = Student.GetStudent(userName);
             if (student == null)
             {
                 //ask for student id
