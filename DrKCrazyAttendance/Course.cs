@@ -422,7 +422,7 @@ namespace DrKCrazyAttendance
                             result = "Classroom is required";
                         }
                         break;
-                    case "name":
+                    case "coursename":
                         if (string.IsNullOrWhiteSpace(CourseName))
                         {
                             result = "Course name is required";
@@ -432,6 +432,24 @@ namespace DrKCrazyAttendance
                         if (string.IsNullOrWhiteSpace(Section))
                         {
                             result = "Section is required";
+                        }
+                        break;
+                    case "startdate":
+                        if (StartDate == DateTime.MinValue)
+                        {
+                            result = "Start Date is required";
+                        }
+                        break;
+                    case "enddate":
+                        if (EndDate == DateTime.MinValue)
+                        {
+                            result = "End Date is required";
+                        }
+                        break;
+                    case "graceperiod":
+                        if (LogTardy && GracePeriod == TimeSpan.MinValue)
+                        {
+                            result = "Grace Peroid is required";
                         }
                         break;
                 }

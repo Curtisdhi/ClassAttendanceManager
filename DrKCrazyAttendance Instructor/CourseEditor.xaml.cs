@@ -29,6 +29,7 @@ namespace DrKCrazyAttendance_Instructor
         {
             InitializeComponent();
             Course = new Course(Settings.Default.Instructor);
+            DataContext = this;
             editing = false;
             List<string> classrooms = Course.GetClassrooms();
             foreach (string classroom in classrooms)
@@ -39,20 +40,11 @@ namespace DrKCrazyAttendance_Instructor
 
         public CourseEditor(Course course) {
             InitializeComponent();
-            this.Course = course;
-            this.DataContext = this;
+            Course = course;
+            DataContext = this;
             //if course id is 0, must be not be persisted.
             if (Course.Id != 0)
                 editing = true;
-
-            //txtCourse.Text = Course.CourseName;
-            /*txtSection.Text = Course.Section;
-            startDatePicker.SelectedDate = Course.StartDate;
-            endDatePicker.SelectedDate = Course.EndDate;
-            startTimePicker.Value = Course.StartTime;
-            endTimePicker.Value = Course.EndTime;
-            chkEnableTardy.IsChecked = Course.LogTardy;
-            gracePeriodTS.Value = Course.GracePeriod;*/
 
             foreach (DayOfWeek day in Course.Days)
             {
@@ -84,7 +76,6 @@ namespace DrKCrazyAttendance_Instructor
             {
                 classroomChoice.Items.Add(classroom);
             }
-            //classroomChoice.SelectedIndex = classroomChoice.Items.IndexOf(Course.Classroom);
 
         }
 
@@ -160,25 +151,6 @@ namespace DrKCrazyAttendance_Instructor
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            /*if (classroomChoice.SelectedItem == null)
-            {
-                Course.Classroom = classroomChoice.Text;
-            }
-            else
-            {
-                Course.Classroom = classroomChoice.SelectedItem.ToString();
-            }
-            Course.CourseName = txtCourse.Text;
-            Course.Section = txtSection.Text;
-
-            Course.StartDate = GetDateTime(startDatePicker.SelectedDate);
-            Course.EndDate = GetDateTime(endDatePicker.SelectedDate);
-            Course.StartTime = GetDateTime(startTimePicker.Value);
-            Course.EndTime = GetDateTime(endTimePicker.Value);
-
-            Course.GracePeriod = GetTimeSpan(gracePeriodTS.Value);
-            Course.LogTardy = IsChecked(chkEnableTardy);*/
-
             //the checkboxes aren't binded, so we must manually deal with it
             Course.Days.Clear();
             if (IsChecked(chkMonday))
@@ -218,6 +190,11 @@ namespace DrKCrazyAttendance_Instructor
         {
             //reset the course to the original settings before closing!
             ResetForm();
+        }
+
+        private void control_Error(object sender, ValidationErrorEventArgs e)
+        {
+
         }
 
     }
