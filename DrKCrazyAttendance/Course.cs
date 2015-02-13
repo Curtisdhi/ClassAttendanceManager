@@ -391,9 +391,12 @@ namespace DrKCrazyAttendance
             {
                 try
                 {
-                    while (rdr.Read())
+                    if (rdr != null)
                     {
-                        classrooms.Add(rdr.GetString(0));
+                        while (rdr.Read())
+                        {
+                            classrooms.Add(rdr.GetString(0));
+                        }
                     }
                 }
                 catch (MySqlException ex)

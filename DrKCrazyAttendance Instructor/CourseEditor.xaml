@@ -59,7 +59,7 @@
                 </Style>
             </xctk:TimeSpanUpDown.Style>
         </xctk:TimeSpanUpDown>
-        <Label Content="Start Time:" HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" Width="68"/>
+        <Label Content="Start Time:" HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" Width="68" Margin="24,71,0,0"/>
         <Label Content="End Time:" HorizontalAlignment="Left" Margin="198,71,0,0" VerticalAlignment="Top" Height="26" Width="61"/>
         <xctk:TimePicker x:Name="startTimePicker" HorizontalAlignment="Left" Margin="97,77,0,0" VerticalAlignment="Top" Width="100" Background="White" 
                          Value="{Binding Course.StartTime, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Validation.Error="control_Error"/>
