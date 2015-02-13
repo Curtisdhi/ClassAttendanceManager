@@ -64,6 +64,28 @@ namespace DrKCrazyAttendance
         #endregion
 
         #region Sql Methods
+        public Dictionary<string, object> GetQueryParameters()
+        {
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            if (Id != 0)
+                parameters.Add("@id", Id);
+            parameters.Add("@courseId", Course.Id);
+            parameters.Add("@studentId", Student.Id);
+            parameters.Add("@ip", ComputerIPv4);
+            parameters.Add("@timeLog", TimeLog);
+            parameters.Add("@isTardy", IsTardy);
+            return parameters;
+        }
+
+
+        public static void Add(Attendance attendance)
+        {
+            Console.WriteLine(attendance.TimeLog.ToString("ss"));
+            string query = @"INSERT INTO Attendances (courseId, studentId, computerIPv4, timeLog, isTardy)
+                VALUES (@courseId, @studentId, @ip, @timeLog, @isTardy)";
+            DatabaseManager.ExecuteQuery(query, attendance.GetQueryParameters());
+        } 
+
         public static List<Attendance> GetAttendancesByClassroom(string classroom)
         {
             string query = @"SELECT * FROM Attendances AS a 

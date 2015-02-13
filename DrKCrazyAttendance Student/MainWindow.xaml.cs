@@ -47,12 +47,22 @@ namespace DrKCrazyAttendance_Student
             Student student = Student.GetStudent("Dylan");
             if (student == null)
             {
+                //ask for student id
                 Console.WriteLine("hello world");
             }
             else 
             {
                 Course course = Course.GetCoursesByTime("C2427", DateTime.Now.TimeOfDay);
-                Console.WriteLine(course.CourseName);
+                if (course == null)
+                {
+                    MessageBox.Show("No course is available.");
+                }
+                else
+                {
+                    //register attendance
+                    Attendance attendance = new Attendance(course, student, "127.0.0.1", DateTime.Now, false);
+                    Attendance.Add(attendance);
+                }
             }
         }
     }
