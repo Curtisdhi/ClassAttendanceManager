@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DrKCrazyAttendance.Properties
+namespace DrKCrazyAttendance_Student.Properties
 {
 
 
@@ -44,7 +44,7 @@ namespace DrKCrazyAttendance.Properties
             {
                 if ((resourceMan == null))
                 {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("DrKCrazyAttendance.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("DrKCrazyAttendance_Student.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

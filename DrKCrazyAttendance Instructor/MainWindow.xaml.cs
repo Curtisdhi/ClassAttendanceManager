@@ -32,7 +32,6 @@ namespace DrKCrazyAttendance_Instructor
         {
             InitializeComponent();
             Instance = this;
-
             List<string> classrooms = Course.GetClassrooms();
             foreach (string classroom in classrooms)
             {
