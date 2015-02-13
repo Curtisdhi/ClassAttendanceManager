@@ -48,7 +48,7 @@
         <Label Content="Grace Period:" HorizontalAlignment="Left" Margin="33,169,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.425,0.538"/>
         <xctk:TimeSpanUpDown x:Name="gracePeriodTS" HorizontalAlignment="Left" Margin="118,172,0,0" VerticalAlignment="Top" Width="79" IsEnabled="False"
     		ToolTip="How long for the student has to &quot;sign in&quot; before being counted for being tardy " 
-            Value="{Binding Course.GracePeriod, ValidatesOnDataErrors=True, NotifyOnValidationError=True} Validation.Error="control_Error"">
+            Value="{Binding Course.GracePeriod, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" Validation.Error="control_Error">
             <xctk:TimeSpanUpDown.Style>
                 <Style TargetType="{x:Type xctk:TimeSpanUpDown}">
                     <Style.Triggers>
@@ -66,6 +66,6 @@
         <xctk:TimePicker x:Name="endTimePicker" HorizontalAlignment="Left" Margin="259,77,0,0" VerticalAlignment="Top" Width="100" Background="White" 
                          Value="{Binding Course.EndTime, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Validation.Error="control_Error"/>
         <Button x:Name="btnResetAddCourse" Content="Reset" HorizontalAlignment="Left" Margin="342,197,0,0" VerticalAlignment="Top" Width="75" IsCancel="True" Click="btnResetCourse_Click"/>
-        <Button x:Name="btnSave" HorizontalAlignment="Left" Margin="422,197,0,0" VerticalAlignment="Top" Width="75" IsDefault="True" Click="btnSave_Click"/>
+        <Button x:Name="btnSave" HorizontalAlignment="Left" Margin="422,197,0,0" VerticalAlignment="Top" Width="75" IsDefault="True" Click="btnSave_Click" Content="Save"/>
     </Grid>
 </Window>
