@@ -35,6 +35,23 @@ namespace DrKCrazyAttendance
         #endregion
 
         #region Sql Methods
+        public Dictionary<string, object> GetQueryParameters()
+        {
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            if (Id != 0)
+                parameters.Add("@id", Id);
+            parameters.Add("@username", Username);
+            return parameters;
+        }
+
+
+        public static void Add(Student student)
+        {
+            string query = @"INSERT INTO Students (id, username)
+                VALUES (@Id, @username)";
+            DatabaseManager.ExecuteQuery(query, student.GetQueryParameters());
+        } 
+
         public static List<Student> GetStudentsByCourse(long courseId) {
             List<Student> students = new List<Student>();
             string query = @"SELECT FROM Students AS s
@@ -74,7 +91,7 @@ namespace DrKCrazyAttendance
         public static Student GetStudent(long id)
         {
             Student student = null;
-            string query = "SELECT FROM Students WHERE id=@id";
+            string query = "SELECT * FROM Students WHERE id=@id";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("@id", id);
             MySqlDataReader rdr = DatabaseManager.GetDataReaderFromQuery(query, parameters);

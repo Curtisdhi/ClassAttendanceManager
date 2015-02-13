@@ -48,7 +48,7 @@ namespace DrKCrazyAttendance_Student
             if (student == null)
             {
                 //ask for student id
-                Console.WriteLine("hello world");
+                new StudentIDForm().Show();
             }
             else 
             {

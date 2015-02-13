@@ -80,7 +80,6 @@ namespace DrKCrazyAttendance
 
         public static void Add(Attendance attendance)
         {
-            Console.WriteLine(attendance.TimeLog.ToString("ss"));
             string query = @"INSERT INTO Attendances (courseId, studentId, computerIPv4, timeLog, isTardy)
                 VALUES (@courseId, @studentId, @ip, @timeLog, @isTardy)";
             DatabaseManager.ExecuteQuery(query, attendance.GetQueryParameters());
