@@ -54,7 +54,7 @@ namespace DrKCrazyAttendance
         public static Student GetStudent(string username)
         {
             Student student = null;
-            string query = "SELECT FROM Students WHERE username=@username";
+            string query = "SELECT * FROM Students WHERE username=@username";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("@username", username);
             MySqlDataReader rdr = DatabaseManager.GetDataReaderFromQuery(query, parameters);
@@ -93,7 +93,7 @@ namespace DrKCrazyAttendance
 
         public static List<Student> GetStudents(MySqlDataReader rdr)
         {
-            List<Student> students = null;
+            List<Student> students = new List<Student>();
             while (rdr.Read())
             {
                 Student student = new Student(rdr.GetInt32(0), rdr.GetString(1));

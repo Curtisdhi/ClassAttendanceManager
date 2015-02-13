@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DrKCrazyAttendance;
+using DrKCrazyAttendance.Properties;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -37,7 +39,21 @@ namespace DrKCrazyAttendance_Student
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-
+            Settings.Default.SqlDatabase = "capstone_2";
+            Settings.Default.SqlUsername = "capstone";
+            Settings.Default.SqlServerAddr = "www.projectgxp.com";
+            Settings.Default.SqlPassword = "SYM4GMmlzHmpoGenV4yb";
+            string userName = Environment.UserName;
+            Student student = Student.GetStudent("Dylan");
+            if (student == null)
+            {
+                Console.WriteLine("hello world");
+            }
+            else 
+            {
+                Course course = Course.GetCoursesByTime("C2427", DateTime.Now.TimeOfDay);
+                Console.WriteLine(course.CourseName);
+            }
         }
     }
 }

@@ -269,6 +269,24 @@ namespace DrKCrazyAttendance
             return GetCoursesFromTable(table);
         }
 
+        public static Course GetCoursesByTime(string classroom,TimeSpan time)
+        {
+            Course course = null;
+            string query = @"SELECT * FROM Courses WHERE classroom = @class AND (@time BETWEEN startTime AND endTime) ORDER BY name, section";
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters.Add("@class", classroom);
+            parameters.Add("@time", time.ToString());
+
+            DataTable table = DatabaseManager.GetDataTableFromQuery(query, parameters);
+
+            List<Course> courses = GetCoursesFromTable(table);
+            if (courses.Count > 0)
+            {
+                course = courses[0];
+            }
+            return course;
+        }
+
         public static List<Course> GetCoursesFromTable(DataTable table)
         {
             List<Course> courses = new List<Course>();
