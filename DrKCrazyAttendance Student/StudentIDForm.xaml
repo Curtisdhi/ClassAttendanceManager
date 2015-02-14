@@ -1,0 +1,18 @@
+﻿<Window x:Class="DrKCrazyAttendance_Student.StudentIDForm"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="StudentIDForm" Height="207" Width="298">
+    <Grid>
+        <Label Content="Student ID" HorizontalAlignment="Left" Margin="23,28,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtstuID2" HorizontalAlignment="Left" Height="31" Margin="185,23,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="42" TextChanged="txtId_TextChanged"/>
+        <TextBox x:Name="txtstuID3" HorizontalAlignment="Left" Height="31" Margin="240,23,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="42" RenderTransformOrigin="0.548,0.581" TextChanged="txtId_TextChanged"/>
+        <Label Content="Confirm ID" HorizontalAlignment="Left" Margin="23,76,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtConID2" HorizontalAlignment="Left" Height="31" Margin="185,71,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="42" TextChanged="txtId_TextChanged"/>
+        <TextBox x:Name="txtConID3" HorizontalAlignment="Left" Height="31" Margin="240,71,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="42" RenderTransformOrigin="0.548,0.581" TextChanged="txtId_TextChanged"/>
+        <Button x:Name="btnSave" Content="Save" HorizontalAlignment="Left" Margin="196,139,0,0" VerticalAlignment="Top" Width="75" Click="btnSave_Click"/>
+        <Button x:Name="btnClear" Content="Clear" HorizontalAlignment="Left" Margin="95,139,0,0" VerticalAlignment="Top" Width="75" Click="btnClear_Click"/>
+        <TextBox x:Name="txtstuID1" HorizontalAlignment="Left" Height="31" Margin="128,23,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="42" Text="900" IsEnabled="False"/>
+        <TextBox x:Name="txtConID1" HorizontalAlignment="Left" Height="31" Margin="128,71,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="42" Text="900" IsEnabled="False"/>
+
+    </Grid>
+</Window>

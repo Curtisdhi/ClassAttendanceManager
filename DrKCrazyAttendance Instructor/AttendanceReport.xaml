@@ -1,0 +1,36 @@
+﻿<Window x:Class="DrKCrazyAttendance_Instructor.AttendanceReport"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="AttendanceReport" Height="500" Width="500" Background="White">
+    <Grid>
+        <Menu Height="28" VerticalAlignment="Top">
+            <MenuItem x:Name="menuFile" Header="File">
+                <MenuItem x:Name="menuClose" Header="Close" RenderTransformOrigin="0.846,0.625" Click="menuClose_Click" Background="#00000000"/>
+            </MenuItem>
+            <Button x:Name="btnSave" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" ToolTip="Save report on to your computer" Click="btnSave_Click">
+                <Image Source="images/floppy.png"/>
+            </Button>
+            <Button x:Name="btnPrint" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="btnPrint_Click">
+                <Image Source="images/printer.png" ToolTip="Print out the report"/>
+            </Button>
+        </Menu>
+        <DataGrid x:Name="attendanceDataGrid" Margin="10,33,10,10" ItemsSource="{Binding}" CanUserAddRows="false" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Click="Delete_Button_Click"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
+                                    ToolTip="Permanently remove attendance record">
+                                <Image Source="images/delete.png" Width="12" Height="12" />
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Binding="{Binding Path=Student.Username}" Header="Username"/>
+                <DataGridTextColumn Binding="{Binding Path=Student.Id}" Header="Student Id"/>
+
+            </DataGrid.Columns>
+        </DataGrid>
+        <DockPanel HorizontalAlignment="Right" Height="57" LastChildFill="False" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="472"/>
+    </Grid>
+</Window>
