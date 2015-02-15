@@ -277,7 +277,7 @@ namespace DrKCrazyAttendance
                     ORDER BY name, section";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("@class", classroom);
-            parameters.Add("@time", time.TimeOfDay);
+            parameters.Add("@time", time.TimeOfDay.ToString());
 
             DataTable table = DatabaseManager.GetDataTableFromQuery(query, parameters);
 
@@ -285,7 +285,7 @@ namespace DrKCrazyAttendance
             foreach (Course c in courses)
             {
                 //return the first course that meets on this day
-                if (c.Days.Contains(time.DayOfWeek))
+                //if (c.Days.Contains(time.DayOfWeek))
                 {
                     course = c;
                     break;
