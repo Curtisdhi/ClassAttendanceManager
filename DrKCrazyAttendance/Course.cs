@@ -285,7 +285,7 @@ namespace DrKCrazyAttendance
             foreach (Course c in courses)
             {
                 //return the first course that meets on this day
-                //if (c.Days.Contains(time.DayOfWeek))
+                if (c.Days.Contains(time.DayOfWeek))
                 {
                     course = c;
                     break;
