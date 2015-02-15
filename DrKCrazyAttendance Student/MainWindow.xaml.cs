@@ -43,27 +43,49 @@ namespace DrKCrazyAttendance_Student
             Settings.Default.SqlUsername = "capstone";
             Settings.Default.SqlServerAddr = "www.projectgxp.com";
             Settings.Default.SqlPassword = "SYM4GMmlzHmpoGenV4yb";
+            Settings.Default.Classroom = "C2427";
             string userName = Environment.UserName;
             Student student = Student.GetStudent(userName);
             if (student == null)
             {
                 //ask for student id
-                new StudentIDForm().Show();
-            }
-            else 
-            {
-                Course course = Course.GetCoursesByTime("C2427", DateTime.Now.TimeOfDay);
-                if (course == null)
+                bool? success = new StudentIDForm().ShowDialog();
+                if (success != null && (bool)success)
                 {
-                    MessageBox.Show("No course is available.");
+                    //refetch student
+                    student = Student.GetStudent(userName);
+                    RegisterAttendance(student);
+                }
+            }
+            else
+            {
+                RegisterAttendance(student);
+            }
+            
+        }
+
+        private void RegisterAttendance(Student student)
+        {
+            DateTime now = DateTime.Now;
+            Course course = Course.GetCoursesByTime(Settings.Default.Classroom, now);
+            if (course == null)
+            {
+                MessageBox.Show("No course is available.");
+            }
+            else
+            {
+                //register attendance
+                Attendance attendance = new Attendance(course, student, "127.0.0.1", now, false);
+                if (!Attendance.HasAttended(attendance))
+                {
+                    Attendance.Add(attendance);
                 }
                 else
                 {
-                    //register attendance
-                    Attendance attendance = new Attendance(course, student, "127.0.0.1", DateTime.Now, false);
-                    Attendance.Add(attendance);
+                    MessageBox.Show("You have already been counted for today.");
                 }
             }
         }
+
     }
 }

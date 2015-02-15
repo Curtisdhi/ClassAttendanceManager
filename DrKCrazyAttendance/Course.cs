@@ -269,21 +269,29 @@ namespace DrKCrazyAttendance
             return GetCoursesFromTable(table);
         }
 
-        public static Course GetCoursesByTime(string classroom,TimeSpan time)
+        public static Course GetCoursesByTime(string classroom, DateTime time)
         {
             Course course = null;
-            string query = @"SELECT * FROM Courses WHERE classroom = @class AND (@time BETWEEN startTime AND endTime) ORDER BY name, section";
+            string query = @"SELECT * FROM Courses 
+                    WHERE classroom = @class AND (@time BETWEEN startTime AND endTime) 
+                    ORDER BY name, section";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("@class", classroom);
-            parameters.Add("@time", time.ToString());
+            parameters.Add("@time", time.TimeOfDay);
 
             DataTable table = DatabaseManager.GetDataTableFromQuery(query, parameters);
 
             List<Course> courses = GetCoursesFromTable(table);
-            if (courses.Count > 0)
+            foreach (Course c in courses)
             {
-                course = courses[0];
+                //return the first course that meets on this day
+                if (c.Days.Contains(time.DayOfWeek))
+                {
+                    course = c;
+                    break;
+                }
             }
+
             return course;
         }
 

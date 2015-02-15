@@ -68,12 +68,21 @@ namespace DrKCrazyAttendance_Student
         {
             TextBox box = (TextBox)sender;
             int length = box.Text.Length;
+            //only allow 3 characters per box
             if (length > 3)
             {
                 box.Text = box.Text.Substring(0, length - 1);
                 box.CaretIndex = box.Text.Length;
                 e.Handled = true;
             }
+            //prevent the student from entering non-digits
+            else if (!char.IsDigit(box.Text[length - 1]))
+            {
+                box.Text = box.Text.Substring(0, length - 1);
+                box.CaretIndex = box.Text.Length;
+                e.Handled = true;
+            }
         }
+
     }
 }
