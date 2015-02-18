@@ -22,6 +22,8 @@ namespace DrKCrazyAttendance_Student
     /// </summary>
     public partial class MainWindow : Window
     {
+        Student student = null;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -29,7 +31,14 @@ namespace DrKCrazyAttendance_Student
 
         private void Hyperlink_Click(object sender, RoutedEventArgs e)
         {
-
+            if (student != null)
+            {
+                bool? success = new StudentIDForm(student).ShowDialog();
+                if (success != null && (bool)success)
+                {
+                    MessageBox.Show("Successfully changed your id");
+                }
+            }
         }
 
         private void btnOk_Click(object sender, RoutedEventArgs e)
@@ -44,8 +53,9 @@ namespace DrKCrazyAttendance_Student
             Settings.Default.SqlServerAddr = "www.projectgxp.com";
             Settings.Default.SqlPassword = "SYM4GMmlzHmpoGenV4yb";
             Settings.Default.Classroom = "C2427";
-            string userName = Environment.UserName;
-            Student student = Student.GetStudent(userName);
+            string userName = "nb";//Environment.UserName;
+            
+            student = Student.GetStudent(userName);
             if (student == null)
             {
                 //ask for student id
@@ -54,18 +64,26 @@ namespace DrKCrazyAttendance_Student
                 {
                     //refetch student
                     student = Student.GetStudent(userName);
-                    RegisterAttendance(student);
+                    if (!RegisterAttendance(student))
+                    {
+                        
+                    }
                 }
+                Close();
             }
             else
             {
-                RegisterAttendance(student);
+                if (!RegisterAttendance(student))
+                {
+                    Close();
+                }
             }
             
         }
 
-        private void RegisterAttendance(Student student)
+        private bool RegisterAttendance(Student student)
         {
+            bool success = false;
             DateTime now = DateTime.Now;
             Course course = Course.GetCoursesByTime(Settings.Default.Classroom, now);
             if (course == null)
@@ -76,15 +94,28 @@ namespace DrKCrazyAttendance_Student
             {
                 //register attendance
                 Attendance attendance = new Attendance(course, student, "127.0.0.1", now, false);
-                if (!Attendance.HasAttended(attendance))
+                success = !Attendance.HasAttended(attendance);
+                if (success)
                 {
                     Attendance.Add(attendance);
+                    UpdateInfo(course, student);
                 }
                 else
                 {
                     MessageBox.Show("You have already been counted for today.");
                 }
+
             }
+
+            return success;
+        }
+
+        private void UpdateInfo(Course course, Student student)
+        {
+            lblCourse.Content = course.CourseName +" "+ course.Section;
+            lblInstructor.Content = course.Instructor;
+            lblStudentId.Content = student.Id;
+            lblUsername.Content = student.Username;
         }
 
     }

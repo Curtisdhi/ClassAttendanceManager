@@ -20,39 +20,81 @@ namespace DrKCrazyAttendance_Student
     /// </summary>
     public partial class StudentIDForm : Window
     {
+        Student student = null;
+        const int STUDENT_ID_MAX_LENGTH = 9;
+
         public StudentIDForm()
         {
             InitializeComponent();
         }
+        public StudentIDForm(Student student)
+        {
+            InitializeComponent();
+            this.student = student;
+            if (student != null)
+            {
+                string id = student.Id.ToString();
+                string section1 = id.Substring(0,3);
+                string section2 = id.Substring(3,6);
+                string section3 = id.Substring(6,9);
+
+                txtstuID1.Text = section1;
+                txtstuID2.Text = section2;
+                txtstuID3.Text = section3;
+
+                txtConID1.Text = section1;
+                txtConID2.Text = section2;
+                txtConID3.Text = section3;
+            }
+        }
+
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
             string studentId = txtstuID1.Text + txtstuID2.Text + txtstuID3.Text;
             string conStuId = txtConID1.Text + txtConID2.Text + txtConID3.Text;
-            if (studentId.Equals(conStuId))
+
+            //id must be 9 characters long
+            if (studentId.Length == STUDENT_ID_MAX_LENGTH)
             {
-                long id = 0;
-                if (long.TryParse(studentId, out id))
+                if (studentId.Equals(conStuId))
                 {
-                    if (Student.GetStudent(id) == null)
+                    long id = 0;
+                    if (long.TryParse(studentId, out id))
                     {
-                        Student student = new Student(id, Environment.UserName);
-                        Student.Add(student);
-                        Close();
+                        if (Student.GetStudent(id) == null)
+                        {
+                            Student newStudent = new Student(id, Environment.UserName);
+                            if (student != null)
+                            {
+                                Student.Update(student, newStudent);
+                                student = newStudent;
+                            }
+                            else
+                            {
+                                student = newStudent;
+                                Student.Add(student);
+                            }
+                            Close();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Student id already exists. Please ask you Instructor if this is an issue.");
+                        }
                     }
                     else
                     {
-                        MessageBox.Show("Student id already exists. Please ask you Instructor if this is an issue.");
+                        MessageBox.Show("Student id must be a number.");
                     }
                 }
                 else
                 {
-                    MessageBox.Show("Student id must be a number.");
+                    MessageBox.Show("Student id must match the confirm Id.");
                 }
             }
             else
             {
-                MessageBox.Show("Student id must match the confirm Id.");
+                MessageBox.Show("Student id must contain "+ STUDENT_ID_MAX_LENGTH +" digits.");
             }
         }
 
@@ -76,7 +118,7 @@ namespace DrKCrazyAttendance_Student
                 e.Handled = true;
             }
             //prevent the student from entering non-digits
-            else if (!char.IsDigit(box.Text[length - 1]))
+            else if (length > 0 && !char.IsDigit(box.Text[length - 1]))
             {
                 box.Text = box.Text.Substring(0, length - 1);
                 box.CaretIndex = box.Text.Length;

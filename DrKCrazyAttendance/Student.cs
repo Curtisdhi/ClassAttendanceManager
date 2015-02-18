@@ -50,6 +50,16 @@ namespace DrKCrazyAttendance
             string query = @"INSERT INTO Students (id, username)
                 VALUES (@Id, @username)";
             DatabaseManager.ExecuteQuery(query, student.GetQueryParameters());
+        }
+
+        public static void Update(Student student, Student newStudent)
+        {
+            string query = @"UPDATE Students SET id = @newId, username=@username WHERE id=@id";
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters.Add("@id", student.Id);
+            parameters.Add("@newId", newStudent.Id);
+            parameters.Add("@username", newStudent.Username);
+            DatabaseManager.ExecuteQuery(query, parameters);
         } 
 
         public static List<Student> GetStudentsByCourse(long courseId) {
