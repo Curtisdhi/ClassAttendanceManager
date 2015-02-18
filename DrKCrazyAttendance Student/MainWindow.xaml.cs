@@ -23,10 +23,18 @@ namespace DrKCrazyAttendance_Student
     public partial class MainWindow : Window
     {
         Student student = null;
+        Course course = null;
 
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        public MainWindow(Course course, Student student)
+        {
+            InitializeComponent();
+            this.course = course;
+            this.student = student;
         }
 
         private void Hyperlink_Click(object sender, RoutedEventArgs e)
@@ -48,74 +56,13 @@ namespace DrKCrazyAttendance_Student
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            Settings.Default.SqlDatabase = "capstone_2";
-            Settings.Default.SqlUsername = "capstone";
-            Settings.Default.SqlServerAddr = "www.projectgxp.com";
-            Settings.Default.SqlPassword = "SYM4GMmlzHmpoGenV4yb";
-            Settings.Default.Classroom = "C2427";
-            string userName = "nb";//Environment.UserName;
-            
-            student = Student.GetStudent(userName);
-            if (student == null)
+            if (course != null && student != null)
             {
-                //ask for student id
-                bool? success = new StudentIDForm().ShowDialog();
-                if (success != null && (bool)success)
-                {
-                    //refetch student
-                    student = Student.GetStudent(userName);
-                    if (!RegisterAttendance(student))
-                    {
-                        
-                    }
-                }
-                Close();
+                lblCourse.Content = course.CourseName + " " + course.Section;
+                lblInstructor.Content = course.Instructor;
+                lblStudentId.Content = student.Id;
+                lblUsername.Content = student.Username;
             }
-            else
-            {
-                if (!RegisterAttendance(student))
-                {
-                    Close();
-                }
-            }
-            
-        }
-
-        private bool RegisterAttendance(Student student)
-        {
-            bool success = false;
-            DateTime now = DateTime.Now;
-            Course course = Course.GetCoursesByTime(Settings.Default.Classroom, now);
-            if (course == null)
-            {
-                MessageBox.Show("No course is available.");
-            }
-            else
-            {
-                //register attendance
-                Attendance attendance = new Attendance(course, student, "127.0.0.1", now, false);
-                success = !Attendance.HasAttended(attendance);
-                if (success)
-                {
-                    Attendance.Add(attendance);
-                    UpdateInfo(course, student);
-                }
-                else
-                {
-                    MessageBox.Show("You have already been counted for today.");
-                }
-
-            }
-
-            return success;
-        }
-
-        private void UpdateInfo(Course course, Student student)
-        {
-            lblCourse.Content = course.CourseName +" "+ course.Section;
-            lblInstructor.Content = course.Instructor;
-            lblStudentId.Content = student.Id;
-            lblUsername.Content = student.Username;
         }
 
     }

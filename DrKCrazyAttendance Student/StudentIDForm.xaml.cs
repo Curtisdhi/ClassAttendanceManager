@@ -20,13 +20,21 @@ namespace DrKCrazyAttendance_Student
     /// </summary>
     public partial class StudentIDForm : Window
     {
-        Student student = null;
         const int STUDENT_ID_MAX_LENGTH = 9;
+        Student student = null;
+        string username;
 
         public StudentIDForm()
         {
             InitializeComponent();
         }
+
+        public StudentIDForm(string username)
+        {
+            InitializeComponent();
+            this.username = username;
+        }
+
         public StudentIDForm(Student student)
         {
             InitializeComponent();
@@ -64,7 +72,7 @@ namespace DrKCrazyAttendance_Student
                     {
                         if (Student.GetStudent(id) == null)
                         {
-                            Student newStudent = new Student(id, Environment.UserName);
+                            Student newStudent = new Student(id, username);
                             if (student != null)
                             {
                                 Student.Update(student, newStudent);
@@ -75,6 +83,7 @@ namespace DrKCrazyAttendance_Student
                                 student = newStudent;
                                 Student.Add(student);
                             }
+                            DialogResult = true;
                             Close();
                         }
                         else
