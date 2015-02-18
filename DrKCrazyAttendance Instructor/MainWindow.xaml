@@ -45,7 +45,7 @@
                     <Button x:Name="btnAdd" Content="Add" HorizontalAlignment="Left" Margin="246,0,0,0" VerticalAlignment="Top" Width="75" Click="btnAdd_Click"/>
                     <Button x:Name="btnEdit" Content="Edit" HorizontalAlignment="Left" Margin="166,0,0,0" VerticalAlignment="Top" Width="75" Click="btnEdit_Click" RenderTransformOrigin="0.88,0.478"/>
                     <Button x:Name="btnDelete" Content="Delete" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="btnDelete_Click" RenderTransformOrigin="0.107,0.87" Margin="86,0,0,0"/>
-                    <Button x:Name="btnReport" Content="Get Report" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="btnReport_Click" Margin="406,0,0,0"/>
+                    <Button x:Name="btnReport" Content="Get Report" HorizontalAlignment="Left" Width="75" Click="btnReport_Click" Margin="406,0,0,9"/>
                     <Button x:Name="btnClone" Content="Clone" HorizontalAlignment="Left" Margin="326,0,0,0" VerticalAlignment="Top" Width="75" Click="btnClone_Click"/>
                 </Grid>
             </DockPanel>

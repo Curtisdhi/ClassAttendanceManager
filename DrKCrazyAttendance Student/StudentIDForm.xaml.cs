@@ -12,6 +12,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.IO;
+
 
 namespace DrKCrazyAttendance_Student
 {
@@ -20,6 +22,7 @@ namespace DrKCrazyAttendance_Student
     /// </summary>
     public partial class StudentIDForm : Window
     {
+        private Student_ID_Help studentHelpForm;
         public StudentIDForm()
         {
             InitializeComponent();
@@ -75,5 +78,14 @@ namespace DrKCrazyAttendance_Student
                 e.Handled = true;
             }
         }
+
+        private void menuHelp_Click(object sender, RoutedEventArgs e)
+        {
+            studentHelpForm = new Student_ID_Help();
+            studentHelpForm.Show();
+            
+        }
+
+        
     }
 }
