@@ -77,6 +77,19 @@ namespace DrKCrazyAttendance
             return parameters;
         }
 
+        public static bool HasAttended(Attendance attendance)
+        {
+            //if datediff is greater than 0, than we never recorded an attendance!
+            string query = @"SELECT COUNT(id) FROM Attendances
+                WHERE courseId = @cId AND studentId = @stuId
+                    AND DATEDIFF(timeLog, @date) = 0";
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters.Add("@cId", attendance.Course.Id);
+            parameters.Add("@stuId", attendance.Student.Id);
+            parameters.Add("@date", attendance.TimeLog);
+
+            return DatabaseManager.ExecuteScalar(query, parameters) > 0;
+        }
 
         public static void Add(Attendance attendance)
         {

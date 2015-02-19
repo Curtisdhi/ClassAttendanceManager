@@ -76,6 +76,43 @@ namespace DrKCrazyAttendance
         }
 
         /// <summary>
+        /// Executes a single query to retrieve a single scalar result
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="parameters"></param>
+        /// <returns>Scalar result</returns>
+        public static long ExecuteScalar(string query, Dictionary<string, Object> parameters)
+        {
+            long scalar = 0;
+            MySqlConnection conn;
+            MySqlCommand cmd;
+
+
+            using (conn = DatabaseManager.Connect())
+            {
+                try
+                {
+                    conn.Open();
+                    using (cmd = new MySqlCommand(query, conn))
+                    {
+                        cmd.Prepare();
+                        foreach (string key in parameters.Keys)
+                        {
+                            cmd.Parameters.AddWithValue(key, parameters[key]);
+                        }
+                        scalar = Convert.ToInt64(cmd.ExecuteScalar());
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
+            }
+
+            return scalar;
+        }
+
+        /// <summary>
         /// Executes a single query
         /// </summary>
         /// <param name="query">Sql query</param>
@@ -163,6 +200,7 @@ namespace DrKCrazyAttendance
             }
             return success;
         }
+
     }
 
 }
