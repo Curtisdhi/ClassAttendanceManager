@@ -191,5 +191,14 @@ namespace DrKCrazyAttendance_Instructor
             }
         }
 
+        private void lstCourses_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            bool enable = lstCourses.SelectedItem != null;
+            btnDelete.IsEnabled = enable;
+            btnClone.IsEnabled = enable;
+            btnEdit.IsEnabled = enable;
+            btnReport.IsEnabled = enable;
+        }
+
     }
 }
