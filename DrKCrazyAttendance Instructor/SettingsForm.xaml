@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="DrKCrazyAttendance_Instructor.SettingsForm"
         Title="Settings" Height="280.782" Width="300" Loaded="Window_Loaded" ResizeMode="CanMinimize" Icon="icon.ico">
-    <Grid Background="#FFEAEAEA">
+    <Grid>
         <Label Content="Instructor:" HorizontalAlignment="Left" Margin="20,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.445,0.214"/>
         <TextBox x:Name="txtInstructor" HorizontalAlignment="Left" Height="23" Margin="83,13,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="199" RenderTransformOrigin="0.26,1.132" IsEnabled="False"/>
         <GroupBox Header="Database" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" Height="141" Width="272">
