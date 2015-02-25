@@ -1,9 +1,9 @@
 ﻿<Window x:Name="studentHelpForm" x:Class="DrKCrazyAttendance_Student.Student_ID_Help"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Student_ID_Help" Height="300" Width="300">
+        Title="Student ID Help" Height="300" Width="300" Icon="icon.ico">
     <Grid>
-        <RichTextBox x:Name="rtbHelp" HorizontalAlignment="Left" Height="249" Margin="10,10,0,0" VerticalAlignment="Top" Width="272" SpellCheck.IsEnabled="True" TextChanged="rtbHelp_TextChanged" IsDocumentEnabled="True">
+        <RichTextBox x:Name="rtbHelp" IsReadOnly="True" VerticalScrollBarVisibility="Visible" Margin="10" SpellCheck.IsEnabled="True" TextChanged="rtbHelp_TextChanged" IsDocumentEnabled="True">
             <FlowDocument>
                 <Paragraph>
                     <Run Text="Locate Student Id: "/>
