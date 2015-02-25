@@ -12,6 +12,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.IO;
+
 
 namespace DrKCrazyAttendance_Student
 {
@@ -23,6 +25,7 @@ namespace DrKCrazyAttendance_Student
         const int STUDENT_ID_MAX_LENGTH = 9;
         Student student = null;
         string username;
+        private Student_ID_Help studentHelpForm;
 
         public StudentIDForm()
         {
@@ -103,7 +106,7 @@ namespace DrKCrazyAttendance_Student
             }
             else
             {
-                MessageBox.Show("Student id must contain "+ STUDENT_ID_MAX_LENGTH +" digits.");
+                MessageBox.Show("Student id must contain " + STUDENT_ID_MAX_LENGTH + " digits.");
             }
         }
 
@@ -135,5 +138,13 @@ namespace DrKCrazyAttendance_Student
             }
         }
 
+        private void menuHelp_Click(object sender, RoutedEventArgs e)
+        {
+            studentHelpForm = new Student_ID_Help();
+            studentHelpForm.Show();
+            
+        }
+
+        
     }
 }
