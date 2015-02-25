@@ -1,0 +1,35 @@
+﻿<Window x:Name="studentHelpForm" x:Class="DrKCrazyAttendance_Student.Student_ID_Help"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Student ID Help" Height="300" Width="300" Icon="icon.ico">
+    <Grid>
+        <RichTextBox x:Name="rtbHelp" IsReadOnly="True" VerticalScrollBarVisibility="Visible" Margin="10" SpellCheck.IsEnabled="True" TextChanged="rtbHelp_TextChanged" IsDocumentEnabled="True">
+            <FlowDocument>
+                <Paragraph>
+                    <Run Text="Locate Student Id: "/>
+                    <Run Text=" "/>
+                    <InlineUIContainer>
+                        <TextBlock
+        ><Hyperlink
+        NavigateUri="https://lumprod.northeaststate.edu/cp/home/displaylogin" RequestNavigate="Hyperlink_RequestNavigate"><Run Text="Click here"/></Hyperlink></TextBlock>
+                    </InlineUIContainer>
+                </Paragraph>
+                <Paragraph>
+                    <Run Text="Step 1.) Click the link above or copy and past the following address in the browser of your choice https://lumprod.northeaststate.edu/cp/home/displaylogin "/>
+                </Paragraph>
+                <Paragraph>
+                    <Run Text="Step 2.) Enter the same username and password that was used to log onto the computer into the secure access login form at the top left of the page and left click the login button."/>
+                </Paragraph>
+                <Paragraph>
+                    <Run Text="Step 3.) At the top left of the My.Northeast page you will see a bank of tabs left click on the one that says Norstar "/>
+                </Paragraph>
+                <Paragraph>
+                    <Run Text="Step 4.) With the Norstar tab now being highlighted look directly below to find a Header that says Degree Works for Student left click the link inside of the box that says Degree Works for Student"/>
+                </Paragraph>
+                <Paragraph>
+                    <Run Text="Step 5.) In the upper left hand corner of the page you will find your Student ID. Your ID is also located under student view.    "/>
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+    </Grid>
+</Window>

@@ -22,14 +22,31 @@ namespace DrKCrazyAttendance_Student
     /// </summary>
     public partial class MainWindow : Window
     {
+        Student student = null;
+        Course course = null;
+
         public MainWindow()
         {
             InitializeComponent();
         }
 
+        public MainWindow(Course course, Student student)
+        {
+            InitializeComponent();
+            this.course = course;
+            this.student = student;
+        }
+
         private void Hyperlink_Click(object sender, RoutedEventArgs e)
         {
-
+            if (student != null)
+            {
+                bool? success = new StudentIDForm(student).ShowDialog();
+                if (success != null && (bool)success)
+                {
+                    MessageBox.Show("Successfully changed your id");
+                }
+            }
         }
 
         private void btnOk_Click(object sender, RoutedEventArgs e)
@@ -39,31 +56,14 @@ namespace DrKCrazyAttendance_Student
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            Settings.Default.SqlDatabase = "capstone_2";
-            Settings.Default.SqlUsername = "capstone";
-            Settings.Default.SqlServerAddr = "www.projectgxp.com";
-            Settings.Default.SqlPassword = "SYM4GMmlzHmpoGenV4yb";
-            string userName = Environment.UserName;
-            Student student = Student.GetStudent(userName);
-            if (student == null)
+            if (course != null && student != null)
             {
-                //ask for student id
-                new StudentIDForm().Show();
-            }
-            else 
-            {
-                Course course = Course.GetCoursesByTime("C2427", DateTime.Now.TimeOfDay);
-                if (course == null)
-                {
-                    MessageBox.Show("No course is available.");
-                }
-                else
-                {
-                    //register attendance
-                    Attendance attendance = new Attendance(course, student, "127.0.0.1", DateTime.Now, false);
-                    Attendance.Add(attendance);
-                }
+                lblCourse.Content = course.CourseName + " " + course.Section;
+                lblInstructor.Content = course.Instructor;
+                lblStudentId.Content = student.Id;
+                lblUsername.Content = student.Username;
             }
         }
+
     }
 }
