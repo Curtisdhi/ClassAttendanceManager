@@ -13,7 +13,7 @@
             <MenuItem x:Name="mnuAbout" Header="About" Click="mnuAbout_Click"/>
         </Menu>
         <Grid Margin="0,28,-2,0" Height="Auto">
-            <ListView x:Name="lstCourses" Margin="17,37,17,54" MouseDoubleClick="ListView_MouseDoubleClick">
+            <ListView x:Name="lstCourses" Margin="17,37,17,54" MouseDoubleClick="ListView_MouseDoubleClick" SelectionChanged="lstCourses_SelectionChanged">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Classroom" DisplayMemberBinding="{Binding Classroom}" Width="70"/>
@@ -43,10 +43,10 @@
             <DockPanel Height="44" LastChildFill="False" Margin="0,0,17,0" VerticalAlignment="Bottom" Width="487" HorizontalAlignment="Right">
                 <Grid Margin="0,0,0,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="29" Width="491">
                     <Button x:Name="btnAdd" Content="Add" HorizontalAlignment="Left" Margin="246,0,0,0" VerticalAlignment="Top" Width="75" Click="btnAdd_Click"/>
-                    <Button x:Name="btnEdit" Content="Edit" HorizontalAlignment="Left" Margin="166,0,0,0" VerticalAlignment="Top" Width="75" Click="btnEdit_Click" RenderTransformOrigin="0.88,0.478"/>
-                    <Button x:Name="btnDelete" Content="Delete" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="btnDelete_Click" RenderTransformOrigin="0.107,0.87" Margin="86,0,0,0"/>
-                    <Button x:Name="btnReport" Content="Get Report" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="btnReport_Click" Margin="406,0,0,0"/>
-                    <Button x:Name="btnClone" Content="Clone" HorizontalAlignment="Left" Margin="326,0,0,0" VerticalAlignment="Top" Width="75" Click="btnClone_Click"/>
+                    <Button x:Name="btnEdit" Content="Edit" HorizontalAlignment="Left" Margin="166,0,0,0" VerticalAlignment="Top" Width="75" Click="btnEdit_Click" RenderTransformOrigin="0.88,0.478" IsEnabled="False"/>
+                    <Button x:Name="btnDelete" Content="Delete" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="btnDelete_Click" RenderTransformOrigin="0.107,0.87" Margin="86,0,0,0" IsEnabled="False"/>
+                    <Button x:Name="btnReport" Content="Get Report" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="btnReport_Click" Margin="406,0,0,0" IsEnabled="False"/>
+                    <Button x:Name="btnClone" Content="Clone" HorizontalAlignment="Left" Margin="326,0,0,0" VerticalAlignment="Top" Width="75" Click="btnClone_Click" IsEnabled="False"/>
                 </Grid>
             </DockPanel>
         </Grid>
