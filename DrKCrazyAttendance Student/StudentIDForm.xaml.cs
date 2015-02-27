@@ -42,6 +42,7 @@ namespace DrKCrazyAttendance_Student
         {
             InitializeComponent();
             this.student = student;
+            this.username = student.Username;
             if (student != null)
             {
                 string id = student.Id.ToString();
