@@ -46,9 +46,10 @@ namespace DrKCrazyAttendance_Student
             {
                 string id = student.Id.ToString();
 
-                txtstuID1.Text = id.Substring(0,3);
-                txtstuID2.Text = id.Substring(3,6);
-                txtstuID3.Text = id.Substring(6,9);
+                //ignore the first part as we have it preset
+                //txtstuID1.Text = id.Substring(0, 3);
+                txtstuID2.Text = id.Substring(3, 3);
+                txtstuID3.Text = id.Substring(6, 3);
             }
         }
 

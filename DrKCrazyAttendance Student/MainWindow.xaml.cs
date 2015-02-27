@@ -22,8 +22,8 @@ namespace DrKCrazyAttendance_Student
     /// </summary>
     public partial class MainWindow : Window
     {
-        Student student = null;
-        Course course = null;
+        private Student student = null;
+        private Course course = null;
 
         public MainWindow()
         {
@@ -37,6 +37,17 @@ namespace DrKCrazyAttendance_Student
             this.student = student;
         }
 
+        private void RefreshInfo()
+        {
+            if (course != null && student != null)
+            {
+                lblCourse.Content = course.CourseName + " " + course.Section;
+                lblInstructor.Content = course.Instructor;
+                lblStudentId.Content = student.Id;
+                lblUsername.Content = student.Username;
+            }
+        }
+
         private void Hyperlink_Click(object sender, RoutedEventArgs e)
         {
             if (student != null)
@@ -44,7 +55,14 @@ namespace DrKCrazyAttendance_Student
                 bool? success = new StudentIDForm(student).ShowDialog();
                 if (success != null && (bool)success)
                 {
+                    //fetch the new student
+                    student = Student.GetStudent(student.Username);
+                    RefreshInfo();
                     MessageBox.Show("Successfully changed your id");
+                }
+                else
+                {
+                    MessageBox.Show("Your id did not change.");
                 }
             }
         }
@@ -56,13 +74,7 @@ namespace DrKCrazyAttendance_Student
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            if (course != null && student != null)
-            {
-                lblCourse.Content = course.CourseName + " " + course.Section;
-                lblInstructor.Content = course.Instructor;
-                lblStudentId.Content = student.Id;
-                lblUsername.Content = student.Username;
-            }
+            RefreshInfo();
         }
 
     }
