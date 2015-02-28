@@ -1,28 +1,33 @@
 ﻿<Window x:Class="DrKCrazyAttendance_Student.StudentIDForm"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Request Student ID" Height="179.258" Width="255.32" Icon="icon.ico">
+        Title="Request Student ID" Height="136.258" Width="196.32" Icon="icon.ico" ResizeMode="NoResize">
     <Grid Margin="0,10,0,0">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="65*"/>
-            <ColumnDefinition Width="53*"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="129*"/>
-        </Grid.ColumnDefinitions>
-        <Label Content="Student ID" HorizontalAlignment="Left" Margin="20,23,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
-        <TextBox x:Name="txtstuID2" HorizontalAlignment="Left" Height="21" Margin="12,27,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="30" TextChanged="txtId_TextChanged" Grid.Column="2" Grid.ColumnSpan="3"/>
-        <TextBox x:Name="txtstuID3" HorizontalAlignment="Left" Height="21" Margin="57,28,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.548,0.581" TextChanged="txtId_TextChanged" Grid.Column="2" Grid.ColumnSpan="3"/>
-        <Label Content="Confirm ID" HorizontalAlignment="Left" Margin="20,54,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
-        <TextBox x:Name="txtConID2" HorizontalAlignment="Left" Height="21" Margin="12,59,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="30" TextChanged="txtId_TextChanged" Grid.Column="2" Grid.ColumnSpan="3"/>
-        <TextBox x:Name="txtConID3" HorizontalAlignment="Left" Height="21" Margin="58,59,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="29" RenderTransformOrigin="0.548,0.581" TextChanged="txtId_TextChanged" Grid.Column="2" Grid.ColumnSpan="3"/>
-        <Button x:Name="btnSave" Content="Save" HorizontalAlignment="Left" Margin="31,102,0,0" VerticalAlignment="Top" Width="58" Click="btnSave_Click" Grid.Column="2" Grid.ColumnSpan="3"/>
-        <Button x:Name="btnClear" Content="Clear" HorizontalAlignment="Left" Margin="13.644,102,0,0" VerticalAlignment="Top" Width="58" Click="btnClear_Click" Grid.ColumnSpan="4" Grid.Column="1"/>
-        <TextBox x:Name="txtstuID1" HorizontalAlignment="Left" Height="21" Margin="27.644,27,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="30" Text="900" IsEnabled="False" Grid.ColumnSpan="4" Grid.Column="1"/>
-        <TextBox x:Name="txtConID1" HorizontalAlignment="Left" Height="21" Margin="27.644,58,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="30" Text="900" IsEnabled="False" Grid.ColumnSpan="4" Grid.Column="1"/>
         <Menu Height="28" VerticalAlignment="Top" Margin="0,-10,0,0" Grid.ColumnSpan="5">
             <MenuItem x:Name="menuHelp" Header="Help" Click="menuHelp_Click"/>
         </Menu>
+        <StackPanel Grid.ColumnSpan="5" HorizontalAlignment="Left" Height="77" Margin="0,18,0,0" VerticalAlignment="Top" Width="188">
+            <Grid Height="24">
+                <Label Content="Student ID:" HorizontalAlignment="Left" Margin="0"/>
+                <TextBox x:Name="txtstuID1" HorizontalAlignment="Left" Height="21" Margin="74,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="30" Text="900" IsEnabled="False"/>
+                <TextBox x:Name="txtstuID2" HorizontalAlignment="Left" Height="21" Margin="109,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="30" TextChanged="txtId_TextChanged"/>
+                <TextBox x:Name="txtstuID3" HorizontalAlignment="Left" Height="21" Margin="144,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.548,0.581" TextChanged="txtId_TextChanged"/>
+            </Grid>
+            <Grid Height="24">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="169*"/>
+                    <ColumnDefinition Width="86*"/>
+                </Grid.ColumnDefinitions>
+                <Label Content="Confirm ID:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0"/>
+                <TextBox x:Name="txtConID1" HorizontalAlignment="Left" Height="21" Margin="74,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="30" Text="900" IsEnabled="False"/>
+                <TextBox x:Name="txtConID2" Height="21" Margin="109,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="txtId_TextChanged" Grid.ColumnSpan="2" HorizontalAlignment="Left" Width="30"/>
+                <TextBox x:Name="txtConID3" HorizontalAlignment="Left" Height="21" Margin="144,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.548,0.581" TextChanged="txtId_TextChanged" Grid.ColumnSpan="2"/>
+            </Grid>
+            <Grid Height="24">
+                <Button x:Name="btnClear" HorizontalAlignment="Right" Margin="0,0,73,0" VerticalAlignment="Bottom" Width="58" Click="btnClear_Click" Content="Clear"/>
+                <Button x:Name="btnSave" Content="Save" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Bottom" Width="58" Click="btnSave_Click"/>
+            </Grid>
+        </StackPanel>
 
     </Grid>
 </Window>

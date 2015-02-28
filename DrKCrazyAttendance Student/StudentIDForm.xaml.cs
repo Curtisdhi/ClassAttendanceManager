@@ -42,20 +42,15 @@ namespace DrKCrazyAttendance_Student
         {
             InitializeComponent();
             this.student = student;
+            this.username = student.Username;
             if (student != null)
             {
                 string id = student.Id.ToString();
-                string section1 = id.Substring(0,3);
-                string section2 = id.Substring(3,6);
-                string section3 = id.Substring(6,9);
 
-                txtstuID1.Text = section1;
-                txtstuID2.Text = section2;
-                txtstuID3.Text = section3;
-
-                txtConID1.Text = section1;
-                txtConID2.Text = section2;
-                txtConID3.Text = section3;
+                //ignore the first part as we have it preset
+                //txtstuID1.Text = id.Substring(0, 3);
+                txtstuID2.Text = id.Substring(3, 3);
+                txtstuID3.Text = id.Substring(6, 3);
             }
         }
 
@@ -140,11 +135,30 @@ namespace DrKCrazyAttendance_Student
 
         private void menuHelp_Click(object sender, RoutedEventArgs e)
         {
-            studentHelpForm = new Student_ID_Help();
-            studentHelpForm.Show();
+            
+            if (studentHelpForm != null)
+            {
+                //window is already open, let's just refocus it
+                if (studentHelpForm.IsLoaded)
+                {
+                    studentHelpForm.Focus();
+                    studentHelpForm.WindowState = WindowState.Normal;
+                }
+                //window has been closed so let's open a new one
+                else
+                {
+                    studentHelpForm = new Student_ID_Help();
+                    studentHelpForm.Show();
+                }
+            }
+            //window has never been open
+            else {
+                studentHelpForm = new Student_ID_Help();
+                studentHelpForm.Show();
+            }
             
         }
 
-        
+    
     }
 }
