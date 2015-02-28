@@ -85,16 +85,25 @@ namespace DrKCrazyAttendance_Instructor
             settingsForm.Show();
         }
 
-
+       
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            if (lstCourses.SelectedItem != null)
+            var confirmDelete = MessageBox.Show ("Are you sure you want to delete this Course?",
+                                    "Confirm", MessageBoxButton.OKCancel );
+           
+           if (confirmDelete == MessageBoxResult.OK && lstCourses.SelectedItem != null)
+   
             {
                 Course course = (Course)lstCourses.SelectedItem;
                 Course.Remove(course);
                 lstCourses.Items.Remove(course);
             }
-        }
+           if (confirmDelete == MessageBoxResult.Cancel)
+           {
+               
+           }
+           }
+           
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
