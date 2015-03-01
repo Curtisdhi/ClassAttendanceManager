@@ -22,7 +22,7 @@
                  Text="{Binding Course.Section, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" Style="{StaticResource textBoxInError}" Validation.Error="control_Error"/>
         <GroupBox Header="Class Days" HorizontalAlignment="Left" Margin="388,58,0,0" VerticalAlignment="Top" Height="134" Width="109">
             <StackPanel HorizontalAlignment="Left" Height="143" VerticalAlignment="Top" Width="80" Margin="10,10,0,-12">
-                <CheckBox x:Name="chkMonday" Content="Monday" HorizontalAlignment="Left" VerticalAlignment="Top" Height="16" Width="61"/>
+                <CheckBox x:Name="chkMonday" Content="Monday" HorizontalAlignment="Right" VerticalAlignment="Top" Height="16" Width="61" Margin="0,0,19,0"/>
                 <CheckBox x:Name="chkTuesday" Content="Tuesday" HorizontalAlignment="Left" VerticalAlignment="Top" Height="16" Width="61"/>
                 <CheckBox x:Name="chkWednesday" Content="Wednesday" HorizontalAlignment="Left" VerticalAlignment="Top" Height="16" Width="79"/>
                 <CheckBox x:Name="chkThursday" Content="Thursday" HorizontalAlignment="Left" VerticalAlignment="Top" Height="16" Width="69"/>

@@ -152,9 +152,6 @@ namespace DrKCrazyAttendance_Instructor
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
           
-
-
-
             if (String.IsNullOrEmpty(txtCourse.Text))
             {
                 MessageBox.Show("Please Enter a Course ID", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -170,27 +167,33 @@ namespace DrKCrazyAttendance_Instructor
                 
      
             else
-            { 
-                           
+            {
 
-                        //the checkboxes aren't binded, so we must manually deal with it
-                Course.Days.Clear();
-                if (IsChecked(chkMonday))
-                    Course.Days.Add(DayOfWeek.Monday);
-                if (IsChecked(chkTuesday))
-                    Course.Days.Add(DayOfWeek.Tuesday);
-                if (IsChecked(chkWednesday))
-                    Course.Days.Add(DayOfWeek.Wednesday);
-                if (IsChecked(chkThursday))
-                    Course.Days.Add(DayOfWeek.Thursday);
-                if (IsChecked(chkFriday))
-                    Course.Days.Add(DayOfWeek.Friday);
-                if (IsChecked(chkSaturday))
-                    Course.Days.Add(DayOfWeek.Saturday);
+                if (!IsChecked(chkMonday) && !IsChecked(chkTuesday) && !IsChecked(chkWednesday) && !IsChecked(chkThursday) 
+                    && !IsChecked(chkFriday) && !IsChecked(chkSaturday))
+                {
+                    MessageBox.Show("Please Select at least one Day", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
                 else
                 {
-                    MessageBox.Show("Please Select a Date", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                }
+                    //the checkboxes aren't binded, so we must manually deal with it
+                    Course.Days.Clear();
+                    if (IsChecked(chkMonday))
+                        Course.Days.Add(DayOfWeek.Monday);
+                    else if (IsChecked(chkTuesday))
+                        Course.Days.Add(DayOfWeek.Tuesday);
+                    else if (IsChecked(chkWednesday))
+                        Course.Days.Add(DayOfWeek.Wednesday);
+                    else if (IsChecked(chkThursday))
+                        Course.Days.Add(DayOfWeek.Thursday);
+                    else if (IsChecked(chkFriday))
+                        Course.Days.Add(DayOfWeek.Friday);
+                    else if (IsChecked(chkSaturday))
+                        Course.Days.Add(DayOfWeek.Saturday);
+
+
+
+
                     if (editing)
                     {
                         //update in the DB
@@ -204,7 +207,7 @@ namespace DrKCrazyAttendance_Instructor
 
 
                     Close();
-                
+                } 
             }
         }
 
