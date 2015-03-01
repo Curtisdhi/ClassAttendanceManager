@@ -98,10 +98,7 @@ namespace DrKCrazyAttendance_Instructor
                 Course.Remove(course);
                 lstCourses.Items.Remove(course);
             }
-           if (confirmDelete == MessageBoxResult.Cancel)
-           {
-               
-           }
+          
            }
            
 
