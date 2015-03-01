@@ -164,50 +164,50 @@ namespace DrKCrazyAttendance_Instructor
                     {
                         MessageBox.Show("Please Enter a Classroom", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                     }
-                
-     
-            else
-            {
-
-                if (!IsChecked(chkMonday) && !IsChecked(chkTuesday) && !IsChecked(chkWednesday) && !IsChecked(chkThursday) 
-                    && !IsChecked(chkFriday) && !IsChecked(chkSaturday))
-                {
-                    MessageBox.Show("Please Select at least one Day", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                }
-                else
-                {
-                    //the checkboxes aren't binded, so we must manually deal with it
-                    Course.Days.Clear();
-                    if (IsChecked(chkMonday))
-                        Course.Days.Add(DayOfWeek.Monday);
-                    else if (IsChecked(chkTuesday))
-                        Course.Days.Add(DayOfWeek.Tuesday);
-                    else if (IsChecked(chkWednesday))
-                        Course.Days.Add(DayOfWeek.Wednesday);
-                    else if (IsChecked(chkThursday))
-                        Course.Days.Add(DayOfWeek.Thursday);
-                    else if (IsChecked(chkFriday))
-                        Course.Days.Add(DayOfWeek.Friday);
-                    else if (IsChecked(chkSaturday))
-                        Course.Days.Add(DayOfWeek.Saturday);
 
 
-
-
-                    if (editing)
-                    {
-                        //update in the DB
-                        Course.Update(Course);
-                    }
                     else
                     {
-                        MainWindow.Instance.lstCourses.Items.Add(Course);
-                        Course.Add(Course);
-                    }
+
+                        if (!IsChecked(chkMonday) && !IsChecked(chkTuesday) && !IsChecked(chkWednesday) && !IsChecked(chkThursday)
+                            && !IsChecked(chkFriday) && !IsChecked(chkSaturday))
+                        {
+                            MessageBox.Show("Please Select at least one Day", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        }
+                        else
+                        {
+                            //the checkboxes aren't binded, so we must manually deal with it
+                            Course.Days.Clear();
+                            if (IsChecked(chkMonday))
+                                Course.Days.Add(DayOfWeek.Monday);
+                            else if (IsChecked(chkTuesday))
+                                Course.Days.Add(DayOfWeek.Tuesday);
+                            else if (IsChecked(chkWednesday))
+                                Course.Days.Add(DayOfWeek.Wednesday);
+                            else if (IsChecked(chkThursday))
+                                Course.Days.Add(DayOfWeek.Thursday);
+                            else if (IsChecked(chkFriday))
+                                Course.Days.Add(DayOfWeek.Friday);
+                            else if (IsChecked(chkSaturday))
+                                Course.Days.Add(DayOfWeek.Saturday);
 
 
-                    Close();
-                } 
+
+
+                            if (editing)
+                            {
+                                //update in the DB
+                                Course.Update(Course);
+                            }
+                            else
+                            {
+                                MainWindow.Instance.lstCourses.Items.Add(Course);
+                                Course.Add(Course);
+                            }
+
+
+                            Close();
+                        } 
             }
         }
 
