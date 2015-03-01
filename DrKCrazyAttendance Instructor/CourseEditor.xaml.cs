@@ -151,34 +151,61 @@ namespace DrKCrazyAttendance_Instructor
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            //the checkboxes aren't binded, so we must manually deal with it
-            Course.Days.Clear();
-            if (IsChecked(chkMonday))
-                Course.Days.Add(DayOfWeek.Monday);
-            if (IsChecked(chkTuesday))
-                Course.Days.Add(DayOfWeek.Tuesday);
-            if (IsChecked(chkWednesday))
-                Course.Days.Add(DayOfWeek.Wednesday);
-            if (IsChecked(chkThursday))
-                Course.Days.Add(DayOfWeek.Thursday);
-            if (IsChecked(chkFriday))
-                Course.Days.Add(DayOfWeek.Friday);
-            if (IsChecked(chkSaturday))
-                Course.Days.Add(DayOfWeek.Saturday);
+          
 
-            if (editing)
+
+
+            if (String.IsNullOrEmpty(txtCourse.Text))
             {
-                //update in the DB
-                Course.Update(Course);
+                MessageBox.Show("Please Enter a Course ID", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
+                if (String.IsNullOrEmpty(txtSection.Text))
+                {
+                    MessageBox.Show("Please Enter a Section", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+                    if (String.IsNullOrEmpty(classroomChoice.Text))
+                    {
+                        MessageBox.Show("Please Enter a Classroom", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                
+     
             else
-            {
-                MainWindow.Instance.lstCourses.Items.Add(Course);
-                Course.Add(Course);
+            { 
+                           
+
+                        //the checkboxes aren't binded, so we must manually deal with it
+                Course.Days.Clear();
+                if (IsChecked(chkMonday))
+                    Course.Days.Add(DayOfWeek.Monday);
+                if (IsChecked(chkTuesday))
+                    Course.Days.Add(DayOfWeek.Tuesday);
+                if (IsChecked(chkWednesday))
+                    Course.Days.Add(DayOfWeek.Wednesday);
+                if (IsChecked(chkThursday))
+                    Course.Days.Add(DayOfWeek.Thursday);
+                if (IsChecked(chkFriday))
+                    Course.Days.Add(DayOfWeek.Friday);
+                if (IsChecked(chkSaturday))
+                    Course.Days.Add(DayOfWeek.Saturday);
+                else
+                {
+                    MessageBox.Show("Please Select a Date", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+                    if (editing)
+                    {
+                        //update in the DB
+                        Course.Update(Course);
+                    }
+                    else
+                    {
+                        MainWindow.Instance.lstCourses.Items.Add(Course);
+                        Course.Add(Course);
+                    }
+
+
+                    Close();
+                
             }
-
-            Close();
-
         }
 
         private void chkEnableTardy_Click(object sender, RoutedEventArgs e)
@@ -194,7 +221,7 @@ namespace DrKCrazyAttendance_Instructor
 
         private void control_Error(object sender, ValidationErrorEventArgs e)
         {
-
+            
         }
 
     }
