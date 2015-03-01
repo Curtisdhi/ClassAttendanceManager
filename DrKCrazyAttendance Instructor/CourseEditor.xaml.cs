@@ -156,16 +156,17 @@ namespace DrKCrazyAttendance_Instructor
             {
                 MessageBox.Show("Please Enter a Course ID", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
-                if (String.IsNullOrEmpty(txtSection.Text))
+            else if (String.IsNullOrEmpty(txtSection.Text))
                 {
                     MessageBox.Show("Please Enter a Section", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
-                    if (String.IsNullOrEmpty(classroomChoice.Text))
+
+                  else if (String.IsNullOrEmpty(classroomChoice.Text))
                     {
                         MessageBox.Show("Please Enter a Classroom", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                     }
                 
-     
+    
             else
             {
 
