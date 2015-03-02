@@ -151,26 +151,63 @@ namespace DrKCrazyAttendance_Instructor
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-          
-            if (String.IsNullOrEmpty(txtCourse.Text))
+            String course = txtCourse.Text;
+            String classroom = classroomChoice.Text;
+            String section = txtSection.Text;
+
+
+            if (!length(course))
+            {
+                MessageBox.Show("The course must be 8 characters long exp.CISP1010", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            if (!upperCases(course))
+            {
+                MessageBox.Show("The course must start with 4 uppercase letters exp.CISP1010", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+
+            else if(!leng(classroom))
+            {
+                MessageBox.Show("The classroom must be 5 characters long exp.C2424", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else if (!digits(classroom))
+            {
+                MessageBox.Show("The classroom must end with 4 digits exp.C2424", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else if (!upperCase(classroom))
+            {
+                MessageBox.Show("The classroom number must start with a uppercase letter", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else if (!upperCase(section))
+            {
+                MessageBox.Show("The section number must start with a uppercase letter", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else if (!sdigit(section))
+            {
+                MessageBox.Show("The section number must end with 2 digits", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else if (!len(section))
+            {
+                MessageBox.Show("The course must be 3 characters long exp.A01", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else if (String.IsNullOrEmpty(txtCourse.Text))
             {
                 MessageBox.Show("Please Enter a Course ID", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
             else if (String.IsNullOrEmpty(txtSection.Text))
-                {
-                    MessageBox.Show("Please Enter a Section", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                }
+            {
+                MessageBox.Show("Please Enter a Section", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
 
-                  else if (String.IsNullOrEmpty(classroomChoice.Text))
-                    {
-                        MessageBox.Show("Please Enter a Classroom", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    }
-                
-    
+            else if (String.IsNullOrEmpty(classroomChoice.Text))
+            {
+                MessageBox.Show("Please Enter a Classroom", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+
+
             else
             {
 
-                if (!IsChecked(chkMonday) && !IsChecked(chkTuesday) && !IsChecked(chkWednesday) && !IsChecked(chkThursday) 
+                if (!IsChecked(chkMonday) && !IsChecked(chkTuesday) && !IsChecked(chkWednesday) && !IsChecked(chkThursday)
                     && !IsChecked(chkFriday) && !IsChecked(chkSaturday))
                 {
                     MessageBox.Show("Please Select at least one Day", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -181,15 +218,15 @@ namespace DrKCrazyAttendance_Instructor
                     Course.Days.Clear();
                     if (IsChecked(chkMonday))
                         Course.Days.Add(DayOfWeek.Monday);
-                     if (IsChecked(chkTuesday))
+                    if (IsChecked(chkTuesday))
                         Course.Days.Add(DayOfWeek.Tuesday);
-                     if (IsChecked(chkWednesday))
+                    if (IsChecked(chkWednesday))
                         Course.Days.Add(DayOfWeek.Wednesday);
-                     if (IsChecked(chkThursday))
+                    if (IsChecked(chkThursday))
                         Course.Days.Add(DayOfWeek.Thursday);
-                     if (IsChecked(chkFriday))
+                    if (IsChecked(chkFriday))
                         Course.Days.Add(DayOfWeek.Friday);
-                     if (IsChecked(chkSaturday))
+                    if (IsChecked(chkSaturday))
                         Course.Days.Add(DayOfWeek.Saturday);
 
 
@@ -208,7 +245,7 @@ namespace DrKCrazyAttendance_Instructor
 
 
                     Close();
-                } 
+                }
             }
         }
 
@@ -228,5 +265,84 @@ namespace DrKCrazyAttendance_Instructor
             
         }
 
+        public static Boolean length(String course)
+        {
+            if (course.Length == 8)
+            {
+
+            }
+            else
+            {
+                return false;
+            }
+            return true;
+        }
+
+             public static Boolean leng(String classroom)
+        {
+            if (classroom.Length == 5)
+            {
+                
+            }
+            else
+            {
+                return false;
+            }
+            return true;
+
+        }
+
+             public static Boolean len(String section)
+             {
+                 if (section.Length == 3)
+                 {
+
+                 }
+                 else
+                 {
+                     return false;
+                 }
+                 return true;
+
+             }
+             public static Boolean upperCase(String classroom)
+             {
+
+                     if (Char.IsUpper(classroom[0]))
+                     {
+                         return true;
+                     }
+                 return false;
+             }
+
+             public static Boolean digits(String classroom)
+             {
+
+                     if (Char.IsDigit(classroom[1+3]))
+                     {
+                         return true;
+                     }
+                 return false;
+             }
+
+             public static Boolean upperCases(String course)
+             {
+
+                 if (Char.IsUpper(course[0+3]))
+                 {
+                     return true;
+                 }
+                 return false;
+             }
+
+             public static Boolean sdigit(String section)
+             {
+
+                 if (Char.IsDigit(section[1 + 1]))
+                 {
+                     return true;
+                 }
+                 return false;
+             }
     }
 }
