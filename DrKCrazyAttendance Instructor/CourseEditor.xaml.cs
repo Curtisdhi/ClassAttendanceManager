@@ -155,12 +155,12 @@ namespace DrKCrazyAttendance_Instructor
             String classroom = classroomChoice.Text;
             String section = txtSection.Text;
 
-
+            
             if (!length(course))
             {
                 MessageBox.Show("The course must be 8 characters long exp.CISP1010", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
-            if (!upperCases(course))
+            else if (!upperCases(course))
             {
                 MessageBox.Show("The course must start with 4 uppercase letters exp.CISP1010", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
@@ -338,7 +338,7 @@ namespace DrKCrazyAttendance_Instructor
              public static Boolean sdigit(String section)
              {
 
-                 if (Char.IsDigit(section[1 + 1]))
+                 if (Char.IsDigit(section[0 + 1]))
                  {
                      return true;
                  }

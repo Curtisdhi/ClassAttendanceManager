@@ -149,6 +149,20 @@ namespace DrKCrazyAttendance_Instructor
             {
                 about.Close();
             }
+            if (editor != null && editor.IsVisible )
+            {
+                var confirmResult = MessageBox.Show("Are you sure to close the program without saving the settings?",
+                                        "Confirm", MessageBoxButton.YesNo);
+                if (confirmResult == MessageBoxResult.Yes)
+                {
+                    editor.Close();
+                }
+                else
+                {
+                    //cancel if the user doesn't confirm
+                    e.Cancel = true;
+                }
+            }
         }
 
         private void mnuAbout_Click(object sender, RoutedEventArgs e)
