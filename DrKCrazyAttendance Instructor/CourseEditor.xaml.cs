@@ -169,19 +169,19 @@ namespace DrKCrazyAttendance_Instructor
             {
                 MessageBox.Show("The classroom must be 5 characters long exp.C2424", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
-            else if (!digits(classroom))
+            else if (!Digits(classroom))
             {
                 MessageBox.Show("The classroom must end with 4 digits exp.C2424", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
-            else if (!upperCase(classroom))
+            else if (!UpperCase(classroom))
             {
                 MessageBox.Show("The classroom number must start with a uppercase letter", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
-            else if (!upperCase(section))
+            else if (!UpperCase(section))
             {
                 MessageBox.Show("The section number must start with a uppercase letter", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
-            else if (!sdigit(section))
+            else if (!SDigit(section))
             {
                 MessageBox.Show("The section number must end with 2 digits", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
@@ -202,11 +202,23 @@ namespace DrKCrazyAttendance_Instructor
             {
                 MessageBox.Show("Please Enter a Classroom", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
-
+            else if (String.IsNullOrEmpty(startDatePicker.Text))
+            {
+                MessageBox.Show("Please Enter a Starting Date", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else if (String.IsNullOrEmpty(endDatePicker.Text))
+            {
+                MessageBox.Show("Please Enter a Ending Date", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+           
+       
+            else if (String.IsNullOrEmpty(startTimePicker.FormatString))
+            {
+                MessageBox.Show("Please Enter a Ending Time", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
 
             else
             {
-
                 if (!IsChecked(chkMonday) && !IsChecked(chkTuesday) && !IsChecked(chkWednesday) && !IsChecked(chkThursday)
                     && !IsChecked(chkFriday) && !IsChecked(chkSaturday))
                 {
@@ -265,7 +277,8 @@ namespace DrKCrazyAttendance_Instructor
             
         }
 
-        public static Boolean length(String course)
+
+        public static bool length(String course)
         {
             if (course.Length == 8)
             {
@@ -278,7 +291,7 @@ namespace DrKCrazyAttendance_Instructor
             return true;
         }
 
-             public static Boolean leng(String classroom)
+             public static bool leng(String classroom)
         {
             if (classroom.Length == 5)
             {
@@ -292,7 +305,7 @@ namespace DrKCrazyAttendance_Instructor
 
         }
 
-             public static Boolean len(String section)
+             public static bool len(String section)
              {
                  if (section.Length == 3)
                  {
@@ -305,7 +318,8 @@ namespace DrKCrazyAttendance_Instructor
                  return true;
 
              }
-             public static Boolean upperCase(String classroom)
+
+             public static Boolean UpperCase(String classroom)
              {
 
                      if (Char.IsUpper(classroom[0]))
@@ -315,7 +329,7 @@ namespace DrKCrazyAttendance_Instructor
                  return false;
              }
 
-             public static Boolean digits(String classroom)
+             public static Boolean Digits(String classroom)
              {
 
                      if (Char.IsDigit(classroom[1+3]))
@@ -335,7 +349,7 @@ namespace DrKCrazyAttendance_Instructor
                  return false;
              }
 
-             public static Boolean sdigit(String section)
+             public static Boolean SDigit(String section)
              {
 
                  if (Char.IsDigit(section[0 + 1]))

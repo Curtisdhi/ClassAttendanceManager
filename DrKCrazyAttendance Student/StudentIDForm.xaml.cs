@@ -87,6 +87,9 @@ namespace DrKCrazyAttendance_Student
                                 Student.Add(student);
                             }
                             DialogResult = true;
+                                   
+                            MainWindow mnw = new MainWindow();
+                            mnw.Show();
                             Close();
                         }
                         else

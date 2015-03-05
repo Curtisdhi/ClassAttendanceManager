@@ -133,7 +133,7 @@ namespace DrKCrazyAttendance_Instructor
         {
             if (settingsForm != null && settingsForm.IsVisible)
             {
-                var confirmResult = MessageBox.Show("Are you sure to close the program without saving the settings?",
+                var confirmResult = MessageBox.Show("Are you sure you want to close the program without saving the settings?",
                                         "Confirm", MessageBoxButton.YesNo);
                 if (confirmResult == MessageBoxResult.Yes)
                 {
@@ -151,7 +151,7 @@ namespace DrKCrazyAttendance_Instructor
             }
             if (editor != null && editor.IsVisible )
             {
-                var confirmResult = MessageBox.Show("Are you sure to close the program without saving the settings?",
+                var confirmResult = MessageBox.Show("Are you sure you want to close the program?",
                                         "Confirm", MessageBoxButton.YesNo);
                 if (confirmResult == MessageBoxResult.Yes)
                 {
