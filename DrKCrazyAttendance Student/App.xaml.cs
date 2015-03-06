@@ -22,7 +22,7 @@ namespace DrKCrazyAttendance_Student
             Settings.Default.SqlServerAddr = "www.projectgxp.com";
             Settings.Default.SqlPassword = "SYM4GMmlzHmpoGenV4yb";
             Settings.Default.Classroom = "C2427";
-            string userName = "bobv"; //Environment.UserName;
+            string userName = Environment.UserName;
 
             DateTime now = DateTime.Now;
             Course course = Course.GetCoursesByTime(Settings.Default.Classroom, now);

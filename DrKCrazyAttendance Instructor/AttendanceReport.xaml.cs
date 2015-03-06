@@ -141,11 +141,10 @@ namespace DrKCrazyAttendance_Instructor
                         sb.Append(",");
                         foreach (object a in avm.AttendsToCourse)
                         {
-                            bool b = false;
-                            if (a is bool)
-                            {
-                                b = (bool)a;
-                            }
+                            Property prop = (Property)a;
+                            bool b = Convert.ToBoolean(prop.Value);
+                            Console.Write(a.GetType());
+                       
                             //place an X where the student attended on that date
                             sb.Append(b ? "X" : "");
                             sb.Append(",");
