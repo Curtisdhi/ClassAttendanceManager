@@ -177,6 +177,11 @@ namespace DrKCrazyAttendance_Instructor
                 Course.Add(Course);
             }
 
+            if (Course.StartDate > Course.EndDate && Course.EndDate != null && Course.StartDate !=null)
+            {
+                MessageBox.Show("check your start and end dates");
+            }
+
             Close();
 
         }
