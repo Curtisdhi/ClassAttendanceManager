@@ -93,10 +93,10 @@ namespace DrKCrazyAttendance_Instructor
             }
 
         }
-
+       
         private void btnPrint_Click(object sender, RoutedEventArgs e)
         {
-
+            
         }
 
         private void menuClose_Click(object sender, RoutedEventArgs e)

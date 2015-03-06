@@ -84,6 +84,12 @@ namespace DrKCrazyAttendance_Instructor
         {
             txtInstructor.Text = Settings.Default.Instructor;
         }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            MainWindow mww = new MainWindow();
+            mww.Show();    
+        }
      
     }
 }
