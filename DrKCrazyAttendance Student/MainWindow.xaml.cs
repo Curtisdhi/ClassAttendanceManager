@@ -22,41 +22,60 @@ namespace DrKCrazyAttendance_Student
     /// </summary>
     public partial class MainWindow : Window
     {
-        private Student student = null;
-        private Course course = null;
+        private Course course;
+        private Student student;
 
         public MainWindow()
         {
             InitializeComponent();
         }
 
-        public MainWindow(Course course, Student student)
+        #region Properties
+        public Course Course
         {
-            InitializeComponent();
-            this.course = course;
-            this.student = student;
+            set {
+                course = value;
+                RefreshInfo();
+            }
+            get {
+                return course;
+            }
         }
+
+        public Student Student
+        {
+            set {
+                student = value;
+                RefreshInfo();
+            }
+            get {
+                return student;  
+            }
+        }
+        #endregion
 
         private void RefreshInfo()
         {
-            if (course != null && student != null)
+            if (Course != null) {
+                lblCourse.Content = Course.CourseName + " " + Course.Section;
+                lblInstructor.Content = Course.Instructor;
+            }
+            if (Student != null)
             {
-                lblCourse.Content = course.CourseName + " " + course.Section;
-                lblInstructor.Content = course.Instructor;
-                lblStudentId.Content = student.Id;
-                lblUsername.Content = student.Username;
+                lblStudentId.Content = Student.Id;
+                lblUsername.Content = Student.Username;
             }
         }
 
         private void Hyperlink_Click(object sender, RoutedEventArgs e)
         {
-            if (student != null)
+            if (Student != null)
             {
-                bool? success = new StudentIDForm(student).ShowDialog();
+                bool? success = new StudentIDForm(Student).ShowDialog();
                 if (success != null && (bool)success)
                 {
                     //fetch the new student
-                    student = Student.GetStudent(student.Username);
+                    Student = Student.GetStudent(Student.Username);
                     RefreshInfo();
                     MessageBox.Show("Successfully changed your id");
                 }

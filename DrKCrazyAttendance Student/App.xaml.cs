@@ -17,6 +17,9 @@ namespace DrKCrazyAttendance_Student
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            MainWindow = new MainWindow();
+            MainWindow.Visibility = Visibility.Hidden;
+
             Settings.Default.SqlDatabase = "capstone_2";
             Settings.Default.SqlUsername = "capstone";
             Settings.Default.SqlServerAddr = "www.projectgxp.com";
@@ -31,28 +34,34 @@ namespace DrKCrazyAttendance_Student
             if (student == null)
             {
                 //ask for student id
-                bool? success = new StudentIDForm(userName).ShowDialog();
+                StudentIDForm stuIdForm = new StudentIDForm(userName);
+                bool? success = stuIdForm.ShowDialog();
+
                 if (success != null && (bool)success)
                 {
+
                     //refetch student
                     student = Student.GetStudent(userName);
+  
                     if (student == null){
                         MessageBox.Show("Sorry, some error has occurered, and you will not be counted as attended. Please try agian.");
                     }
                 }
             }
-
+           
             if (student != null && RegisterAttendance(course, student, now))
             {
-                MainWindow = new MainWindow(course, student);
-                MainWindow.Show();
+                ((MainWindow)MainWindow).Course = course;
+                ((MainWindow)MainWindow).Student = student;
+                MainWindow.Visibility = Visibility.Visible;
+                MainWindow.Show();                    
             }
             else
             {
-                Shutdown();
+                //Shutdown();
+                MainWindow.Close();
             }
-
-        }
+       }
 
         private bool RegisterAttendance(Course course, Student student, DateTime now)
         {

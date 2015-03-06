@@ -82,7 +82,7 @@ namespace DrKCrazyAttendance_Student
                                 Student.Add(student);
                             }
                             DialogResult = true;
-                            Close();
+
                         }
                         else
                         {
