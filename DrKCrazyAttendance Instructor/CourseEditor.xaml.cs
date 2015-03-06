@@ -212,10 +212,7 @@ namespace DrKCrazyAttendance_Instructor
             }
            
        
-            else if (String.IsNullOrEmpty(startTimePicker.FormatString))
-            {
-                MessageBox.Show("Please Enter a Ending Time", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
+           
 
             else
             {
@@ -319,7 +316,7 @@ namespace DrKCrazyAttendance_Instructor
 
              }
 
-             public static Boolean UpperCase(String classroom)
+             public static bool UpperCase(String classroom)
              {
 
                      if (Char.IsUpper(classroom[0]))
@@ -329,7 +326,7 @@ namespace DrKCrazyAttendance_Instructor
                  return false;
              }
 
-             public static Boolean Digits(String classroom)
+             public static bool Digits(String classroom)
              {
 
                      if (Char.IsDigit(classroom[1+3]))
@@ -349,7 +346,7 @@ namespace DrKCrazyAttendance_Instructor
                  return false;
              }
 
-             public static Boolean SDigit(String section)
+             public static bool SDigit(String section)
              {
 
                  if (Char.IsDigit(section[0 + 1]))

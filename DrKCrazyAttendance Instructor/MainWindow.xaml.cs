@@ -80,9 +80,10 @@ namespace DrKCrazyAttendance_Instructor
         }
 
         private void menuSettings_Click(object sender, RoutedEventArgs e)
-        {
+        { 
             settingsForm = new SettingsForm();
-            settingsForm.Show();
+                settingsForm.Show();
+                this.Hide();
         }
 
        
@@ -219,6 +220,8 @@ namespace DrKCrazyAttendance_Instructor
             btnEdit.IsEnabled = enable;
             btnReport.IsEnabled = enable;
         }
+
+        
 
     }
 }

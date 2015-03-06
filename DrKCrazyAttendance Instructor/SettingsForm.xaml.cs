@@ -47,6 +47,8 @@ namespace DrKCrazyAttendance_Instructor
                 Settings.Default.Save();
                 MainWindow.Instance.LoadCourses();
                 Close();
+                MainWindow mw = new MainWindow();
+                mw.Show();
             }
             else
             {
@@ -82,6 +84,6 @@ namespace DrKCrazyAttendance_Instructor
         {
             txtInstructor.Text = Settings.Default.Instructor;
         }
-
+     
     }
 }

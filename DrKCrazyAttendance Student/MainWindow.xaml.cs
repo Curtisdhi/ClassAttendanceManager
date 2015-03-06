@@ -47,6 +47,11 @@ namespace DrKCrazyAttendance_Student
                     MessageBox.Show("Successfully changed your id");
                 }
             }
+            if (student == student)
+            {
+                MessageBox.Show("User ID matched the previously entered ID no edits will take place ", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+
         }
 
         private void btnOk_Click(object sender, RoutedEventArgs e)
