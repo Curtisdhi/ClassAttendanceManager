@@ -39,6 +39,7 @@ namespace DrKCrazyAttendance_Student
 
         private void Hyperlink_Click(object sender, RoutedEventArgs e)
         {
+            Student stu = new Student();
             if (student != null)
             {
                 bool? success = new StudentIDForm(student).ShowDialog();
@@ -47,7 +48,7 @@ namespace DrKCrazyAttendance_Student
                     MessageBox.Show("Successfully changed your id");
                 }
             }
-            if (student == student)
+            if (student == stu)
             {
                 MessageBox.Show("User ID matched the previously entered ID no edits will take place ", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
