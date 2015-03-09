@@ -13,6 +13,9 @@ namespace DrKCrazyAttendance
     {
         public static MySqlConnection Connect()
         {
+            //decrypt settings
+            Settings.Default.Reload();
+
             string serverAddr = Settings.Default.SqlServerAddr;
             string database = Settings.Default.SqlDatabase;
             string username = Settings.Default.SqlUsername;
