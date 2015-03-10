@@ -46,9 +46,8 @@ namespace DrKCrazyAttendance_Instructor
                 
                 Settings.Default.Save();
                 MainWindow.Instance.LoadCourses();
+                MainWindow.Instance.Show();
                 Close();
-                MainWindow mw = new MainWindow();
-                mw.Show();
             }
             else
             {
@@ -87,8 +86,7 @@ namespace DrKCrazyAttendance_Instructor
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            MainWindow mww = new MainWindow();
-            mww.Show();    
+            MainWindow.Instance.Show();
         }
      
     }

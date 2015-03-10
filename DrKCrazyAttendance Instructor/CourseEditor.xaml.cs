@@ -349,7 +349,7 @@ namespace DrKCrazyAttendance_Instructor
         {
             ComboBox box = (ComboBox)sender;
             //1 letter and 4 digits
-            int length = box.Text.Length;
+            /*int length = box.Text.Length;
 
             StringBuilder sb = new StringBuilder();
 
@@ -383,7 +383,7 @@ namespace DrKCrazyAttendance_Instructor
                 }
             }
             TextBox txt = box.Template.FindName("PART_EditableTextBox", box) as TextBox;
-            txt.CaretIndex = box.Text.Length;
+            txt.CaretIndex = box.Text.Length;*/
         }
     }
 }
