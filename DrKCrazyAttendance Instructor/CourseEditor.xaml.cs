@@ -207,6 +207,11 @@ namespace DrKCrazyAttendance_Instructor
                 errors += "Please check at least one Day\n";
             }
 
+            if (Course.StartDate > Course.EndDate)
+            {
+                errors += "check your start and end dates";
+            }
+
             if (IsChecked(chkEnableTardy))
             {
                 if (GetTimeSpan(gracePeriodTS.Value) == TimeSpan.Zero)
