@@ -172,23 +172,28 @@ namespace DrKCrazyAttendance_Instructor
             if (IsChecked(chkSaturday))
                 Course.Days.Add(DayOfWeek.Saturday);
 
-
-
-
-            if (editing)
+            string errors = IsValid();
+            if (!string.IsNullOrEmpty(errors))
             {
-                //update in the DB
-                Course.Update(Course);
+                MessageBox.Show(errors, "Validation errors", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {
-                MainWindow.Instance.lstCourses.Items.Add(Course);
-                Course.Add(Course);
+
+                if (editing)
+                {
+                    //update in the DB
+                    Course.Update(Course);
+                }
+                else
+                {
+                    MainWindow.Instance.lstCourses.Items.Add(Course);
+                    Course.Add(Course);
+                }
+
+
+                Close();
             }
-
-
-            Close();
-
 
         }
 
@@ -196,9 +201,28 @@ namespace DrKCrazyAttendance_Instructor
         {
             string errors = "";
 
+            if (txtCourse.Text.Length != 8)
+            {
+                errors += "Course requires 8 characters eg. CISP1010\n";
+            }
+            if (txtSection.Text.Length != 3)
+            {
+                errors += "Section requires 3 characters eg. A01\n";
+            }
+            if (classroomChoice.Text == null || classroomChoice.Text.Length != 5)
+            {
+                errors += "Classroom requires 5 characters eg. C2427\n";
+            }
+
             if (GetDateTime(startTimePicker.Value) > GetDateTime(endTimePicker.Value))
             {
                 errors += "Start time can not be before end time.\n";
+            }
+
+            TimeSpan timeValidation = new TimeSpan(0,30,0);
+            if (GetDateTime(endTimePicker.Value).Subtract(GetDateTime(startTimePicker.Value)) < timeValidation)
+            {
+                errors += "Class must be atleast 30 minutes long.\n";
             }
 
             if (!IsChecked(chkMonday) && !IsChecked(chkTuesday) && !IsChecked(chkWednesday) && !IsChecked(chkThursday)
@@ -207,9 +231,11 @@ namespace DrKCrazyAttendance_Instructor
                 errors += "Please check at least one Day\n";
             }
 
-            if (Course.StartDate > Course.EndDate)
+            if (Course.StartDate > Course.EndDate || 
+                GetDateTime(startDatePicker.SelectedDate) == DateTime.MinValue || 
+                GetDateTime(endDatePicker.SelectedDate) == DateTime.MinValue)
             {
-                errors += "check your start and end dates";
+                errors += "Please check your start and end dates";
             }
 
             if (IsChecked(chkEnableTardy))
