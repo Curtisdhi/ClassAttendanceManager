@@ -84,11 +84,17 @@ namespace DrKCrazyAttendance_Student
                     MessageBox.Show("Your id did not change.");
                 }
             }
+            if (student == student)
+            {
+                MessageBox.Show("User ID matched the previously entered ID no edits will take place ", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+
         }
 
         private void btnOk_Click(object sender, RoutedEventArgs e)
         {
             Close();
+           
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
