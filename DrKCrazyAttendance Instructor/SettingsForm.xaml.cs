@@ -45,7 +45,11 @@ namespace DrKCrazyAttendance_Instructor
                     Settings.Default.SqlPassword = txtDbPassword.Password;
                 
                 Settings.Default.Save();
+                //decrypt settings
+                Settings.Default.Reload();
+
                 MainWindow.Instance.LoadCourses();
+
                 Close();
             }
             else

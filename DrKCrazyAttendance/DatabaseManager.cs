@@ -11,24 +11,36 @@ namespace DrKCrazyAttendance
 {
     public class DatabaseManager
     {
+        static DatabaseManager() {
+            IsConnectable = true;
+        }
+
+        public static bool IsConnectable
+        {
+            get;
+            set;
+        }
+
         public static MySqlConnection Connect()
         {
-            //decrypt settings
-            Settings.Default.Reload();
+            MySqlConnection connection = null;
+            if (IsConnectable)
+            {
+                string serverAddr = Settings.Default.SqlServerAddr;
+                string database = Settings.Default.SqlDatabase;
+                string username = Settings.Default.SqlUsername;
+                string password = Settings.Default.SqlPassword;
 
-            string serverAddr = Settings.Default.SqlServerAddr;
-            string database = Settings.Default.SqlDatabase;
-            string username = Settings.Default.SqlUsername;
-            string password = Settings.Default.SqlPassword;
+                /* 
+                 * Requires "Convert Zero Datetime=True" to properly convert Date and Time sql types to .net Datetime
+                 * http://stackoverflow.com/questions/5754822/unable-to-convert-mysql-date-time-value-to-system-datetime
+                 */
+                string cs = string.Format("server={0};userid={1};password={2};database={3};Convert Zero Datetime=True",
+                    serverAddr, username, password, database);
 
-            /* 
-             * Requires "Convert Zero Datetime=True" to properly convert Date and Time sql types to .net Datetime
-             * http://stackoverflow.com/questions/5754822/unable-to-convert-mysql-date-time-value-to-system-datetime
-             */
-            string cs = string.Format("server={0};userid={1};password={2};database={3};Convert Zero Datetime=True",
-                serverAddr, username, password, database);
-            MySqlConnection connection = new MySqlConnection(cs);
+                connection = new MySqlConnection(cs);
 
+            }
             return connection;
         }
 
@@ -46,7 +58,14 @@ namespace DrKCrazyAttendance
             conn = DatabaseManager.Connect();
             try
             {
-                conn.Open();
+                try
+                {
+                    conn.Open();
+                }
+                catch (MySqlException ex)
+                {
+                    IsConnectable = false;
+                }
                 cmd = new MySqlCommand(query, conn);
                 cmd.Prepare();
                 foreach (string key in parameters.Keys)
@@ -55,6 +74,7 @@ namespace DrKCrazyAttendance
                 }
                 rdr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             }
+
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
@@ -90,12 +110,18 @@ namespace DrKCrazyAttendance
             MySqlConnection conn;
             MySqlCommand cmd;
 
-
             using (conn = DatabaseManager.Connect())
             {
                 try
                 {
-                    conn.Open();
+                    try
+                    {
+                        conn.Open();
+                    }
+                    catch (MySqlException ex)
+                    {
+                        IsConnectable = false;
+                    }
                     using (cmd = new MySqlCommand(query, conn))
                     {
                         cmd.Prepare();
@@ -130,7 +156,15 @@ namespace DrKCrazyAttendance
             {
                 try
                 {
-                    conn.Open();
+                    try
+                    {
+                        conn.Open();
+                    }
+                    catch (MySqlException ex)
+                    {
+                        IsConnectable = false;
+                    }
+
                     using (cmd = new MySqlCommand(query, conn))
                     {
                         cmd.Prepare();
@@ -166,7 +200,14 @@ namespace DrKCrazyAttendance
             {
                 try
                 {
-                    conn.Open();
+                    try
+                    {
+                        conn.Open();
+                    }
+                    catch (MySqlException ex)
+                    {
+                        IsConnectable = false;
+                    }
                     tr = conn.BeginTransaction();
                     using (cmd = new MySqlCommand(query, conn))
                     {
