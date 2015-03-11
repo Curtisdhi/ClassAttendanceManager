@@ -82,21 +82,28 @@ namespace DrKCrazyAttendance_Instructor
         }
 
         private void menuSettings_Click(object sender, RoutedEventArgs e)
-        {
+        { 
             settingsForm = new SettingsForm();
-            settingsForm.Show();
+                settingsForm.Show();
+                this.Hide();
         }
 
-
+       
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            if (lstCourses.SelectedItem != null)
+            var confirmDelete = MessageBox.Show ("Are you sure you want to delete this Course?",
+                                    "Confirm", MessageBoxButton.OKCancel );
+           
+           if (confirmDelete == MessageBoxResult.OK && lstCourses.SelectedItem != null)
+   
             {
                 Course course = (Course)lstCourses.SelectedItem;
                 Course.Remove(course);
                 lstCourses.Items.Remove(course);
             }
-        }
+          
+           }
+           
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
@@ -129,7 +136,7 @@ namespace DrKCrazyAttendance_Instructor
         {
             if (settingsForm != null && settingsForm.IsVisible)
             {
-                var confirmResult = MessageBox.Show("Are you sure to close the program without saving the settings?",
+                var confirmResult = MessageBox.Show("Are you sure you want to close the program without saving the settings?",
                                         "Confirm", MessageBoxButton.YesNo);
                 if (confirmResult == MessageBoxResult.Yes)
                 {
@@ -144,6 +151,20 @@ namespace DrKCrazyAttendance_Instructor
             if (about != null)
             {
                 about.Close();
+            }
+            if (editor != null && editor.IsVisible )
+            {
+                var confirmResult = MessageBox.Show("Are you sure you want to close the program?",
+                                        "Confirm", MessageBoxButton.YesNo);
+                if (confirmResult == MessageBoxResult.Yes)
+                {
+                    editor.Close();
+                }
+                else
+                {
+                    //cancel if the user doesn't confirm
+                    e.Cancel = true;
+                }
             }
         }
 
@@ -201,6 +222,8 @@ namespace DrKCrazyAttendance_Instructor
             btnEdit.IsEnabled = enable;
             btnReport.IsEnabled = enable;
         }
+
+        
 
     }
 }

@@ -49,7 +49,7 @@ namespace DrKCrazyAttendance_Instructor
                 Settings.Default.Reload();
 
                 MainWindow.Instance.LoadCourses();
-
+                MainWindow.Instance.Show();
                 Close();
             }
             else
@@ -87,5 +87,10 @@ namespace DrKCrazyAttendance_Instructor
             txtInstructor.Text = Settings.Default.Instructor;
         }
 
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            MainWindow.Instance.Show();
+        }
+     
     }
 }

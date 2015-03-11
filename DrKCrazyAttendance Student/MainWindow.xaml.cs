@@ -71,24 +71,34 @@ namespace DrKCrazyAttendance_Student
         {
             if (Student != null)
             {
+                long id = Student.Id;
                 bool? success = new StudentIDForm(Student).ShowDialog();
                 if (success != null && (bool)success)
                 {
                     //fetch the new student
                     Student = Student.GetStudent(Student.Username);
                     RefreshInfo();
-                    MessageBox.Show("Successfully changed your id");
+                    
+                    if (Student.Id == id) {
+                        MessageBox.Show("User ID matched the previously entered ID no edits will take place ", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Successfully changed your id");
+                    }
                 }
                 else
                 {
                     MessageBox.Show("Your id did not change.");
                 }
             }
+
         }
 
         private void btnOk_Click(object sender, RoutedEventArgs e)
         {
             Close();
+           
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

@@ -93,10 +93,10 @@ namespace DrKCrazyAttendance_Instructor
             }
 
         }
-
+       
         private void btnPrint_Click(object sender, RoutedEventArgs e)
         {
-
+            
         }
 
         private void menuClose_Click(object sender, RoutedEventArgs e)
@@ -107,7 +107,8 @@ namespace DrKCrazyAttendance_Instructor
         //datagrid delete button event
         private void Delete_Button_Click(object sender, RoutedEventArgs e)
         {
-            //Attendance obj = ((FrameworkElement)sender).DataContext as Attendance;
+            Attendance obj = ((FrameworkElement)sender).DataContext as Attendance;
+            if (true) { }
         }
 
         //Save this object into a CSV file
@@ -165,5 +166,6 @@ namespace DrKCrazyAttendance_Instructor
             }
 
         }
+       
     }
 }
