@@ -13,7 +13,18 @@ namespace DrKCrazyAttendance
     {
         public Course()
         {
+            this.Id = 0;
             Days = new List<DayOfWeek>();
+            this.Classroom = "";
+            this.CourseName = "";
+            this.Section = "";
+            this.Instructor = "";
+            this.StartDate = DateTime.Now;
+            this.EndDate = DateTime.Now;
+            this.StartTime = DateTime.MinValue;
+            this.EndTime = DateTime.MinValue;
+            this.GracePeriod = TimeSpan.Zero;
+            this.LogTardy = false;
         }
 
         public Course(string instructor) : this()
@@ -443,42 +454,64 @@ namespace DrKCrazyAttendance
         {
             get
             {
-                string result = null;
-                switch (propertyName.ToLower()) { 
-                    case "classroom":
-                        if (string.IsNullOrWhiteSpace(Classroom))
+                string result = "";
+                switch (propertyName) { 
+                    case "Classroom":
+                        if (Classroom.Length != 5)
                         {
-                            result = "Classroom is required";
+                            result = "Requires 5 characters.";
                         }
                         break;
-                    case "coursename":
-                        if (string.IsNullOrWhiteSpace(CourseName))
+                    case "CourseName":
+                        if (CourseName.Length != 8)
                         {
-                            result = "Course name is required";
+                            result = "Requires 8 characters.";
                         }
                         break;
-                    case "section":
-                        if (string.IsNullOrWhiteSpace(Section))
+                    case "Section":
+                        if (Section.Length != 3)
                         {
-                            result = "Section is required";
+                            result = "Requires 3 characters.";
                         }
                         break;
-                    case "startdate":
+                    case "StartDate":
                         if (StartDate == DateTime.MinValue)
                         {
-                            result = "Start Date is required";
+                            result = "Required";
+                        }
+                        else if (StartDate > EndDate)
+                        {
+                            result = "Start date can not be after end date.";
                         }
                         break;
-                    case "enddate":
+                    case "EndDate":
                         if (EndDate == DateTime.MinValue)
                         {
-                            result = "End Date is required";
+                            result = "Required";
                         }
                         break;
-                    case "graceperiod":
+                    case "StartTime":
+                        if (StartTime == DateTime.MinValue)
+                        {
+                            result = "Required";
+                        }
+                        else if (StartTime > EndTime)
+                        {
+                            result = "Start time can not be after end time.";
+                        }
+                        TimeSpan timeValidation = new TimeSpan(0, 30, 0);
+                        if ((EndTime - StartTime) < timeValidation)
+                        {
+                            result = "Class must be atleast 30 minutes long.\n";
+                        }
+                        break;
+                    case "EndTime":
+
+                        break;
+                    case "GracePeriod":
                         if (LogTardy && GracePeriod == TimeSpan.MinValue)
                         {
-                            result = "Grace Peroid is required";
+                            result = "Required";
                         }
                         break;
                 }

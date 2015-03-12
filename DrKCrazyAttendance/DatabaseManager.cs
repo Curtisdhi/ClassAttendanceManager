@@ -62,7 +62,7 @@ namespace DrKCrazyAttendance
                 {
                     conn.Open();
                 }
-                catch (MySqlException ex)
+                catch (MySqlException)
                 {
                     IsConnectable = false;
                 }
@@ -118,7 +118,7 @@ namespace DrKCrazyAttendance
                     {
                         conn.Open();
                     }
-                    catch (MySqlException ex)
+                    catch (MySqlException)
                     {
                         IsConnectable = false;
                     }
@@ -160,7 +160,7 @@ namespace DrKCrazyAttendance
                     {
                         conn.Open();
                     }
-                    catch (MySqlException ex)
+                    catch (MySqlException)
                     {
                         IsConnectable = false;
                     }
@@ -205,7 +205,7 @@ namespace DrKCrazyAttendance
                     {
                         conn.Open();
                     }
-                    catch (MySqlException ex)
+                    catch (MySqlException)
                     {
                         IsConnectable = false;
                     }
