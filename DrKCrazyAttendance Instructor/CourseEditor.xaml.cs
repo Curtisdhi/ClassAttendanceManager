@@ -1,4 +1,5 @@
-﻿using DrKCrazyAttendance;
+﻿
+using DrKCrazyAttendance;
 using DrKCrazyAttendance.Properties;
 using System;
 using System.Collections.Generic;
@@ -38,7 +39,8 @@ namespace DrKCrazyAttendance_Instructor
             }
         }
 
-        public CourseEditor(Course course) {
+        public CourseEditor(Course course)
+        {
             InitializeComponent();
             Course = course;
             DataContext = this;
@@ -83,7 +85,8 @@ namespace DrKCrazyAttendance_Instructor
         public Course Course
         {
             get { return course; }
-            private set {
+            private set
+            {
                 course = value;
                 //clone the course so we have the original values to
                 //revert back to in the even the user doesn't save.
@@ -155,107 +158,95 @@ namespace DrKCrazyAttendance_Instructor
             String classroom = classroomChoice.Text;
             String section = txtSection.Text;
 
-            
-            if (!length(course))
-            {
-                MessageBox.Show("The course must be 8 characters long exp.CISP1010", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
-            else if (!upperCases(course))
-            {
-                MessageBox.Show("The course must start with 4 uppercase letters exp.CISP1010", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
+            //the checkboxes aren't binded, so we must manually deal with it
+            Course.Days.Clear();
+            if (IsChecked(chkMonday))
+                Course.Days.Add(DayOfWeek.Monday);
+            if (IsChecked(chkTuesday))
+                Course.Days.Add(DayOfWeek.Tuesday);
+            if (IsChecked(chkWednesday))
+                Course.Days.Add(DayOfWeek.Wednesday);
+            if (IsChecked(chkThursday))
+                Course.Days.Add(DayOfWeek.Thursday);
+            if (IsChecked(chkFriday))
+                Course.Days.Add(DayOfWeek.Friday);
+            if (IsChecked(chkSaturday))
+                Course.Days.Add(DayOfWeek.Saturday);
 
-            else if(!leng(classroom))
+            string errors = IsValid();
+            if (!string.IsNullOrEmpty(errors))
             {
-                MessageBox.Show("The classroom must be 5 characters long exp.C2424", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show(errors, "Validation errors", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            else if (!Digits(classroom))
-            {
-                MessageBox.Show("The classroom must end with 4 digits exp.C2424", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
-            else if (!UpperCase(classroom))
-            {
-                MessageBox.Show("The classroom number must start with a uppercase letter", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
-            else if (!UpperCase(section))
-            {
-                MessageBox.Show("The section number must start with a uppercase letter", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
-            else if (!SDigit(section))
-            {
-                MessageBox.Show("The section number must end with 2 digits", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
-            else if (!len(section))
-            {
-                MessageBox.Show("The course must be 3 characters long exp.A01", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
-            else if (String.IsNullOrEmpty(txtCourse.Text))
-            {
-                MessageBox.Show("Please Enter a Course ID", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
-            else if (String.IsNullOrEmpty(txtSection.Text))
-            {
-                MessageBox.Show("Please Enter a Section", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
-
-            else if (String.IsNullOrEmpty(classroomChoice.Text))
-            {
-                MessageBox.Show("Please Enter a Classroom", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
-            else if (String.IsNullOrEmpty(startDatePicker.Text))
-            {
-                MessageBox.Show("Please Enter a Starting Date", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
-            else if (String.IsNullOrEmpty(endDatePicker.Text))
-            {
-                MessageBox.Show("Please Enter a Ending Date", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
-           
-       
-           
-
             else
             {
-                if (!IsChecked(chkMonday) && !IsChecked(chkTuesday) && !IsChecked(chkWednesday) && !IsChecked(chkThursday)
-                    && !IsChecked(chkFriday) && !IsChecked(chkSaturday))
+
+                if (editing)
                 {
-                    MessageBox.Show("Please Select at least one Day", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    //update in the DB
+                    Course.Update(Course);
                 }
                 else
                 {
-                    //the checkboxes aren't binded, so we must manually deal with it
-                    Course.Days.Clear();
-                    if (IsChecked(chkMonday))
-                        Course.Days.Add(DayOfWeek.Monday);
-                    if (IsChecked(chkTuesday))
-                        Course.Days.Add(DayOfWeek.Tuesday);
-                    if (IsChecked(chkWednesday))
-                        Course.Days.Add(DayOfWeek.Wednesday);
-                    if (IsChecked(chkThursday))
-                        Course.Days.Add(DayOfWeek.Thursday);
-                    if (IsChecked(chkFriday))
-                        Course.Days.Add(DayOfWeek.Friday);
-                    if (IsChecked(chkSaturday))
-                        Course.Days.Add(DayOfWeek.Saturday);
+                    MainWindow.Instance.lstCourses.Items.Add(Course);
+                    Course.Add(Course);
+                }
 
 
+                Close();
+            }
 
+        }
 
-                    if (editing)
-                    {
-                        //update in the DB
-                        Course.Update(Course);
-                    }
-                    else
-                    {
-                        MainWindow.Instance.lstCourses.Items.Add(Course);
-                        Course.Add(Course);
-                    }
+        private string IsValid()
+        {
+            string errors = "";
 
+            if (txtCourse.Text.Length != 8)
+            {
+                errors += "Course requires 8 characters eg. CISP1010\n";
+            }
+            if (txtSection.Text.Length != 3)
+            {
+                errors += "Section requires 3 characters eg. A01\n";
+            }
+            if (classroomChoice.Text == null || classroomChoice.Text.Length != 5)
+            {
+                errors += "Classroom requires 5 characters eg. C2427\n";
+            }
 
-                    Close();
+            if (GetDateTime(startTimePicker.Value) > GetDateTime(endTimePicker.Value))
+            {
+                errors += "Start time can not be before end time.\n";
+            }
+
+            TimeSpan timeValidation = new TimeSpan(0,30,0);
+            if (GetDateTime(endTimePicker.Value).Subtract(GetDateTime(startTimePicker.Value)) < timeValidation)
+            {
+                errors += "Class must be atleast 30 minutes long.\n";
+            }
+
+            if (!IsChecked(chkMonday) && !IsChecked(chkTuesday) && !IsChecked(chkWednesday) && !IsChecked(chkThursday)
+                && !IsChecked(chkFriday) && !IsChecked(chkSaturday))
+            {
+                errors += "Please check at least one Day\n";
+            }
+
+            if (Course.StartDate > Course.EndDate || 
+                GetDateTime(startDatePicker.SelectedDate) == DateTime.MinValue || 
+                GetDateTime(endDatePicker.SelectedDate) == DateTime.MinValue)
+            {
+                errors += "Please check your start and end dates";
+            }
+
+            if (IsChecked(chkEnableTardy))
+            {
+                if (GetTimeSpan(gracePeriodTS.Value) == TimeSpan.Zero)
+                {
+                    errors += "Grace period can not be zero if tardy mode is enabled.\n";
                 }
             }
+            return errors;
         }
 
         private void chkEnableTardy_Click(object sender, RoutedEventArgs e)
@@ -271,89 +262,129 @@ namespace DrKCrazyAttendance_Instructor
 
         private void control_Error(object sender, ValidationErrorEventArgs e)
         {
-            
+
         }
 
 
-        public static bool length(String course)
+        private void txtCourse_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (course.Length == 8)
-            {
+            TextBox box = (TextBox)sender;
+            //four characters and 4 digits
+            int length = box.Text.Length;
 
-            }
-            else
+            StringBuilder sb = new StringBuilder();
+
+            if (length > 0)
             {
-                return false;
+                if (length <= 4)
+                {
+                    if (!char.IsLetter(box.Text[length - 1]))
+                    {
+                        box.Text = box.Text.Substring(0, length - 1);
+                        e.Handled = true;
+                    }
+                    else
+                    {
+                        box.Text = box.Text.ToUpper();
+                        e.Handled = true;
+                    }
+                }
+                else if (length <= 8)
+                {
+                    if (!char.IsDigit(box.Text[length - 1]))
+                    {
+                        box.Text = box.Text.Substring(0, length - 1);
+                        e.Handled = true;
+                    }
+                }
+                else
+                {
+                    box.Text = box.Text.Substring(0, length - 1);
+                    e.Handled = true;
+                }
             }
-            return true;
+            box.CaretIndex = box.Text.Length;
         }
 
-             public static bool leng(String classroom)
+        private void txtSection_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (classroom.Length == 5)
-            {
-                
-            }
-            else
-            {
-                return false;
-            }
-            return true;
+            TextBox box = (TextBox)sender;
+            //four characters and 4 digits
+            int length = box.Text.Length;
 
+            StringBuilder sb = new StringBuilder();
+
+            if (length > 0)
+            {
+                if (length <= 1)
+                {
+                    if (!char.IsLetter(box.Text[length - 1]))
+                    {
+                        box.Text = box.Text.Substring(0, length - 1);
+                        e.Handled = true;
+                    }
+                    else
+                    {
+                        box.Text = box.Text.ToUpper();
+                        e.Handled = true;
+                    }
+                }
+                else if (length <= 3)
+                {
+                    if (!char.IsDigit(box.Text[length - 1]))
+                    {
+                        box.Text = box.Text.Substring(0, length - 1);
+                        e.Handled = true;
+                    }
+                }
+                else
+                {
+                    box.Text = box.Text.Substring(0, length - 1);
+                    e.Handled = true;
+                }
+            }
+            box.CaretIndex = box.Text.Length;
         }
 
-             public static bool len(String section)
-             {
-                 if (section.Length == 3)
-                 {
+        private void classroomChoice_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox box = (ComboBox)sender;
+            //1 letter and 4 digits
+            int length = box.Text.Length;
 
-                 }
-                 else
-                 {
-                     return false;
-                 }
-                 return true;
+            StringBuilder sb = new StringBuilder();
 
-             }
-
-             public static bool UpperCase(String classroom)
-             {
-
-                     if (Char.IsUpper(classroom[0]))
-                     {
-                         return true;
-                     }
-                 return false;
-             }
-
-             public static bool Digits(String classroom)
-             {
-
-                     if (Char.IsDigit(classroom[1+3]))
-                     {
-                         return true;
-                     }
-                 return false;
-             }
-
-             public static Boolean upperCases(String course)
-             {
-
-                 if (Char.IsUpper(course[0+3]))
-                 {
-                     return true;
-                 }
-                 return false;
-             }
-
-             public static bool SDigit(String section)
-             {
-
-                 if (Char.IsDigit(section[0 + 1]))
-                 {
-                     return true;
-                 }
-                 return false;
-             }
+            if (length > 0)
+            {
+                if (length <= 1)
+                {
+                    if (!char.IsLetter(box.Text[length - 1]))
+                    {
+                        box.Text = box.Text.Substring(0, length - 1);
+                        e.Handled = true;
+                    }
+                    else
+                    {
+                        box.Text = box.Text.ToUpper();
+                        e.Handled = true;
+                    }
+                }
+                else if (length <= 5)
+                {
+                    if (!char.IsDigit(box.Text[length - 1]))
+                    {
+                        box.Text = box.Text.Substring(0, length - 1);
+                        e.Handled = true;
+                    }
+                }
+                else
+                {
+                    box.Text = box.Text.Substring(0, length - 1);
+                    e.Handled = true;
+                }
+            }
+            TextBox txt = box.Template.FindName("PART_EditableTextBox", box) as TextBox;
+            txt.CaretIndex = box.Text.Length;
+        }
     }
 }

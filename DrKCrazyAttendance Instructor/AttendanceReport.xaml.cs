@@ -16,6 +16,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace DrKCrazyAttendance_Instructor
 {
@@ -93,10 +94,11 @@ namespace DrKCrazyAttendance_Instructor
             }
 
         }
-       
+
         private void btnPrint_Click(object sender, RoutedEventArgs e)
         {
-            
+            PrintDialog dialog = new PrintDialog();
+            dialog.PrintVisual(this.attendanceDataGrid, "");
         }
 
         private void menuClose_Click(object sender, RoutedEventArgs e)
@@ -108,7 +110,8 @@ namespace DrKCrazyAttendance_Instructor
         private void Delete_Button_Click(object sender, RoutedEventArgs e)
             
             //Attendance obj = ((FrameworkElement)sender).DataContext as Attendance;
-             {var  result = MessageBox.Show("Are you sure you want to delete this student?", "Validation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+             {
+            var  result = MessageBox.Show("Are you sure you want to delete this student?", "Validation", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if ( result == MessageBoxResult.Yes && attendanceDataGrid.SelectedItem != null)
             {
                 attendanceDataGrid.Items.Remove(attendanceDataGrid.SelectedItem);
