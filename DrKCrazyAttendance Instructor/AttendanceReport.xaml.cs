@@ -107,8 +107,13 @@ namespace DrKCrazyAttendance_Instructor
         //datagrid delete button event
         private void Delete_Button_Click(object sender, RoutedEventArgs e)
         {
-            Attendance obj = ((FrameworkElement)sender).DataContext as Attendance;
-            if (true) { }
+            Button btn = sender as Button;
+            AttendanceViewModel avm = btn.DataContext as AttendanceViewModel;
+
+            Attendance.Remove(avm.Attendances);
+            //remove this from the datagrid
+            attendanceDataGrid.Items.Remove(avm);
+
         }
 
         //Save this object into a CSV file

@@ -186,6 +186,7 @@ namespace DrKCrazyAttendance
 
         /// <summary>
         /// Executes multiple queries
+        /// Parameters must be symmetric.
         /// </summary>
         /// <param name="query">Sql query</param>
         /// <param name="parameters">Query parameters</param>
@@ -213,13 +214,20 @@ namespace DrKCrazyAttendance
                     {
                         cmd.Prepare();
                         cmd.Transaction = tr;
+
+                        //add the parameters first thing
+                        foreach (string key in parameters.First().Keys)
+                        {
+                            cmd.Parameters.AddWithValue(key, null);
+                        }
                         //we use a list of dictionarys to allow different sets of parameters. 
                         //Such in the event we are given the job of updating several queries in one time.
                         foreach (Dictionary<string, Object> param in parameters)
                         {
                             foreach (string key in param.Keys)
                             {
-                                cmd.Parameters.AddWithValue(key, param[key]);
+                                //change the values to match what we were given
+                                cmd.Parameters[key].Value = param[key];
                             }
                             cmd.ExecuteNonQuery();
                         }

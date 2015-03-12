@@ -19,7 +19,7 @@
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Click="Delete_Button_Click"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
+                            <Button Click="Delete_Button_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
                                     ToolTip="Permanently remove attendance record">
                                 <Image Source="images/delete.png" Width="12" Height="12" />
                             </Button>
