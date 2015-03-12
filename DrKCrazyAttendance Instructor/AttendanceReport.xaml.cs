@@ -2,20 +2,13 @@
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace DrKCrazyAttendance_Instructor
 {
@@ -96,7 +89,8 @@ namespace DrKCrazyAttendance_Instructor
        
         private void btnPrint_Click(object sender, RoutedEventArgs e)
         {
-            
+            PrintDialog dialog = new PrintDialog();
+            dialog.PrintVisual(this.attendanceDataGrid, "");
         }
 
         private void menuClose_Click(object sender, RoutedEventArgs e)
@@ -109,11 +103,14 @@ namespace DrKCrazyAttendance_Instructor
         {
             Button btn = sender as Button;
             AttendanceViewModel avm = btn.DataContext as AttendanceViewModel;
-
-            Attendance.Remove(avm.Attendances);
-            //remove this from the datagrid
-            attendanceDataGrid.Items.Remove(avm);
-
+            var  result = MessageBox.Show("Are you sure you want to delete this student's attendance record?", "Are you sure?", 
+                MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                Attendance.Remove(avm.Attendances);
+                //remove this from the datagrid
+                attendanceDataGrid.Items.Remove(avm);
+            }
         }
 
         //Save this object into a CSV file
@@ -171,6 +168,6 @@ namespace DrKCrazyAttendance_Instructor
             }
 
         }
-       
+
     }
 }

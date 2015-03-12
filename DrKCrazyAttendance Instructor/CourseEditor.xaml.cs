@@ -1,4 +1,5 @@
-﻿using DrKCrazyAttendance;
+﻿
+using DrKCrazyAttendance;
 using DrKCrazyAttendance.Properties;
 using System;
 using System.Collections.Generic;
@@ -171,7 +172,7 @@ namespace DrKCrazyAttendance_Instructor
                 Course.Days.Add(DayOfWeek.Friday);
             if (IsChecked(chkSaturday))
                 Course.Days.Add(DayOfWeek.Saturday);
-
+            
             string errors = IsValid();
             if (!string.IsNullOrEmpty(errors))
             {
@@ -181,24 +182,24 @@ namespace DrKCrazyAttendance_Instructor
             {
 
                 if (editing)
-                {
+            {
                     //update in the DB
                     Course.Update(Course);
-                }
+            }
                 else
-                {
+            {
                     MainWindow.Instance.lstCourses.Items.Add(Course);
                     Course.Add(Course);
-                }
+            }
 
 
                 Close();
             }
 
-        }
+            }
 
         private string IsValid()
-        {
+            {
             string errors = "";
 
             if (txtCourse.Text.Length != 8)
@@ -224,26 +225,27 @@ namespace DrKCrazyAttendance_Instructor
             {
                 errors += "Class must be atleast 30 minutes long.\n";
             }
-
-            if (!IsChecked(chkMonday) && !IsChecked(chkTuesday) && !IsChecked(chkWednesday) && !IsChecked(chkThursday)
-                && !IsChecked(chkFriday) && !IsChecked(chkSaturday))
-            {
+           
+                if (!IsChecked(chkMonday) && !IsChecked(chkTuesday) && !IsChecked(chkWednesday) && !IsChecked(chkThursday)
+                    && !IsChecked(chkFriday) && !IsChecked(chkSaturday))
+                {
                 errors += "Please check at least one Day\n";
-            }
+                }
 
             if (Course.StartDate > Course.EndDate || 
                 GetDateTime(startDatePicker.SelectedDate) == DateTime.MinValue || 
                 GetDateTime(endDatePicker.SelectedDate) == DateTime.MinValue)
-            {
+                {
                 errors += "Please check your start and end dates";
             }
 
             if (IsChecked(chkEnableTardy))
-            {
+                    {
                 if (GetTimeSpan(gracePeriodTS.Value) == TimeSpan.Zero)
-                {
+                    {
                     errors += "Grace period can not be zero if tardy mode is enabled.\n";
                 }
+            return errors;
             }
             return errors;
         }
@@ -261,7 +263,7 @@ namespace DrKCrazyAttendance_Instructor
 
         private void control_Error(object sender, ValidationErrorEventArgs e)
         {
-
+            
         }
 
 
@@ -271,8 +273,6 @@ namespace DrKCrazyAttendance_Instructor
             //four characters and 4 digits
             int length = box.Text.Length;
 
-            StringBuilder sb = new StringBuilder();
-
             if (length > 0)
             {
                 if (length <= 4)
@@ -281,34 +281,73 @@ namespace DrKCrazyAttendance_Instructor
                     {
                         box.Text = box.Text.Substring(0, length - 1);
                         e.Handled = true;
-                    }
-                    else
-                    {
+            }
+            else
+            {
                         box.Text = box.Text.ToUpper();
                         e.Handled = true;
-                    }
-                }
+            }
+        }
                 else if (length <= 8)
+        {
+                    if (!char.IsDigit(box.Text[length - 1]))
+            {
+                        box.Text = box.Text.Substring(0, length - 1);
+                        e.Handled = true;
+            }
+                }
+            else
+            {
+                    box.Text = box.Text.Substring(0, length - 1);
+                    e.Handled = true;
+            }
+        }
+            box.CaretIndex = box.Text.Length;
+        }
+
+        private void txtSection_TextChanged(object sender, TextChangedEventArgs e)
+             {
+            TextBox box = (TextBox)sender;
+            //four characters and 4 digits
+            int length = box.Text.Length;
+
+
+            if (length > 0)
+            {
+                if (length <= 1)
+                {
+                    if (!char.IsLetter(box.Text[length - 1]))
+                    {
+                        box.Text = box.Text.Substring(0, length - 1);
+                        e.Handled = true;
+                 }
+                 else
+                 {
+                        box.Text = box.Text.ToUpper();
+                        e.Handled = true;
+                 }
+             }
+                else if (length <= 3)
                 {
                     if (!char.IsDigit(box.Text[length - 1]))
-                    {
+             {
                         box.Text = box.Text.Substring(0, length - 1);
                         e.Handled = true;
                     }
                 }
                 else
-                {
+                     {
                     box.Text = box.Text.Substring(0, length - 1);
                     e.Handled = true;
                 }
-            }
+                     }
             box.CaretIndex = box.Text.Length;
-        }
+             }
 
-        private void txtSection_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            TextBox box = (TextBox)sender;
-            //four characters and 4 digits
+        private void classroomChoice_SelectionChanged(object sender, SelectionChangedEventArgs e)
+             {
+            ComboBox box = (ComboBox)sender;
+            //1 letter and 4 digits
             int length = box.Text.Length;
 
             StringBuilder sb = new StringBuilder();
@@ -323,67 +362,27 @@ namespace DrKCrazyAttendance_Instructor
                         e.Handled = true;
                     }
                     else
-                    {
+                     {
                         box.Text = box.Text.ToUpper();
                         e.Handled = true;
-                    }
-                }
-                else if (length <= 3)
-                {
-                    if (!char.IsDigit(box.Text[length - 1]))
-                    {
-                        box.Text = box.Text.Substring(0, length - 1);
-                        e.Handled = true;
-                    }
-                }
-                else
-                {
-                    box.Text = box.Text.Substring(0, length - 1);
-                    e.Handled = true;
-                }
-            }
-            box.CaretIndex = box.Text.Length;
-        }
-
-        private void classroomChoice_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ComboBox box = (ComboBox)sender;
-            //1 letter and 4 digits
-            /*int length = box.Text.Length;
-
-            StringBuilder sb = new StringBuilder();
-
-            if (length > 0)
-            {
-                if (length <= 1)
-                {
-                    if (!char.IsLetter(box.Text[length - 1]))
-                    {
-                        box.Text = box.Text.Substring(0, length - 1);
-                        e.Handled = true;
-                    }
-                    else
-                    {
-                        box.Text = box.Text.ToUpper();
-                        e.Handled = true;
-                    }
-                }
+                     }
+             }
                 else if (length <= 5)
-                {
+             {
                     if (!char.IsDigit(box.Text[length - 1]))
-                    {
+                 {
                         box.Text = box.Text.Substring(0, length - 1);
                         e.Handled = true;
-                    }
-                }
+                 }
+             }
                 else
-                {
+                 {
                     box.Text = box.Text.Substring(0, length - 1);
                     e.Handled = true;
                 }
-            }
+                 }
             TextBox txt = box.Template.FindName("PART_EditableTextBox", box) as TextBox;
-            txt.CaretIndex = box.Text.Length;*/
-        }
+            txt.CaretIndex = box.Text.Length;
+             }
     }
 }

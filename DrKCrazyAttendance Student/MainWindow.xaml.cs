@@ -61,7 +61,7 @@ namespace DrKCrazyAttendance_Student
                 lblInstructor.Content = Course.Instructor;
             }
             if (Student != null)
-            {
+        {
                 lblStudentId.Content = Student.Id;
                 lblUsername.Content = Student.Username;
             }
@@ -84,11 +84,11 @@ namespace DrKCrazyAttendance_Student
                     }
                     else
                     {
-                        MessageBox.Show("Successfully changed your id");
-                    }
+                    MessageBox.Show("Successfully changed your id");
                 }
+            }
                 else
-                {
+            {
                     MessageBox.Show("Your id did not change.");
                 }
             }
