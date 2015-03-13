@@ -110,10 +110,10 @@ namespace DrKCrazyAttendance_Instructor
             chkSaturday.IsChecked = originalCourse.Days.Contains(DayOfWeek.Saturday);
             txtCourse.Text = originalCourse.CourseName;
             txtSection.Text = originalCourse.Section;
-            startDatePicker.SelectedDate = (DateTime?)originalCourse.StartDate;
-            endDatePicker.SelectedDate = (DateTime?)originalCourse.EndDate;
-            startTimePicker.Value = (DateTime?)originalCourse.StartTime;
-            endTimePicker.Value = (DateTime?)originalCourse.EndTime;
+            startDatePicker.SelectedDate = originalCourse.StartDate;
+            endDatePicker.SelectedDate = originalCourse.EndDate;
+            startTimePicker.Value = originalCourse.StartTime;
+            endTimePicker.Value = originalCourse.EndTime;
 
             classroomChoice.SelectedIndex = classroomChoice.Items.IndexOf(originalCourse.Classroom);
 
@@ -154,24 +154,6 @@ namespace DrKCrazyAttendance_Instructor
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            String course = txtCourse.Text;
-            String classroom = classroomChoice.Text;
-            String section = txtSection.Text;
-
-            //the checkboxes aren't binded, so we must manually deal with it
-            Course.Days.Clear();
-            if (IsChecked(chkMonday))
-                Course.Days.Add(DayOfWeek.Monday);
-            if (IsChecked(chkTuesday))
-                Course.Days.Add(DayOfWeek.Tuesday);
-            if (IsChecked(chkWednesday))
-                Course.Days.Add(DayOfWeek.Wednesday);
-            if (IsChecked(chkThursday))
-                Course.Days.Add(DayOfWeek.Thursday);
-            if (IsChecked(chkFriday))
-                Course.Days.Add(DayOfWeek.Friday);
-            if (IsChecked(chkSaturday))
-                Course.Days.Add(DayOfWeek.Saturday);
 
             string errors = IsValid();
             if (!string.IsNullOrEmpty(errors))
@@ -180,6 +162,20 @@ namespace DrKCrazyAttendance_Instructor
             }
             else
             {
+                //the checkboxes aren't binded, so we must manually deal with it
+                Course.Days.Clear();
+                if (IsChecked(chkMonday))
+                    Course.Days.Add(DayOfWeek.Monday);
+                if (IsChecked(chkTuesday))
+                    Course.Days.Add(DayOfWeek.Tuesday);
+                if (IsChecked(chkWednesday))
+                    Course.Days.Add(DayOfWeek.Wednesday);
+                if (IsChecked(chkThursday))
+                    Course.Days.Add(DayOfWeek.Thursday);
+                if (IsChecked(chkFriday))
+                    Course.Days.Add(DayOfWeek.Friday);
+                if (IsChecked(chkSaturday))
+                    Course.Days.Add(DayOfWeek.Saturday);
 
                 if (editing)
                 {
@@ -202,28 +198,9 @@ namespace DrKCrazyAttendance_Instructor
         {
             string errors = "";
 
-            if (txtCourse.Text.Length != 8)
+            if (!Course.IsValid)
             {
-                errors += "Course requires 8 characters eg. CISP1010\n";
-            }
-            if (txtSection.Text.Length != 3)
-            {
-                errors += "Section requires 3 characters eg. A01\n";
-            }
-            if (classroomChoice.Text == null || classroomChoice.Text.Length != 5)
-            {
-                errors += "Classroom requires 5 characters eg. C2427\n";
-            }
-
-            if (GetDateTime(startTimePicker.Value) > GetDateTime(endTimePicker.Value))
-            {
-                errors += "Start time can not be after end time.\n";
-            }
-
-            TimeSpan timeValidation = new TimeSpan(0, 30, 0);
-            if (GetDateTime(endTimePicker.Value).Subtract(GetDateTime(startTimePicker.Value)) < timeValidation)
-            {
-                errors += "Class must be atleast 30 minutes long.\n";
+                errors += "Please correct the errors before continuing.\n";
             }
 
             if (!IsChecked(chkMonday) && !IsChecked(chkTuesday) && !IsChecked(chkWednesday) && !IsChecked(chkThursday)
@@ -232,21 +209,6 @@ namespace DrKCrazyAttendance_Instructor
                 errors += "Please check at least one Day\n";
             }
 
-            if (Course.StartDate > Course.EndDate ||
-                GetDateTime(startDatePicker.SelectedDate) == DateTime.MinValue ||
-                GetDateTime(endDatePicker.SelectedDate) == DateTime.MinValue)
-            {
-                errors += "Start date can not be after end date.";
-            }
-
-            if (IsChecked(chkEnableTardy))
-            {
-                if (GetTimeSpan(gracePeriodTS.Value) == TimeSpan.Zero)
-                {
-                    errors += "Grace period can not be zero if tardy mode is enabled.\n";
-                }
-                return errors;
-            }
             return errors;
         }
 

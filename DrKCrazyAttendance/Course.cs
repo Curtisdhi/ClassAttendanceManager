@@ -9,8 +9,10 @@ using System.Threading.Tasks;
 
 namespace DrKCrazyAttendance
 {
-    public class Course : IDataErrorInfo
+    public class Course : IDataErrorInfo, INotifyPropertyChanged
     {
+        private Dictionary<string, bool> propertiesValid = new Dictionary<string, bool>();
+
         public Course()
         {
             this.Id = 0;
@@ -64,6 +66,15 @@ namespace DrKCrazyAttendance
         }
 
         #region Properties
+        public bool IsValid
+        {
+            get
+            {
+                //if if this doesn't contain true, the object isn't valid
+                return !propertiesValid.ContainsValue(true);
+            }
+        }
+
         public long Id
         {
             get;
@@ -454,6 +465,7 @@ namespace DrKCrazyAttendance
         {
             get
             {
+                TimeSpan timeValidation = new TimeSpan(0, 30, 0);
                 string result = "";
                 switch (propertyName) { 
                     case "Classroom":
@@ -481,32 +493,50 @@ namespace DrKCrazyAttendance
                         }
                         else if (StartDate > EndDate)
                         {
-                            result = "Start date can not be after end date.";
+                            result = "Start date can't be after end date.";
                         }
+                        RaisePropertyChanged("EndDate");
+                        eventsInAction[propertyName] = false;
                         break;
                     case "EndDate":
                         if (EndDate == DateTime.MinValue)
                         {
                             result = "Required";
                         }
+                        else if (StartDate > EndDate)
+                        {
+                            result = "\t";//"End date can't be before start date.";
+                        }
+                        //validate start date
+                        RaisePropertyChanged("StartDate");
+                        eventsInAction[propertyName] = false;
                         break;
                     case "StartTime":
-                        if (StartTime == DateTime.MinValue)
-                        {
-                            result = "Required";
-                        }
-                        else if (StartTime > EndTime)
+                        if (StartTime > EndTime)
                         {
                             result = "Start time can not be after end time.";
                         }
-                        TimeSpan timeValidation = new TimeSpan(0, 30, 0);
-                        if ((EndTime - StartTime) < timeValidation)
+                        else if ((EndTime - StartTime) < timeValidation)
                         {
-                            result = "Class must be atleast 30 minutes long.\n";
+                            result = "Class must be atleast 30 minutes long.";
                         }
+
+                        RaisePropertyChanged("EndTime");
+                        eventsInAction[propertyName] = false;
+                        
                         break;
                     case "EndTime":
-
+                        if (StartTime > EndTime)
+                        {
+                            result = "\t";//"End time can't come before start time.";
+                        }
+                        else if ((EndTime - StartTime) < timeValidation)
+                        {
+                            result = "\t";//"Class must be atleast 30 minutes long.";
+                        }
+                        //validate start time
+                        RaisePropertyChanged("StartTime");
+                        eventsInAction[propertyName] = false;
                         break;
                     case "GracePeriod":
                         if (LogTardy && GracePeriod == TimeSpan.MinValue)
@@ -514,11 +544,51 @@ namespace DrKCrazyAttendance
                             result = "Required";
                         }
                         break;
+                    case "LogTardy":
+                        //validate grace period
+                        RaisePropertyChanged("GracePeriod");
+                        break;
                 }
+
+                propertiesValid[propertyName] = string.IsNullOrEmpty(result);
 
                 return result;
             }
         }
+        #endregion
+
+        #region INotifyPropertyChanged Members
+        private Dictionary<string, bool> eventsInAction = new Dictionary<string, bool>();
+
+        private void RaisePropertyChanged(string propName)
+        {
+            if (propertyChangedDelegate != null) 
+            {
+                if (!eventsInAction.ContainsKey(propName) || !eventsInAction[propName]) 
+                {
+                    eventsInAction[propName] = true;
+                    propertyChangedDelegate(this, new PropertyChangedEventArgs(propName));
+                }
+                else {
+                    eventsInAction[propName] = false;
+                }
+            }
+        }
+
+        private PropertyChangedEventHandler propertyChangedDelegate;
+
+        event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
+        {
+            add
+            {
+                propertyChangedDelegate = (PropertyChangedEventHandler)Delegate.Combine(propertyChangedDelegate, value);
+            }
+            remove
+            {
+                propertyChangedDelegate = (PropertyChangedEventHandler)Delegate.Remove(propertyChangedDelegate, value);
+            }
+        }
+
         #endregion
     }
 }
