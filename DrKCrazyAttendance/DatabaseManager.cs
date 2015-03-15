@@ -97,7 +97,10 @@ namespace DrKCrazyAttendance
                 }
                 rdr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             }
-
+            catch (MySqlException)
+            {
+                throw;
+            }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
@@ -110,12 +113,19 @@ namespace DrKCrazyAttendance
         {
             DataTable table = new DataTable();
             MySqlDataReader rdr = null;
-            using (rdr = GetDataReaderFromQuery(query, parameters))
+            try
             {
-                if (rdr != null)
+                using (rdr = GetDataReaderFromQuery(query, parameters))
                 {
-                    table.Load(rdr);
+                    if (rdr != null)
+                    {
+                        table.Load(rdr);
+                    }
                 }
+            }
+            catch (MySqlException)
+            {
+                throw;
             }
             
             return table;

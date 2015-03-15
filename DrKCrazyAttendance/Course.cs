@@ -192,6 +192,11 @@ namespace DrKCrazyAttendance
         #endregion
 
         #region Methods
+        public bool IsTardy(DateTime now) {
+            //if now is greater than class starting time plus graceperiod, then student is tardy.
+            return now.TimeOfDay > (StartTime + GracePeriod).TimeOfDay;
+        }
+
         //gets every datetime with in the range of start and end dates
         public DateTime[] GetClassMeetings()
         {
@@ -203,6 +208,8 @@ namespace DrKCrazyAttendance
             return dates;
         }
         #endregion
+
+        
 
         public static List<DayOfWeek> GetDaysFromFriendly(string fDays)
         {

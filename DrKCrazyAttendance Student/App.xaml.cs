@@ -29,12 +29,15 @@ namespace DrKCrazyAttendance_Student
             string userName = Environment.UserName;
 
             DateTime now = DateTime.Now;
-            Course course = Course.GetCoursesByTime(Settings.Default.Classroom, now);
+            Course course = null;
             Student student = null;
 
-            //getStudent may throw a sql exception
             try
             {
+                //may throw a sql exception
+                course = Course.GetCoursesByTime(Settings.Default.Classroom, now);
+
+                //may throw a sql exception
                 student = Student.GetStudent(userName);
 
                 if (student == null)
@@ -60,7 +63,12 @@ namespace DrKCrazyAttendance_Student
                 MessageBox.Show(ex.Message, "Server Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
-            if (student != null && RegisterAttendance(course, student, now))
+            if (course == null)
+            {
+                MessageBox.Show("No course is not found.", "Course Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+           
+            if (student != null && course != null && RegisterAttendance(course, student, now))
             {
                 ((MainWindow)MainWindow).Course = course;
                 ((MainWindow)MainWindow).Student = student;
@@ -77,24 +85,16 @@ namespace DrKCrazyAttendance_Student
         private bool RegisterAttendance(Course course, Student student, DateTime now)
         {
             bool success = false;
-            if (course == null)
+            //register attendance
+            Attendance attendance = new Attendance(course, student, "127.0.0.1", now, course.IsTardy(now));
+            success = !Attendance.HasAttended(attendance);
+            if (success)
             {
-                MessageBox.Show("No course is available.");
+                Attendance.Add(attendance);
             }
             else
             {
-                //register attendance
-                Attendance attendance = new Attendance(course, student, "127.0.0.1", now, false);
-                success = !Attendance.HasAttended(attendance);
-                if (success)
-                {
-                    Attendance.Add(attendance);
-                }
-                else
-                {
-                    MessageBox.Show("You have already been counted for today.");
-                }
-
+                MessageBox.Show("You have already been counted for today.");
             }
 
             return success;

@@ -69,11 +69,19 @@ namespace DrKCrazyAttendance
                                 ON a.courseId = @courseID";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("@courseId", courseId);
-            MySqlDataReader rdr = DatabaseManager.GetDataReaderFromQuery(query, parameters);
-           
-            using (rdr)
+
+            try
             {
-                students = GetStudents(rdr);
+                MySqlDataReader rdr = DatabaseManager.GetDataReaderFromQuery(query, parameters);
+
+                using (rdr)
+                {
+                    students = GetStudents(rdr);
+                }
+            }
+            catch (MySqlException)
+            {
+                throw;
             }
             return students;
         }
@@ -84,15 +92,23 @@ namespace DrKCrazyAttendance
             string query = "SELECT * FROM Students WHERE username=@username";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("@username", username);
-            MySqlDataReader rdr = DatabaseManager.GetDataReaderFromQuery(query, parameters);
-           
-            using (rdr)
+
+            try
             {
-                List<Student> students = GetStudents(rdr);
-                if (students.Count > 0)
+                MySqlDataReader rdr = DatabaseManager.GetDataReaderFromQuery(query, parameters);
+
+                using (rdr)
                 {
-                    student = students[0];
+                    List<Student> students = GetStudents(rdr);
+                    if (students.Count > 0)
+                    {
+                        student = students[0];
+                    }
                 }
+            }
+            catch (MySqlException)
+            {
+                throw;
             }
            
             return student;
@@ -104,15 +120,22 @@ namespace DrKCrazyAttendance
             string query = "SELECT * FROM Students WHERE id=@id";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("@id", id);
-            MySqlDataReader rdr = DatabaseManager.GetDataReaderFromQuery(query, parameters);
-           
-            using (rdr)
+            try
             {
-                List<Student> students = GetStudents(rdr);
-                if (students.Count > 0)
+                MySqlDataReader rdr = DatabaseManager.GetDataReaderFromQuery(query, parameters);
+
+                using (rdr)
                 {
-                    student = students[0];
+                    List<Student> students = GetStudents(rdr);
+                    if (students.Count > 0)
+                    {
+                        student = students[0];
+                    }
                 }
+            }
+            catch (MySqlException)
+            {
+                throw;
             }
            
             return student;
@@ -121,10 +144,13 @@ namespace DrKCrazyAttendance
         public static List<Student> GetStudents(MySqlDataReader rdr)
         {
             List<Student> students = new List<Student>();
-            while (rdr.Read())
+            if (rdr != null)
             {
-                Student student = new Student(rdr.GetInt32(0), rdr.GetString(1));
-                students.Add(student);
+                while (rdr.Read())
+                {
+                    Student student = new Student(rdr.GetInt32(0), rdr.GetString(1));
+                    students.Add(student);
+                }
             }
             return students;
         }
