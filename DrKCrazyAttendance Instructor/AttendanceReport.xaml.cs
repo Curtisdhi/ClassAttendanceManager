@@ -97,8 +97,18 @@ namespace DrKCrazyAttendance_Instructor
 
         private void btnPrint_Click(object sender, RoutedEventArgs e)
         {
+            StackPanel page = new StackPanel();
             PrintDialog dialog = new PrintDialog();
-            dialog.PrintVisual(this.attendanceDataGrid, "");
+
+bool? result = dialog.ShowDialog();
+if (result.HasValue && result.Value)
+{
+    System.Windows.Size pageSize = new System.Windows.Size { Height = dialog.PrintableAreaHeight, Width = dialog.PrintableAreaWidth };
+    page.Measure(pageSize);
+    page.UpdateLayout();
+    dialog.PrintVisual(this.attendanceDataGrid, "");
+}
+           
         }
 
         private void menuClose_Click(object sender, RoutedEventArgs e)
