@@ -71,7 +71,7 @@ namespace DrKCrazyAttendance_Instructor
 
         public void LoadCourses()
         {
-            DatabaseManager.IsConnectable = true;
+            //DatabaseManager.IsConnectable = true;
 
             lstCourses.Items.Clear();
             List<Course> courses = Course.GetCoursesByInstructor(Settings.Default.Instructor);

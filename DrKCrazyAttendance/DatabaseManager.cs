@@ -5,7 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using DrKCrazyAttendance.Properties;
-using System.Data; 
+using System.Data;
+using DrKCrazyAttendance.Util; 
 
 namespace DrKCrazyAttendance
 {
@@ -18,7 +19,7 @@ namespace DrKCrazyAttendance
         public static bool IsConnectable
         {
             get;
-            set;
+            private set;
         }
 
         public static MySqlConnection Connect()
@@ -26,10 +27,10 @@ namespace DrKCrazyAttendance
             MySqlConnection connection = null;
             if (IsConnectable)
             {
-                string serverAddr = Settings.Default.SqlServerAddr;
-                string database = Settings.Default.SqlDatabase;
-                string username = Settings.Default.SqlUsername;
-                string password = Settings.Default.SqlPassword;
+                string serverAddr = SecurityCrypt.AES_Decrypt(Settings.Default.SqlServerAddr);
+                string database = SecurityCrypt.AES_Decrypt(Settings.Default.SqlDatabase);
+                string username = SecurityCrypt.AES_Decrypt(Settings.Default.SqlUsername);
+                string password = SecurityCrypt.AES_Decrypt(Settings.Default.SqlPassword);
 
                 /* 
                  * Requires "Convert Zero Datetime=True" to properly convert Date and Time sql types to .net Datetime
@@ -42,6 +43,26 @@ namespace DrKCrazyAttendance
 
             }
             return connection;
+        }
+
+        public static bool TestConnection()
+        {
+            MySqlConnection conn;
+            using (conn = DatabaseManager.Connect())
+            {
+                try
+                {
+                    conn.Open();
+                    IsConnectable = true;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                    IsConnectable = false;
+                }
+            }
+            
+            return IsConnectable;
         }
 
         public static MySqlDataReader GetDataReaderFromQuery(string query)
@@ -61,10 +82,12 @@ namespace DrKCrazyAttendance
                 try
                 {
                     conn.Open();
+                    IsConnectable = true;
                 }
                 catch (MySqlException)
                 {
                     IsConnectable = false;
+                    throw;
                 }
                 cmd = new MySqlCommand(query, conn);
                 cmd.Prepare();
@@ -117,6 +140,7 @@ namespace DrKCrazyAttendance
                     try
                     {
                         conn.Open();
+                        IsConnectable = true;
                     }
                     catch (MySqlException)
                     {
@@ -135,6 +159,7 @@ namespace DrKCrazyAttendance
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex);
+                    throw;
                 }
             }
 
@@ -159,6 +184,7 @@ namespace DrKCrazyAttendance
                     try
                     {
                         conn.Open();
+                        IsConnectable = true;
                     }
                     catch (MySqlException)
                     {
@@ -179,6 +205,7 @@ namespace DrKCrazyAttendance
                 catch (MySqlException ex)
                 {
                     Console.WriteLine("Error: {0}", ex.ToString());
+                    throw;
                 }
             }
             return id;
@@ -204,6 +231,7 @@ namespace DrKCrazyAttendance
                     try
                     {
                         conn.Open();
+                        IsConnectable = true;
                     }
                     catch (MySqlException)
                     {
@@ -248,6 +276,7 @@ namespace DrKCrazyAttendance
                     }
 
                     Console.WriteLine("Error: {0}", ex.ToString());
+                    throw;
                 }
             }
             return success;

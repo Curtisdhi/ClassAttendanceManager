@@ -1,4 +1,5 @@
 ﻿using DrKCrazyAttendance.Properties;
+using DrKCrazyAttendance.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -37,6 +38,7 @@ namespace DrKCrazyAttendance_Instructor
         {
             if (!locked)
             {
+                Settings.Default.Encrypted = false;
                 Settings.Default.Instructor = txtInstructor.Text;
                 Settings.Default.SqlServerAddr = txtDbServerAddr.Text;
                 Settings.Default.SqlDatabase = txtDatabase.Text;
@@ -45,8 +47,6 @@ namespace DrKCrazyAttendance_Instructor
                     Settings.Default.SqlPassword = txtDbPassword.Password;
                 
                 Settings.Default.Save();
-                //decrypt settings
-                Settings.Default.Reload();
 
                 MainWindow.Instance.LoadCourses();
                 MainWindow.Instance.Show();
@@ -69,9 +69,9 @@ namespace DrKCrazyAttendance_Instructor
                 txtDbUsername.IsEnabled = true;
                 txtDbServerAddr.IsEnabled = true;
 
-                txtDbServerAddr.Text = Settings.Default.SqlServerAddr;
-                txtDatabase.Text = Settings.Default.SqlDatabase;
-                txtDbUsername.Text = Settings.Default.SqlUsername;
+                txtDbServerAddr.Text = SecurityCrypt.AES_Decrypt(Settings.Default.SqlServerAddr);
+                txtDatabase.Text = SecurityCrypt.AES_Decrypt(Settings.Default.SqlDatabase);
+                txtDbUsername.Text = SecurityCrypt.AES_Decrypt(Settings.Default.SqlUsername);
 
                 txtPin.IsEnabled = false;
                 btnUnlock.IsEnabled = false;

@@ -19,29 +19,23 @@ namespace DrKCrazyAttendance.Properties {
         //Decrypts settings from config file
         private void SettingsLoadingEventHandler(object sender, System.Configuration.SettingsLoadedEventArgs e)
         {
-            if (Settings.Default.Encrypted)
+            if (!Settings.Default.Encrypted)
             {
-                try
-                {
-                    Settings.Default.SqlDatabase = SecurityCrypt.AES_Decrypt(Settings.Default.SqlDatabase);
-                    Settings.Default.SqlServerAddr = SecurityCrypt.AES_Decrypt(Settings.Default.SqlServerAddr);
-                    Settings.Default.SqlUsername = SecurityCrypt.AES_Decrypt(Settings.Default.SqlUsername);
-                    Settings.Default.SqlPassword = SecurityCrypt.AES_Decrypt(Settings.Default.SqlPassword);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex);
-                }
+                //Encrypts
+                Settings.Default.Save();
             }
         }
         
         //Encrypts before being written to a file
         private void SettingsSavingEventHandler(object sender, System.ComponentModel.CancelEventArgs e) {
-            Settings.Default.SqlDatabase = SecurityCrypt.AES_Encrypt(Settings.Default.SqlDatabase);
-            Settings.Default.SqlServerAddr = SecurityCrypt.AES_Encrypt(Settings.Default.SqlServerAddr);
-            Settings.Default.SqlUsername = SecurityCrypt.AES_Encrypt(Settings.Default.SqlUsername);
-            Settings.Default.SqlPassword = SecurityCrypt.AES_Encrypt(Settings.Default.SqlPassword);
-            Settings.Default.Encrypted = true;
+            if (!Settings.Default.Encrypted)
+            {
+                Settings.Default.SqlDatabase = SecurityCrypt.AES_Encrypt(Settings.Default.SqlDatabase);
+                Settings.Default.SqlServerAddr = SecurityCrypt.AES_Encrypt(Settings.Default.SqlServerAddr);
+                Settings.Default.SqlUsername = SecurityCrypt.AES_Encrypt(Settings.Default.SqlUsername);
+                Settings.Default.SqlPassword = SecurityCrypt.AES_Encrypt(Settings.Default.SqlPassword);
+                Settings.Default.Encrypted = true;
+            }
         }
     }
 }

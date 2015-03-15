@@ -1,5 +1,6 @@
 ﻿using DrKCrazyAttendance;
 using DrKCrazyAttendance.Properties;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -20,35 +21,45 @@ namespace DrKCrazyAttendance_Student
             MainWindow = new MainWindow();
             MainWindow.Visibility = Visibility.Hidden;
 
-            Settings.Default.SqlDatabase = "capstone_2";
+            /*Settings.Default.SqlDatabase = "capstone_2";
             Settings.Default.SqlUsername = "capstone";
             Settings.Default.SqlServerAddr = "www.projectgxp.com";
             Settings.Default.SqlPassword = "SYM4GMmlzHmpoGenV4yb";
-            Settings.Default.Classroom = "C2427";
+            Settings.Default.Classroom = "C2427";*/
             string userName = Environment.UserName;
 
             DateTime now = DateTime.Now;
             Course course = Course.GetCoursesByTime(Settings.Default.Classroom, now);
+            Student student = null;
 
-            Student student = Student.GetStudent(userName);
-            if (student == null)
+            //getStudent may throw a sql exception
+            try
             {
-                //ask for student id
-                StudentIDForm stuIdForm = new StudentIDForm(userName);
-                bool? success = stuIdForm.ShowDialog();
+                student = Student.GetStudent(userName);
 
-                if (success != null && (bool)success)
+                if (student == null)
                 {
+                    //ask for student id
+                    StudentIDForm stuIdForm = new StudentIDForm(userName);
+                    bool? success = stuIdForm.ShowDialog();
 
-                    //refetch student
-                    student = Student.GetStudent(userName);
-  
-                    if (student == null){
-                        MessageBox.Show("Sorry, some error has occurered, and you will not be counted as attended. Please try agian.");
+                    if (success != null && (bool)success)
+                    {
+
+                        student = Student.GetStudent(userName);
+                        if (student == null)
+                        {
+                            MessageBox.Show("Sorry, some error has occurered, and you will not be counted as attended. Please try agian.",
+                                "Internal error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
                     }
                 }
             }
-           
+            catch (MySqlException ex)
+            {
+                MessageBox.Show(ex.Message, "Server Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
             if (student != null && RegisterAttendance(course, student, now))
             {
                 ((MainWindow)MainWindow).Course = course;

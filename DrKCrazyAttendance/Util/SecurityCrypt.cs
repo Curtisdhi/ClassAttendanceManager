@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace DrKCrazyAttendance.Util
 {
     //http://www.codeproject.com/Articles/769741/Csharp-AES-bits-Encryption-Library-with-Salt
-    class SecurityCrypt
+    public class SecurityCrypt
     {
         //create the key from the assemblies name and a security pin
         private static readonly byte[] KEY = SHA256.Create().ComputeHash(
@@ -55,7 +55,8 @@ namespace DrKCrazyAttendance.Util
             string encrypt = "";
             if (!string.IsNullOrEmpty(data))
             {
-                encrypt = Encoding.UTF8.GetString(AES_Encrypt(Encoding.UTF8.GetBytes(data)));
+                //Note encode as base64 to properly store encryption to file
+                encrypt = Convert.ToBase64String(AES_Encrypt(Encoding.UTF8.GetBytes(data)));
             }
             return encrypt;
         }
@@ -94,7 +95,8 @@ namespace DrKCrazyAttendance.Util
             string decrypt = "";
             if (!string.IsNullOrEmpty(data))
             {
-                decrypt = Encoding.UTF8.GetString(AES_Decrypt(Encoding.UTF8.GetBytes(data)));
+                //Note, we decode from base64 and decrypt the contents and THEN encode using UTF8
+                decrypt = Encoding.UTF8.GetString(AES_Decrypt(Convert.FromBase64String(data)));
             }
             return decrypt;
         }
