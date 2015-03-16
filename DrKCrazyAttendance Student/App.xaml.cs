@@ -63,12 +63,7 @@ namespace DrKCrazyAttendance_Student
                 MessageBox.Show(ex.Message, "Server Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
-            if (course == null)
-            {
-                MessageBox.Show("No course is not found.", "Course Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
-           
-            if (student != null && course != null && RegisterAttendance(course, student, now))
+            if (student != null && RegisterAttendance(course, student, now))
             {
                 ((MainWindow)MainWindow).Course = course;
                 ((MainWindow)MainWindow).Student = student;
@@ -85,18 +80,24 @@ namespace DrKCrazyAttendance_Student
         private bool RegisterAttendance(Course course, Student student, DateTime now)
         {
             bool success = false;
-            //register attendance
-            Attendance attendance = new Attendance(course, student, "127.0.0.1", now, course.IsTardy(now));
-            success = !Attendance.HasAttended(attendance);
-            if (success)
+            if (course == null)
             {
-                Attendance.Add(attendance);
+                MessageBox.Show("No course is not found.", "Course Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
             else
             {
-                MessageBox.Show("You have already been counted for today.");
+                //register attendance
+                Attendance attendance = new Attendance(course, student, "127.0.0.1", now, course.IsTardy(now));
+                success = !Attendance.HasAttended(attendance);
+                if (success)
+                {
+                    Attendance.Add(attendance);
+                }
+                else
+                {
+                    MessageBox.Show("You have already been counted for today.");
+                }
             }
-
             return success;
         } 
 

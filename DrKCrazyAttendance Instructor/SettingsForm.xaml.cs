@@ -1,4 +1,5 @@
-﻿using DrKCrazyAttendance.Properties;
+﻿using DrKCrazyAttendance;
+using DrKCrazyAttendance.Properties;
 using DrKCrazyAttendance.Util;
 using System;
 using System.Collections.Generic;
@@ -48,7 +49,18 @@ namespace DrKCrazyAttendance_Instructor
                 
                 Settings.Default.Save();
 
-                MainWindow.Instance.LoadCourses();
+                if (DatabaseManager.TestConnection())
+                {
+                    MainWindow.Instance.LoadCourses();
+                    MainWindow.Instance.Title = MainWindow.Instance.OriginalTitle +" - Connected";
+                }
+                else
+                {
+                    MainWindow.Instance.Title = MainWindow.Instance.OriginalTitle +" - Disconnected";
+                    MessageBox.Show("Error! Could not connect to database. Please confirm settings are correct. If problem persists, contact IT.",
+                        "Database Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+
                 MainWindow.Instance.Show();
                 Close();
             }

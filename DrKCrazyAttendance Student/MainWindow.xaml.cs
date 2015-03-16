@@ -28,6 +28,8 @@ namespace DrKCrazyAttendance_Student
         public MainWindow()
         {
             InitializeComponent();
+            this.Left = System.Windows.SystemParameters.PrimaryScreenWidth;
+            this.Top = System.Windows.SystemParameters.PrimaryScreenHeight;
         }
 
         #region Properties
@@ -65,6 +67,16 @@ namespace DrKCrazyAttendance_Student
                 lblStudentId.Content = Student.Id;
                 lblUsername.Content = Student.Username;
             }
+        }
+
+        private void CenterWindowOnScreen()
+        {
+            double screenWidth = System.Windows.SystemParameters.PrimaryScreenWidth;
+            double screenHeight = System.Windows.SystemParameters.PrimaryScreenHeight;
+            double windowWidth = this.Width;
+            double windowHeight = this.Height;
+            this.Left = (screenWidth / 2) - (windowWidth / 2);
+            this.Top = (screenHeight / 2) - (windowHeight / 2);
         }
 
         private void Hyperlink_Click(object sender, RoutedEventArgs e)

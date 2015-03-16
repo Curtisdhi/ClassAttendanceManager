@@ -168,7 +168,7 @@ namespace DrKCrazyAttendance
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex);
+                    Console.WriteLine("Error: {0}", ex);
                     throw;
                 }
             }
@@ -214,7 +214,7 @@ namespace DrKCrazyAttendance
                 }
                 catch (MySqlException ex)
                 {
-                    Console.WriteLine("Error: {0}", ex.ToString());
+                    Console.WriteLine("Error: {0}", ex);
                     throw;
                 }
             }
@@ -282,10 +282,10 @@ namespace DrKCrazyAttendance
                     }
                     catch (MySqlException ex1)
                     {
-                        Console.WriteLine("Error: {0}", ex1.ToString());
+                        Console.WriteLine("Error: {0}", ex1);
                     }
 
-                    Console.WriteLine("Error: {0}", ex.ToString());
+                    Console.WriteLine("Error: {0}", ex);
                     throw;
                 }
             }
