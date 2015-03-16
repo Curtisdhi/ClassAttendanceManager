@@ -71,7 +71,7 @@ namespace DrKCrazyAttendance
             get
             {
                 //if if this doesn't contain true, the object isn't valid
-                return !propertiesValid.ContainsValue(true);
+                return !propertiesValid.ContainsValue(false);
             }
         }
 
@@ -519,11 +519,11 @@ namespace DrKCrazyAttendance
                         eventsInAction[propertyName] = false;
                         break;
                     case "StartTime":
-                        if (StartTime > EndTime)
+                        if (StartTime.TimeOfDay > EndTime.TimeOfDay)
                         {
                             result = "Start time can not be after end time.";
                         }
-                        else if ((EndTime - StartTime) < timeValidation)
+                        else if ((EndTime.TimeOfDay - StartTime.TimeOfDay) < timeValidation)
                         {
                             result = "Class must be atleast 30 minutes long.";
                         }
@@ -533,11 +533,11 @@ namespace DrKCrazyAttendance
                         
                         break;
                     case "EndTime":
-                        if (StartTime > EndTime)
+                        if (StartTime.TimeOfDay > EndTime.TimeOfDay)
                         {
                             result = "\t";//"End time can't come before start time.";
                         }
-                        else if ((EndTime - StartTime) < timeValidation)
+                        else if ((EndTime.TimeOfDay - StartTime.TimeOfDay) < timeValidation)
                         {
                             result = "\t";//"Class must be atleast 30 minutes long.";
                         }
