@@ -147,8 +147,8 @@ namespace DrKCrazyAttendance_Student
                 //window has been closed so let's open a new one
                 else
                 {
-            studentHelpForm = new Student_ID_Help();
-            studentHelpForm.Show();
+                    studentHelpForm = new Student_ID_Help();
+                    studentHelpForm.Show();
                 }
             }
             //window has never been open

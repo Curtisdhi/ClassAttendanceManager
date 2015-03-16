@@ -143,7 +143,6 @@ namespace DrKCrazyAttendance_Instructor
 
         }
 
-
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
             CreateCourseEditor(null);
@@ -153,12 +152,29 @@ namespace DrKCrazyAttendance_Instructor
         {
             if (lstCourses.SelectedItem != null)
             {
-                CourseEditor ce = new CourseEditor((Course)lstCourses.SelectedItem);
-                ce.Show();
-                ce.Closed += OnCourseEditorClose;
-                editors.Add(ce);
+                CreateCourseEditor((Course)lstCourses.SelectedItem);
             }
         }
+
+        private void ListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (lstCourses.SelectedItem != null)
+            {
+                CreateCourseEditor((Course)lstCourses.SelectedItem);
+            }
+        }
+
+        private void btnClone_Click(object sender, RoutedEventArgs e)
+        {
+            if (lstCourses.SelectedItem != null)
+            {
+                Course course = (Course)lstCourses.SelectedItem;
+                Course cloneCourse = new Course(course);
+                CreateCourseEditor(cloneCourse);
+            }
+        }
+
+        
 
         private void menuClose_Click(object sender, RoutedEventArgs e)
         {
@@ -168,8 +184,6 @@ namespace DrKCrazyAttendance_Instructor
         private void Window_ContentRendered(object sender, EventArgs e)
         {
             LoadCourses();
-
-            //Attendance.GetAttendancesByInstructor(Settings.Default.Instructor);
         }
 
         private void OnCourseEditorClose(object sender, EventArgs e)
@@ -183,7 +197,7 @@ namespace DrKCrazyAttendance_Instructor
                                             "Confirm", MessageBoxButton.YesNo);
             if (confirmResult == MessageBoxResult.Yes)
             {
-                if (settingsForm != null && settingsForm.IsVisible)
+                if (settingsForm != null && settingsForm.IsLoaded)
                 {
                     confirmResult = MessageBox.Show("Are you sure you close without saving the settings?",
                                             "Confirm", MessageBoxButton.YesNo);
@@ -197,7 +211,7 @@ namespace DrKCrazyAttendance_Instructor
                         e.Cancel = true;
                     }
                 }
-                if (about != null && about.IsVisible)
+                if (about != null && about.IsLoaded)
                 {
                     about.Close();
                 }
@@ -210,7 +224,7 @@ namespace DrKCrazyAttendance_Instructor
                 //close every opened course editor
                 for (int i = editors.Count-1; i >= 0; i--)
                 {
-                    if (editors[i] != null && editors[i].IsVisible)
+                    if (editors[i] != null && editors[i].IsLoaded)
                     {
                         editors[i].Close();
                     }
@@ -226,9 +240,13 @@ namespace DrKCrazyAttendance_Instructor
 
         private void mnuAbout_Click(object sender, RoutedEventArgs e)
         {
-            if (about != null && about.IsVisible)
+            if (about != null)
             {
-                about.Focus();
+                if (about.IsLoaded)
+                {
+                    about.Focus();
+                    about.WindowState = WindowState.Normal;
+                }
             }
             else
             {
@@ -247,27 +265,9 @@ namespace DrKCrazyAttendance_Instructor
             }
         }
 
-        private void btnClone_Click(object sender, RoutedEventArgs e)
-        {
-            if (lstCourses.SelectedItem != null)
-            {
-                Course course = (Course)lstCourses.SelectedItem;
-                Course cloneCourse = new Course(course);
-                CreateCourseEditor(cloneCourse);
-            }
-        }
-
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
 
-        }
-
-        private void ListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            if (lstCourses.SelectedItem != null)
-            {
-                CreateCourseEditor((Course)lstCourses.SelectedItem);    
-            }
         }
 
         private void lstCourses_SelectionChanged(object sender, SelectionChangedEventArgs e)

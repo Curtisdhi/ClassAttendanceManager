@@ -19,7 +19,8 @@
             <Label Content="{Binding Path=(Validation.Errors).CurrentItem.ErrorContent, ElementName=txtSection}" Margin="363,7,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="Red"/>
             <Label Content="Section:" HorizontalAlignment="Left" Margin="363,25,0,0" VerticalAlignment="Top" Height="26" Width="54"/>
             <ComboBox x:Name="classroomChoice" HorizontalAlignment="Left" Margin="100,29,0,0" VerticalAlignment="Top" Width="100" IsEditable="True" 
-            	Text="{Binding Course.Classroom, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Style="{StaticResource textBoxInError}" Validation.Error="control_Error" SelectionChanged="classroomChoice_SelectionChanged"/>
+            	Text="{Binding Course.Classroom, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Style="{StaticResource textBoxInError}" Validation.Error="control_Error" 
+                      TextBoxBase.TextChanged="classroomChoice_TextChanged"/>
             <TextBox x:Name="txtCourse" HorizontalAlignment="Left" Height="23" Margin="259,28,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="100" 
             	Text="{Binding Course.CourseName, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Style="{StaticResource textBoxInError}" Validation.Error="control_Error" TextChanged="txtCourse_TextChanged"/>
             <TextBox x:Name="txtSection" HorizontalAlignment="Left" Height="23" Margin="417,28,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="80" 

@@ -306,7 +306,7 @@ namespace DrKCrazyAttendance_Instructor
             box.CaretIndex = box.Text.Length;
         }
 
-        private void classroomChoice_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void classroomChoice_TextChanged(object sender, TextChangedEventArgs e)
         {
             ComboBox box = (ComboBox)sender;
             //1 letter and 4 digits
