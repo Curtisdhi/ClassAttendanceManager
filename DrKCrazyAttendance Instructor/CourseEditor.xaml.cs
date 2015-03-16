@@ -44,7 +44,7 @@ namespace DrKCrazyAttendance_Instructor
             InitializeComponent();
             Course = course;
             DataContext = this;
-            //if course id is 0, must be not be persisted.
+            //if course id is 0, must be not be edited.
             if (Course.Id != 0)
                 editing = true;
 
@@ -95,6 +95,12 @@ namespace DrKCrazyAttendance_Instructor
                 originalCourse = new Course(value);
             }
         }
+
+        public bool Persisted
+        {
+            get;
+            private set;
+        }
         #endregion
 
         private void ResetForm()
@@ -115,7 +121,7 @@ namespace DrKCrazyAttendance_Instructor
             startTimePicker.Value = originalCourse.StartTime;
             endTimePicker.Value = originalCourse.EndTime;
 
-            classroomChoice.SelectedIndex = classroomChoice.Items.IndexOf(originalCourse.Classroom);
+            classroomChoice.Text = originalCourse.Classroom;
 
         }
 
@@ -176,20 +182,30 @@ namespace DrKCrazyAttendance_Instructor
                     Course.Days.Add(DayOfWeek.Friday);
                 if (IsChecked(chkSaturday))
                     Course.Days.Add(DayOfWeek.Saturday);
-
-                if (editing)
+                try
                 {
-                    //update in the DB
-                    Course.Update(Course);
+                    if (editing)
+                    {
+                        //update in the DB
+                        Course.Update(Course);
+                    }
+                    else
+                    {
+                        Course.Add(Course);
+                        MainWindow.Instance.lstCourses.Items.Add(Course);
+                    }
+                    Persisted = true;
                 }
-                else
+                catch (Exception ex)
                 {
-                    MainWindow.Instance.lstCourses.Items.Add(Course);
-                    Course.Add(Course);
+                    MessageBox.Show("Failed to persist course to the database.\n" + ex.Message,
+                        "Sql Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    Persisted = false;
                 }
-
-
-                Close();
+                finally
+                {
+                    Close();
+                }
             }
 
         }
@@ -220,14 +236,11 @@ namespace DrKCrazyAttendance_Instructor
         private void Window_Closed(object sender, EventArgs e)
         {
             //reset the course to the original settings before closing!
-            ResetForm();
+            if (!Persisted)
+            {
+                ResetForm();
+            }
         }
-
-        private void control_Error(object sender, ValidationErrorEventArgs e)
-        {
-
-        }
-
 
         private void txtCourse_TextChanged(object sender, TextChangedEventArgs e)
         {

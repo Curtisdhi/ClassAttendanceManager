@@ -113,12 +113,29 @@ namespace DrKCrazyAttendance_Instructor
             }
             else
             {
-                ce = new CourseEditor(course);
+                bool cExists = false;
+                //make sure we aren't already editing a course
+                foreach (CourseEditor c in editors) {
+                    if (course.Id != 0 && course.Id == c.Course.Id)
+                    {
+                        c.Focus();
+                        c.WindowState = WindowState.Normal;
+                        cExists = true;
+                        break;
+                    }
+                }
+                if (!cExists)
+                {
+                    ce = new CourseEditor(course);
+                }
             }
 
-            ce.Show();
-            ce.Closed += OnCourseEditorClose;
-            editors.Add(ce);
+            if (ce != null)
+            {
+                ce.Show();
+                ce.Closed += OnCourseEditorClose;
+                editors.Add(ce);
+            }
         }
 
         private void menuSettings_Click(object sender, RoutedEventArgs e)
@@ -127,7 +144,6 @@ namespace DrKCrazyAttendance_Instructor
             settingsForm.Show();
             this.Hide();
         }
-
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
@@ -174,8 +190,6 @@ namespace DrKCrazyAttendance_Instructor
             }
         }
 
-        
-
         private void menuClose_Click(object sender, RoutedEventArgs e)
         {
             Close();
@@ -188,7 +202,9 @@ namespace DrKCrazyAttendance_Instructor
 
         private void OnCourseEditorClose(object sender, EventArgs e)
         {
-            editors.Remove((CourseEditor)sender);
+            CourseEditor ce = (CourseEditor)sender;
+            ce.Course.ResetEventsInAction();
+            editors.Remove(ce);
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

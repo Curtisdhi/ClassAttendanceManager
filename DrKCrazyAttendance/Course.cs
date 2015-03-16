@@ -209,8 +209,6 @@ namespace DrKCrazyAttendance
         }
         #endregion
 
-        
-
         public static List<DayOfWeek> GetDaysFromFriendly(string fDays)
         {
             List<DayOfWeek> days = new List<DayOfWeek>();
@@ -566,6 +564,11 @@ namespace DrKCrazyAttendance
 
         #region INotifyPropertyChanged Members
         private Dictionary<string, bool> eventsInAction = new Dictionary<string, bool>();
+
+        public void ResetEventsInAction()
+        {
+            eventsInAction.Clear();
+        }
 
         private void RaisePropertyChanged(string propName)
         {
