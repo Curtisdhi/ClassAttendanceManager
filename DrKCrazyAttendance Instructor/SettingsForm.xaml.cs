@@ -44,22 +44,12 @@ namespace DrKCrazyAttendance_Instructor
                 Settings.Default.SqlServerAddr = txtDbServerAddr.Text;
                 Settings.Default.SqlDatabase = txtDatabase.Text;
                 Settings.Default.SqlUsername = txtDbUsername.Text;
-                if (txtDbPassword.Password != null && txtDbPassword.Password != "") 
+                if (!string.IsNullOrEmpty(txtDbPassword.Password)) 
                     Settings.Default.SqlPassword = txtDbPassword.Password;
                 
                 Settings.Default.Save();
 
-                if (DatabaseManager.TestConnection())
-                {
-                    MainWindow.Instance.LoadCourses();
-                    MainWindow.Instance.Title = MainWindow.Instance.OriginalTitle +" - Connected";
-                }
-                else
-                {
-                    MainWindow.Instance.Title = MainWindow.Instance.OriginalTitle +" - Disconnected";
-                    MessageBox.Show("Error! Could not connect to database. Please confirm settings are correct. If problem persists, contact IT.",
-                        "Database Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+                MainWindow.Instance.LoadCourses();
 
                 MainWindow.Instance.Show();
                 Close();

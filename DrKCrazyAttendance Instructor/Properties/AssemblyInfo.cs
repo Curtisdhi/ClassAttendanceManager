@@ -8,11 +8,18 @@ using System.Windows;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Attendance Manager")]
-[assembly: AssemblyDescription("Icons provided by http://simpleicon.com/ and http://picol.org")]
+[assembly: AssemblyDescription(
+@"Icons provided by http://simpleicon.com/ and http://picol.org.
+
+Developers: 
+Curtis Hicks, Samuel Gillis, Dylan Nichols, Kevin Jackson, Felix Manuel
+
+Developed for Capstone 2015 for Dr. Kominek at NortheastState Community College."
+)]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("DreamTeam")]
+[assembly: AssemblyCompany("DrK's DreamTeam")]
 [assembly: AssemblyProduct("Attendance Manager")]
-[assembly: AssemblyCopyright("Copyright ©  2015")]
+[assembly: AssemblyCopyright("©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -51,5 +58,5 @@ using System.Windows;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.1.0")]
-[assembly: AssemblyFileVersion("1.0.1.0")]
+[assembly: AssemblyVersion("1.1.0.0")]
+[assembly: AssemblyFileVersion("1.1.0.0")]

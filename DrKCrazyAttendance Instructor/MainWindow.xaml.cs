@@ -52,16 +52,20 @@ namespace DrKCrazyAttendance_Instructor
 
         public void LoadCourses()
         {
-            if (DatabaseManager.IsConnectable)
+            lstCourses.Items.Clear();
+            classroomCombo.Items.Clear();
+            daysCombo.Items.Clear();
+
+            if (DatabaseManager.TestConnection())
             {
-                classroomCombo.Items.Clear();
+                Title = OriginalTitle + " - Connected";
+
                 List<string> classrooms = Course.GetClassrooms();
                 foreach (string classroom in classrooms)
                 {
                     classroomCombo.Items.Add(classroom);
                 }
 
-                daysCombo.Items.Clear();
                 string query = @"SELECT DISTINCT days FROM Courses ORDER BY days";
                 MySqlDataReader rdr = null;
                 using (rdr = DatabaseManager.GetDataReaderFromQuery(query))
@@ -82,12 +86,21 @@ namespace DrKCrazyAttendance_Instructor
                     }
                 }
 
-                lstCourses.Items.Clear();
                 List<Course> courses = Course.GetCoursesByInstructor(Settings.Default.Instructor);
                 foreach (Course c in courses)
                 {
                     lstCourses.Items.Add(c);
                 }
+
+                btnAdd.IsEnabled = true;
+            }
+            else
+            {
+                Title = OriginalTitle + " - Disconnected";
+                btnAdd.IsEnabled = false;
+
+                MessageBox.Show("Error! Could not connect to database. Please confirm settings are correct. If problem persists, please contact IT.",
+                        "Database Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -152,7 +165,7 @@ namespace DrKCrazyAttendance_Instructor
             Close();
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private void Window_ContentRendered(object sender, EventArgs e)
         {
             LoadCourses();
 
@@ -265,7 +278,6 @@ namespace DrKCrazyAttendance_Instructor
             btnEdit.IsEnabled = enable;
             btnReport.IsEnabled = enable;
         }
-
 
 
     }
