@@ -109,6 +109,7 @@ namespace DrKCrazyAttendance_Instructor
             {
                 Attendance.Remove(avm.Attendances);
                 //remove this from the datagrid
+                attendanceVms.Remove(avm);
                 attendanceDataGrid.Items.Remove(avm);
             }
         }
