@@ -27,6 +27,7 @@ namespace DrKCrazyAttendance_Instructor
         private About about;
         private List<CourseEditor> editors = new List<CourseEditor>();
         private AttendanceReport attendanceReport;
+        private List<Course> courses = new List<Course>();
 
         public MainWindow()
         {
@@ -56,6 +57,11 @@ namespace DrKCrazyAttendance_Instructor
             classroomCombo.Items.Clear();
             daysCombo.Items.Clear();
 
+            classroomCombo.Items.Add("Classrooms");
+            classroomCombo.SelectedIndex = 0;
+            daysCombo.Items.Add("Days");
+            daysCombo.SelectedIndex = 0;
+
             if (DatabaseManager.TestConnection())
             {
                 Title = OriginalTitle + " - Connected";
@@ -66,6 +72,7 @@ namespace DrKCrazyAttendance_Instructor
                     classroomCombo.Items.Add(classroom);
                 }
 
+                
                 string query = @"SELECT DISTINCT days FROM Courses ORDER BY days";
                 MySqlDataReader rdr = null;
                 using (rdr = DatabaseManager.GetDataReaderFromQuery(query))
@@ -86,11 +93,8 @@ namespace DrKCrazyAttendance_Instructor
                     }
                 }
 
-                List<Course> courses = Course.GetCoursesByInstructor(Settings.Default.Instructor);
-                foreach (Course c in courses)
-                {
-                    lstCourses.Items.Add(c);
-                }
+                courses = Course.GetCoursesByInstructor(Settings.Default.Instructor);
+                SetCourseList(courses);
 
                 btnAdd.IsEnabled = true;
             }
@@ -138,6 +142,28 @@ namespace DrKCrazyAttendance_Instructor
             }
         }
 
+        private void Filter(string classroom, string days)
+        {
+            IQueryable<Course> cs = courses.AsQueryable();
+
+            if (days != null)
+                cs = cs.Where(course => course.FriendlyDays.Equals(days));
+            if (classroom != null)
+                cs = cs.Where(course => course.Classroom.Equals(classroom));
+
+            SetCourseList(cs.ToList<Course>());
+        }
+
+        private void SetCourseList(List<Course> courses)
+        {
+            lstCourses.Items.Clear();
+            foreach (Course c in courses)
+            {
+                lstCourses.Items.Add(c);
+            }
+        }
+
+        #region events
         private void menuSettings_Click(object sender, RoutedEventArgs e)
         {
             settingsForm = new SettingsForm();
@@ -283,7 +309,15 @@ namespace DrKCrazyAttendance_Instructor
 
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
+            string classroom = classroomCombo.SelectedItem as string;
+            if (classroomCombo.SelectedIndex == 0)
+                classroom = null;
 
+            string days = daysCombo.SelectedItem as string;
+            if (daysCombo.SelectedIndex == 0)
+                days = null;
+
+            Filter(classroom, days);
         }
 
         private void lstCourses_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -294,7 +328,7 @@ namespace DrKCrazyAttendance_Instructor
             btnEdit.IsEnabled = enable;
             btnReport.IsEnabled = enable;
         }
-
+        #endregion
 
     }
 }
