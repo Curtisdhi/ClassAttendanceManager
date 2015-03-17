@@ -44,8 +44,10 @@ namespace DrKCrazyAttendance_Instructor
                 Settings.Default.SqlServerAddr = txtDbServerAddr.Text;
                 Settings.Default.SqlDatabase = txtDatabase.Text;
                 Settings.Default.SqlUsername = txtDbUsername.Text;
-                if (!string.IsNullOrEmpty(txtDbPassword.Password)) 
+                if (!string.IsNullOrWhiteSpace(txtDbPassword.Password))
                     Settings.Default.SqlPassword = txtDbPassword.Password;
+                else
+                    Settings.Default.SqlPassword = SecurityCrypt.AES_Decrypt(Settings.Default.SqlPassword);
                 
                 Settings.Default.Save();
 
