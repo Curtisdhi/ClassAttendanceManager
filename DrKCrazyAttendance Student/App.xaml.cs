@@ -19,13 +19,8 @@ namespace DrKCrazyAttendance_Student
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             MainWindow = new MainWindow();
-            MainWindow.Visibility = Visibility.Hidden;
+            ((MainWindow)MainWindow).HideWin();
 
-            /*Settings.Default.SqlDatabase = "capstone_2";
-            Settings.Default.SqlUsername = "capstone";
-            Settings.Default.SqlServerAddr = "www.projectgxp.com";
-            Settings.Default.SqlPassword = "SYM4GMmlzHmpoGenV4yb";
-            Settings.Default.Classroom = "C2427";*/
             string userName = Environment.UserName;
 
             DateTime now = DateTime.Now;
@@ -67,8 +62,7 @@ namespace DrKCrazyAttendance_Student
             {
                 ((MainWindow)MainWindow).Course = course;
                 ((MainWindow)MainWindow).Student = student;
-                MainWindow.Visibility = Visibility.Visible;
-                MainWindow.Show();                    
+                ((MainWindow)MainWindow).ShowWin();                    
             }
             else
             {
@@ -95,7 +89,8 @@ namespace DrKCrazyAttendance_Student
                 }
                 else
                 {
-                    MessageBox.Show("You have already been counted for today.");
+                    MessageBox.Show("You have already been counted for today.", "Info",
+                        MessageBoxButton.OK, MessageBoxImage.Information);
                 }
             }
             return success;

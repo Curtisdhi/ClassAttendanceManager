@@ -1,4 +1,4 @@
-﻿<Window x:Class="DrKCrazyAttendance_Instructor.About"
+﻿<Window x:Class="DrKCrazyAttendance_Student.About"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="About" Height="240" Width="500" MinHeight="240" MinWidth="500" WindowStartupLocation="CenterScreen" Icon="icon.ico">

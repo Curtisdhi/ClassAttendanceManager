@@ -22,14 +22,13 @@ namespace DrKCrazyAttendance_Student
     /// </summary>
     public partial class MainWindow : Window
     {
+        private About about;
         private Course course;
         private Student student;
 
         public MainWindow()
         {
             InitializeComponent();
-            this.Left = System.Windows.SystemParameters.PrimaryScreenWidth;
-            this.Top = System.Windows.SystemParameters.PrimaryScreenHeight;
         }
 
         #region Properties
@@ -79,6 +78,18 @@ namespace DrKCrazyAttendance_Student
             this.Top = (screenHeight / 2) - (windowHeight / 2);
         }
 
+        public void HideWin()
+        {
+            Hide();
+            Left = System.Windows.SystemParameters.PrimaryScreenWidth;
+            Top = System.Windows.SystemParameters.PrimaryScreenHeight;
+        }
+        public void ShowWin()
+        {
+            Show();
+            CenterWindowOnScreen();
+        }
+
         private void Hyperlink_Click(object sender, RoutedEventArgs e)
         {
             if (Student != null)
@@ -116,6 +127,36 @@ namespace DrKCrazyAttendance_Student
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             RefreshInfo();
+        }
+
+        private void menuClose_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void mnuAbout_Click(object sender, RoutedEventArgs e)
+        {
+            if (about != null)
+            {
+                if (about.IsLoaded)
+                {
+                    about.Focus();
+                    about.WindowState = WindowState.Normal;
+                }
+            }
+            else
+            {
+                about = new About();
+                about.Show();
+            }
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (about != null && about.IsLoaded)
+            {
+                about.Close();
+            }
         }
 
     }

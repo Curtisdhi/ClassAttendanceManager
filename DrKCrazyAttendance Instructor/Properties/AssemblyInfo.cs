@@ -7,9 +7,9 @@ using System.Windows;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Attendance Manager")]
+[assembly: AssemblyTitle("Student Attendance Manager")]
 [assembly: AssemblyDescription(
-@"Icons provided by http://simpleicon.com/ and http://picol.org.
+@"Icons provided by simpleicon.com and picol.org
 
 Developers: 
 Curtis Hicks, Samuel Gillis, Dylan Nichols, Kevin Jackson, Felix Manuel
@@ -18,7 +18,7 @@ Developed for Capstone 2015 for Dr. Kominek at NortheastState Community College.
 )]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("DrK's DreamTeam")]
-[assembly: AssemblyProduct("Attendance Manager")]
+[assembly: AssemblyProduct("Student Attendance Manager")]
 [assembly: AssemblyCopyright("©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
