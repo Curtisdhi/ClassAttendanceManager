@@ -15,8 +15,6 @@ namespace DrKCrazyAttendance_Student
     /// </summary>
     public partial class App : Application
     {
-        MainWindow window = null;
-
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             Settings.Default.SqlDatabase = "capstone_2";
@@ -24,7 +22,7 @@ namespace DrKCrazyAttendance_Student
             Settings.Default.SqlServerAddr = "www.projectgxp.com";
             Settings.Default.SqlPassword = "SYM4GMmlzHmpoGenV4yb";
             Settings.Default.Classroom = "C2427";
-            string userName = "bob";//Environment.UserName;
+            string userName = Environment.UserName;
 
             DateTime now = DateTime.Now;
             Course course = Course.GetCoursesByTime(Settings.Default.Classroom, now);
@@ -39,18 +37,21 @@ namespace DrKCrazyAttendance_Student
                     //refetch student
                     student = Student.GetStudent(userName);
                     if (student == null){
-                        MessageBox.Show("Sorry, but you will not be counted as attended. Please try agian.");
+                        MessageBox.Show("Sorry, some error has occurered, and you will not be counted as attended. Please try agian.");
                     }
                 }
             }
-            
-            if (student != null && RegisterAttendance(course, student, now)) {
-                window = new MainWindow(course, student);
-                //show as a dialog to block the thread unti lthe user clicks ok
-                window.ShowDialog();
+
+            if (student != null && RegisterAttendance(course, student, now))
+            {
+                MainWindow = new MainWindow(course, student);
+                MainWindow.Show();
+            }
+            else
+            {
+                Shutdown();
             }
 
-            Shutdown();
         }
 
         private bool RegisterAttendance(Course course, Student student, DateTime now)
