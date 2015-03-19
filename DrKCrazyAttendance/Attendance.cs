@@ -96,7 +96,27 @@ namespace DrKCrazyAttendance
             string query = @"INSERT INTO Attendances (courseId, studentId, computerIPv4, timeLog, isTardy)
                 VALUES (@courseId, @studentId, @ip, @timeLog, @isTardy)";
             DatabaseManager.ExecuteQuery(query, attendance.GetQueryParameters());
-        } 
+        }
+
+        public static void Remove(Attendance attendance)
+        {
+            List<Attendance> attendances = new List<Attendance>();
+            attendances.Add(attendance);
+            Remove(attendances);
+        }
+
+        public static void Remove(List<Attendance> attendances)
+        {
+            List<Dictionary<string, object>> parameters = new List<Dictionary<string, object>>();
+            string query = @"DELETE FROM Attendances WHERE id=@id";
+            foreach (Attendance attendance in attendances)
+            {
+                Dictionary<string, object> param = new Dictionary<string, object>();
+                parameters.Add(param);
+                param.Add("@id", attendance.Id);
+            }
+            DatabaseManager.ExecuteQuery(query, parameters);
+        }
 
         public static List<Attendance> GetAttendancesByClassroom(string classroom)
         {

@@ -1,4 +1,6 @@
-﻿using DrKCrazyAttendance.Properties;
+﻿using DrKCrazyAttendance;
+using DrKCrazyAttendance.Properties;
+using DrKCrazyAttendance.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -37,15 +39,21 @@ namespace DrKCrazyAttendance_Instructor
         {
             if (!locked)
             {
+                Settings.Default.Encrypted = false;
                 Settings.Default.Instructor = txtInstructor.Text;
                 Settings.Default.SqlServerAddr = txtDbServerAddr.Text;
                 Settings.Default.SqlDatabase = txtDatabase.Text;
                 Settings.Default.SqlUsername = txtDbUsername.Text;
-                if (txtDbPassword.Password != null && txtDbPassword.Password != "") 
+                if (!string.IsNullOrWhiteSpace(txtDbPassword.Password))
                     Settings.Default.SqlPassword = txtDbPassword.Password;
+                else
+                    Settings.Default.SqlPassword = SecurityCrypt.AES_Decrypt(Settings.Default.SqlPassword);
                 
                 Settings.Default.Save();
+
                 MainWindow.Instance.LoadCourses();
+
+                MainWindow.Instance.Show();
                 Close();
             }
             else
@@ -65,9 +73,9 @@ namespace DrKCrazyAttendance_Instructor
                 txtDbUsername.IsEnabled = true;
                 txtDbServerAddr.IsEnabled = true;
 
-                txtDbServerAddr.Text = Settings.Default.SqlServerAddr;
-                txtDatabase.Text = Settings.Default.SqlDatabase;
-                txtDbUsername.Text = Settings.Default.SqlUsername;
+                txtDbServerAddr.Text = SecurityCrypt.AES_Decrypt(Settings.Default.SqlServerAddr);
+                txtDatabase.Text = SecurityCrypt.AES_Decrypt(Settings.Default.SqlDatabase);
+                txtDbUsername.Text = SecurityCrypt.AES_Decrypt(Settings.Default.SqlUsername);
 
                 txtPin.IsEnabled = false;
                 btnUnlock.IsEnabled = false;
@@ -83,5 +91,10 @@ namespace DrKCrazyAttendance_Instructor
             txtInstructor.Text = Settings.Default.Instructor;
         }
 
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            MainWindow.Instance.Show();
+        }
+     
     }
 }

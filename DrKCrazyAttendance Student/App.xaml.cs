@@ -1,5 +1,6 @@
 ﻿using DrKCrazyAttendance;
 using DrKCrazyAttendance.Properties;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -17,54 +18,70 @@ namespace DrKCrazyAttendance_Student
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            Settings.Default.SqlDatabase = "capstone_2";
-            Settings.Default.SqlUsername = "capstone";
-            Settings.Default.SqlServerAddr = "www.projectgxp.com";
-            Settings.Default.SqlPassword = "SYM4GMmlzHmpoGenV4yb";
-            Settings.Default.Classroom = "C2427";
+            MainWindow = new MainWindow();
+            ((MainWindow)MainWindow).HideWin();
+
             string userName = Environment.UserName;
 
             DateTime now = DateTime.Now;
-            Course course = Course.GetCoursesByTime(Settings.Default.Classroom, now);
+            Course course = null;
+            Student student = null;
 
-            Student student = Student.GetStudent(userName);
-            if (student == null)
+            try
             {
-                //ask for student id
-                bool? success = new StudentIDForm(userName).ShowDialog();
-                if (success != null && (bool)success)
+                //may throw a sql exception
+                course = Course.GetCoursesByTime(Settings.Default.Classroom, now);
+
+                //may throw a sql exception
+                student = Student.GetStudent(userName);
+
+                if (student == null)
                 {
-                    //refetch student
-                    student = Student.GetStudent(userName);
-                    if (student == null){
-                        MessageBox.Show("Sorry, some error has occurered, and you will not be counted as attended. Please try agian.");
+                    //ask for student id
+                    StudentIDForm stuIdForm = new StudentIDForm(userName);
+                    bool? success = stuIdForm.ShowDialog();
+
+                    if (success != null && (bool)success)
+                    {
+
+                        student = Student.GetStudent(userName);
+                        if (student == null)
+                        {
+                            MessageBox.Show("Sorry, some error has occurered, and you will not be counted as attended. Please try agian.",
+                                "Internal error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
                     }
                 }
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show(ex.Message, "Server Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
             if (student != null && RegisterAttendance(course, student, now))
             {
-                MainWindow = new MainWindow(course, student);
-                MainWindow.Show();
+                ((MainWindow)MainWindow).Course = course;
+                ((MainWindow)MainWindow).Student = student;
+                ((MainWindow)MainWindow).ShowWin();                    
             }
             else
             {
-                Shutdown();
+                //Shutdown();
+                MainWindow.Close();
             }
-
-        }
+       }
 
         private bool RegisterAttendance(Course course, Student student, DateTime now)
         {
             bool success = false;
             if (course == null)
             {
-                MessageBox.Show("No course is available.");
+                MessageBox.Show("No course is not found.", "Course Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
             else
             {
                 //register attendance
-                Attendance attendance = new Attendance(course, student, "127.0.0.1", now, false);
+                Attendance attendance = new Attendance(course, student, "127.0.0.1", now, course.IsTardy(now));
                 success = !Attendance.HasAttended(attendance);
                 if (success)
                 {
@@ -72,11 +89,10 @@ namespace DrKCrazyAttendance_Student
                 }
                 else
                 {
-                    MessageBox.Show("You have already been counted for today.");
+                    MessageBox.Show("You have already been counted for today.", "Info",
+                        MessageBoxButton.OK, MessageBoxImage.Information);
                 }
-
             }
-
             return success;
         } 
 

@@ -10,6 +10,7 @@ namespace DrKCrazyAttendance_Instructor
             Value = value;
         }
 
+
         public string Name { get; private set; }
         public object Value { get; set; }
 
