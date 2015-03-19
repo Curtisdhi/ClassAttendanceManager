@@ -5,28 +5,62 @@ using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using DrKCrazyAttendance.Properties;
-using System.Data; 
+using System.Data;
+using DrKCrazyAttendance.Util; 
 
 namespace DrKCrazyAttendance
 {
     public class DatabaseManager
     {
+        static DatabaseManager() {
+            IsConnectable = true;
+        }
+
+        public static bool IsConnectable
+        {
+            get;
+            private set;
+        }
+
         public static MySqlConnection Connect()
         {
-            string serverAddr = Settings.Default.SqlServerAddr;
-            string database = Settings.Default.SqlDatabase;
-            string username = Settings.Default.SqlUsername;
-            string password = Settings.Default.SqlPassword;
+            MySqlConnection connection = null;
+
+            string serverAddr = SecurityCrypt.AES_Decrypt(Settings.Default.SqlServerAddr);
+            string database = SecurityCrypt.AES_Decrypt(Settings.Default.SqlDatabase);
+            string username = SecurityCrypt.AES_Decrypt(Settings.Default.SqlUsername);
+            string password = SecurityCrypt.AES_Decrypt(Settings.Default.SqlPassword);
 
             /* 
-             * Requires "Convert Zero Datetime=True" to properly convert Date and Time sql types to .net Datetime
-             * http://stackoverflow.com/questions/5754822/unable-to-convert-mysql-date-time-value-to-system-datetime
-             */
+                * Requires "Convert Zero Datetime=True" to properly convert Date and Time sql types to .net Datetime
+                * http://stackoverflow.com/questions/5754822/unable-to-convert-mysql-date-time-value-to-system-datetime
+                */
             string cs = string.Format("server={0};userid={1};password={2};database={3};Convert Zero Datetime=True",
                 serverAddr, username, password, database);
-            MySqlConnection connection = new MySqlConnection(cs);
+
+            connection = new MySqlConnection(cs);
 
             return connection;
+        }
+
+        public static bool TestConnection()
+        {
+            MySqlConnection conn;
+            using (conn = DatabaseManager.Connect())
+            {
+                try
+                {
+                    conn.Open();
+                    IsConnectable = true;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                    IsConnectable = false;
+                }
+            }
+            
+            return IsConnectable;
         }
 
         public static MySqlDataReader GetDataReaderFromQuery(string query)
@@ -39,22 +73,41 @@ namespace DrKCrazyAttendance
             MySqlConnection conn;
             MySqlCommand cmd;
             MySqlDataReader rdr = null;
-
-            conn = DatabaseManager.Connect();
-            try
+            if (IsConnectable)
             {
-                conn.Open();
-                cmd = new MySqlCommand(query, conn);
-                cmd.Prepare();
-                foreach (string key in parameters.Keys)
+                conn = DatabaseManager.Connect();
+                try
                 {
-                    cmd.Parameters.AddWithValue(key, parameters[key]);
+                    try
+                    {
+                        conn.Open();
+                        IsConnectable = true;
+                    }
+                    catch (MySqlException)
+                    {
+                        IsConnectable = false;
+                        throw;
+                    }
+                    cmd = new MySqlCommand(query, conn);
+                    cmd.Prepare();
+                    foreach (string key in parameters.Keys)
+                    {
+                        cmd.Parameters.AddWithValue(key, parameters[key]);
+                    }
+                    rdr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 }
-                rdr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                catch (MySqlException)
+                {
+                    throw;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
             }
-            catch (Exception ex)
+            else
             {
-                Console.WriteLine(ex);
+                throw new Exception("Sql is not connectable");
             }
             
             return rdr;
@@ -64,14 +117,27 @@ namespace DrKCrazyAttendance
         {
             DataTable table = new DataTable();
             MySqlDataReader rdr = null;
-            using (rdr = GetDataReaderFromQuery(query, parameters))
+            if (IsConnectable)
             {
-                if (rdr != null)
+                try
                 {
-                    table.Load(rdr);
+                    using (rdr = GetDataReaderFromQuery(query, parameters))
+                    {
+                        if (rdr != null)
+                        {
+                            table.Load(rdr);
+                        }
+                    }
+                }
+                catch (MySqlException)
+                {
+                    throw;
                 }
             }
-            
+            else
+            {
+                throw new Exception("Sql is not connectable");
+            }
             return table;
         }
 
@@ -86,29 +152,42 @@ namespace DrKCrazyAttendance
             long scalar = 0;
             MySqlConnection conn;
             MySqlCommand cmd;
-
-
-            using (conn = DatabaseManager.Connect())
+            if (IsConnectable)
             {
-                try
+                using (conn = DatabaseManager.Connect())
                 {
-                    conn.Open();
-                    using (cmd = new MySqlCommand(query, conn))
+                    try
                     {
-                        cmd.Prepare();
-                        foreach (string key in parameters.Keys)
+                        try
                         {
-                            cmd.Parameters.AddWithValue(key, parameters[key]);
+                            conn.Open();
+                            IsConnectable = true;
                         }
-                        scalar = Convert.ToInt64(cmd.ExecuteScalar());
+                        catch (MySqlException)
+                        {
+                            IsConnectable = false;
+                        }
+                        using (cmd = new MySqlCommand(query, conn))
+                        {
+                            cmd.Prepare();
+                            foreach (string key in parameters.Keys)
+                            {
+                                cmd.Parameters.AddWithValue(key, parameters[key]);
+                            }
+                            scalar = Convert.ToInt64(cmd.ExecuteScalar());
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Error: {0}", ex);
+                        throw;
                     }
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex);
-                }
             }
-
+            else
+            {
+                throw new Exception("Sql is not connectable");
+            }
             return scalar;
         }
 
@@ -123,32 +202,50 @@ namespace DrKCrazyAttendance
             long id = 0;
             MySqlConnection conn = null;
             MySqlCommand cmd = null;
-            using (conn = DatabaseManager.Connect())
+            if (IsConnectable)
             {
-                try
+                using (conn = DatabaseManager.Connect())
                 {
-                    conn.Open();
-                    using (cmd = new MySqlCommand(query, conn))
+                    try
                     {
-                        cmd.Prepare();
-                        foreach (string key in parameters.Keys)
+                        try
                         {
-                            cmd.Parameters.AddWithValue(key, parameters[key]);
+                            conn.Open();
+                            IsConnectable = true;
                         }
-                        cmd.ExecuteNonQuery();
-                        id = cmd.LastInsertedId;
+                        catch (MySqlException)
+                        {
+                            IsConnectable = false;
+                        }
+
+                        using (cmd = new MySqlCommand(query, conn))
+                        {
+                            cmd.Prepare();
+                            foreach (string key in parameters.Keys)
+                            {
+                                cmd.Parameters.AddWithValue(key, parameters[key]);
+                            }
+                            cmd.ExecuteNonQuery();
+                            id = cmd.LastInsertedId;
+                        }
+                    }
+                    catch (MySqlException ex)
+                    {
+                        Console.WriteLine("Error: {0}", ex);
+                        throw;
                     }
                 }
-                catch (MySqlException ex)
-                {
-                    Console.WriteLine("Error: {0}", ex.ToString());
-                }
+            }
+            else
+            {
+                throw new Exception("Sql is not connectable");
             }
             return id;
         }
 
         /// <summary>
         /// Executes multiple queries
+        /// Parameters must be symmetric.
         /// </summary>
         /// <param name="query">Sql query</param>
         /// <param name="parameters">Query parameters</param>
@@ -158,45 +255,68 @@ namespace DrKCrazyAttendance
             bool success = false;
             MySqlConnection conn = null;
             MySqlCommand cmd = null;
-            MySqlTransaction tr = null; 
-            using (conn = DatabaseManager.Connect())
+            MySqlTransaction tr = null;
+            if (IsConnectable)
             {
-                try
-                {
-                    conn.Open();
-                    tr = conn.BeginTransaction();
-                    using (cmd = new MySqlCommand(query, conn))
-                    {
-                        cmd.Prepare();
-                        cmd.Transaction = tr;
-                        //we use a list of dictionarys to allow different sets of parameters. 
-                        //Such in the event we are given the job of updating several queries in one time.
-                        foreach (Dictionary<string, Object> param in parameters)
-                        {
-                            foreach (string key in param.Keys)
-                            {
-                                cmd.Parameters.AddWithValue(key, param[key]);
-                            }
-                            cmd.ExecuteNonQuery();
-                        }
-                        success = true;
-                        tr.Commit();
-                    }
-                }
-                catch (MySqlException ex)
+                using (conn = DatabaseManager.Connect())
                 {
                     try
                     {
-                        if (tr != null)
-                            tr.Rollback();
-                    }
-                    catch (MySqlException ex1)
-                    {
-                        Console.WriteLine("Error: {0}", ex1.ToString());
-                    }
+                        try
+                        {
+                            conn.Open();
+                            IsConnectable = true;
+                        }
+                        catch (MySqlException)
+                        {
+                            IsConnectable = false;
+                        }
+                        tr = conn.BeginTransaction();
+                        using (cmd = new MySqlCommand(query, conn))
+                        {
+                            cmd.Prepare();
+                            cmd.Transaction = tr;
 
-                    Console.WriteLine("Error: {0}", ex.ToString());
+                            //add the parameters first thing
+                            foreach (string key in parameters.First().Keys)
+                            {
+                                cmd.Parameters.AddWithValue(key, null);
+                            }
+                            //we use a list of dictionarys to allow different sets of parameters. 
+                            //Such in the event we are given the job of updating several queries in one time.
+                            foreach (Dictionary<string, Object> param in parameters)
+                            {
+                                foreach (string key in param.Keys)
+                                {
+                                    //change the values to match what we were given
+                                    cmd.Parameters[key].Value = param[key];
+                                }
+                                cmd.ExecuteNonQuery();
+                            }
+                            success = true;
+                            tr.Commit();
+                        }
+                    }
+                    catch (MySqlException ex)
+                    {
+                        try
+                        {
+                            if (tr != null)
+                                tr.Rollback();
+                        }
+                        catch (MySqlException ex1)
+                        {
+                            Console.WriteLine("Error: {0}", ex1);
+                        }
+
+                        Console.WriteLine("Error: {0}", ex);
+                        throw;
+                    }
                 }
+            }
+            else
+            {
+                throw new Exception("Sql is not connectable");
             }
             return success;
         }

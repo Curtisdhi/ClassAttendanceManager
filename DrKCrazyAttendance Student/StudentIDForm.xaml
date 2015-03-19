@@ -25,7 +25,7 @@
             </Grid>
             <Grid Height="24">
                 <Button x:Name="btnClear" HorizontalAlignment="Right" Margin="0,0,73,0" VerticalAlignment="Bottom" Width="58" Click="btnClear_Click" Content="Clear"/>
-                <Button x:Name="btnSave" Content="Save" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Bottom" Width="58" Click="btnSave_Click"/>
+                <Button x:Name="btnSave" Content="Save" HorizontalAlignment="Right" Margin="0,2,10,0" VerticalAlignment="Top" Width="58" Click="btnSave_Click"/>
             </Grid>
         </StackPanel>
 

@@ -2,17 +2,21 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="DrkCrazyAttendance Manager" Height="350" Width="530" MinHeight="350" MinWidth="530"
-        WindowStartupLocation="CenterScreen" Icon="icon.ico" Loaded="Window_Loaded" Closing="Window_Closing" Background="White">
+        Title="Attendance Manager" Height="350" Width="530" MinHeight="350" MinWidth="530"
+        WindowStartupLocation="CenterScreen" Icon="icon.ico" Closing="Window_Closing" Background="White" ContentRendered="Window_ContentRendered">
     <Grid Margin="0,0,2,0">
-        <Menu Height="28" VerticalAlignment="Top" Margin="0,0,-2,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="7*"/>
+            <ColumnDefinition Width="13*"/>
+        </Grid.ColumnDefinitions>
+        <Menu Height="28" VerticalAlignment="Top" Margin="0,0,-2,0" Grid.ColumnSpan="2">
             <MenuItem x:Name="menuFile" Header="File">
                 <MenuItem x:Name="menuClose" Header="Close" RenderTransformOrigin="0.846,0.625" Click="menuClose_Click"/>
             </MenuItem>
             <MenuItem x:Name="menuSettings" Header="Settings" Click="menuSettings_Click"/>
             <MenuItem x:Name="mnuAbout" Header="About" Click="mnuAbout_Click"/>
         </Menu>
-        <Grid Margin="0,28,-2,0" Height="Auto">
+        <Grid Margin="0,28,-2,0" Height="Auto" Grid.ColumnSpan="2">
             <ListView x:Name="lstCourses" Margin="17,37,17,54" MouseDoubleClick="ListView_MouseDoubleClick" SelectionChanged="lstCourses_SelectionChanged">
                 <ListView.View>
                     <GridView>

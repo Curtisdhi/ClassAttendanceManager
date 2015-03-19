@@ -2,26 +2,29 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="DrKCrazyAttendance.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="Classroom" Type="System.String" Scope="User">
+    <Setting Name="Classroom" Provider="PortableSettingsProvider" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="SqlServerAddr" Type="System.String" Scope="User">
+    <Setting Name="SqlServerAddr" Provider="PortableSettingsProvider" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="SqlDatabase" Type="System.String" Scope="User">
+    <Setting Name="SqlDatabase" Provider="PortableSettingsProvider" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="SqlUsername" Type="System.String" Scope="User">
+    <Setting Name="SqlUsername" Provider="PortableSettingsProvider" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="SqlPassword" Type="System.String" Scope="User">
+    <Setting Name="SqlPassword" Provider="PortableSettingsProvider" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="SecurityPin" Type="System.String" Scope="User">
+    <Setting Name="SecurityPin" Provider="PortableSettingsProvider" Type="System.String" Scope="User">
       <Value Profile="(Default)">9000</Value>
     </Setting>
-    <Setting Name="Instructor" Type="System.String" Scope="User">
+    <Setting Name="Instructor" Provider="PortableSettingsProvider" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Encrypted" Provider="PortableSettingsProvider" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -1,4 +1,5 @@
-﻿using DrKCrazyAttendance;
+﻿
+using DrKCrazyAttendance;
 using DrKCrazyAttendance.Properties;
 using System;
 using System.Collections.Generic;
@@ -38,11 +39,12 @@ namespace DrKCrazyAttendance_Instructor
             }
         }
 
-        public CourseEditor(Course course) {
+        public CourseEditor(Course course)
+        {
             InitializeComponent();
             Course = course;
             DataContext = this;
-            //if course id is 0, must be not be persisted.
+            //if course id is 0, must be not be edited.
             if (Course.Id != 0)
                 editing = true;
 
@@ -83,7 +85,8 @@ namespace DrKCrazyAttendance_Instructor
         public Course Course
         {
             get { return course; }
-            private set {
+            private set
+            {
                 course = value;
                 //clone the course so we have the original values to
                 //revert back to in the even the user doesn't save.
@@ -91,6 +94,12 @@ namespace DrKCrazyAttendance_Instructor
                 //explictly persisted to the DB until the user "saves"
                 originalCourse = new Course(value);
             }
+        }
+
+        public bool Persisted
+        {
+            get;
+            private set;
         }
         #endregion
 
@@ -107,12 +116,12 @@ namespace DrKCrazyAttendance_Instructor
             chkSaturday.IsChecked = originalCourse.Days.Contains(DayOfWeek.Saturday);
             txtCourse.Text = originalCourse.CourseName;
             txtSection.Text = originalCourse.Section;
-            startDatePicker.SelectedDate = (DateTime?)originalCourse.StartDate;
-            endDatePicker.SelectedDate = (DateTime?)originalCourse.EndDate;
-            startTimePicker.Value = (DateTime?)originalCourse.StartTime;
-            endTimePicker.Value = (DateTime?)originalCourse.EndTime;
+            startDatePicker.SelectedDate = originalCourse.StartDate;
+            endDatePicker.SelectedDate = originalCourse.EndDate;
+            startTimePicker.Value = originalCourse.StartTime;
+            endTimePicker.Value = originalCourse.EndTime;
 
-            classroomChoice.SelectedIndex = classroomChoice.Items.IndexOf(originalCourse.Classroom);
+            classroomChoice.Text = originalCourse.Classroom;
 
         }
 
@@ -151,34 +160,72 @@ namespace DrKCrazyAttendance_Instructor
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            //the checkboxes aren't binded, so we must manually deal with it
-            Course.Days.Clear();
-            if (IsChecked(chkMonday))
-                Course.Days.Add(DayOfWeek.Monday);
-            if (IsChecked(chkTuesday))
-                Course.Days.Add(DayOfWeek.Tuesday);
-            if (IsChecked(chkWednesday))
-                Course.Days.Add(DayOfWeek.Wednesday);
-            if (IsChecked(chkThursday))
-                Course.Days.Add(DayOfWeek.Thursday);
-            if (IsChecked(chkFriday))
-                Course.Days.Add(DayOfWeek.Friday);
-            if (IsChecked(chkSaturday))
-                Course.Days.Add(DayOfWeek.Saturday);
 
-            if (editing)
+            string errors = IsValid();
+            if (!string.IsNullOrEmpty(errors))
             {
-                //update in the DB
-                Course.Update(Course);
+                MessageBox.Show(errors, "Validation errors", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {
-                MainWindow.Instance.lstCourses.Items.Add(Course);
-                Course.Add(Course);
+                //the checkboxes aren't binded, so we must manually deal with it
+                Course.Days.Clear();
+                if (IsChecked(chkMonday))
+                    Course.Days.Add(DayOfWeek.Monday);
+                if (IsChecked(chkTuesday))
+                    Course.Days.Add(DayOfWeek.Tuesday);
+                if (IsChecked(chkWednesday))
+                    Course.Days.Add(DayOfWeek.Wednesday);
+                if (IsChecked(chkThursday))
+                    Course.Days.Add(DayOfWeek.Thursday);
+                if (IsChecked(chkFriday))
+                    Course.Days.Add(DayOfWeek.Friday);
+                if (IsChecked(chkSaturday))
+                    Course.Days.Add(DayOfWeek.Saturday);
+                try
+                {
+                    if (editing)
+                    {
+                        //update in the DB
+                        Course.Update(Course);
+                    }
+                    else
+                    {
+                        Course.Add(Course);
+                        MainWindow.Instance.lstCourses.Items.Add(Course);
+                    }
+                    Persisted = true;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Failed to persist course to the database.\n" + ex.Message,
+                        "Sql Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    Persisted = false;
+                }
+                finally
+                {
+                    Close();
+                }
             }
 
-            Close();
+        }
 
+        private string IsValid()
+        {
+            string errors = "";
+
+            if (!Course.IsValid)
+            {
+                errors += "Please correct the errors before continuing.\n";
+            }
+
+            if (!IsChecked(chkMonday) && !IsChecked(chkTuesday) && !IsChecked(chkWednesday) && !IsChecked(chkThursday)
+                && !IsChecked(chkFriday) && !IsChecked(chkSaturday))
+            {
+                errors += "Please check at least one Day\n";
+            }
+
+            return errors;
         }
 
         private void chkEnableTardy_Click(object sender, RoutedEventArgs e)
@@ -189,13 +236,128 @@ namespace DrKCrazyAttendance_Instructor
         private void Window_Closed(object sender, EventArgs e)
         {
             //reset the course to the original settings before closing!
-            ResetForm();
+            if (!Persisted)
+            {
+                ResetForm();
+            }
         }
 
-        private void control_Error(object sender, ValidationErrorEventArgs e)
+        private void txtCourse_TextChanged(object sender, TextChangedEventArgs e)
         {
+            TextBox box = (TextBox)sender;
+            //four characters and 4 digits
+            int length = box.Text.Length;
 
+            if (length > 0)
+            {
+                if (length <= 4)
+                {
+                    if (!char.IsLetter(box.Text[length - 1]))
+                    {
+                        box.Text = box.Text.Substring(0, length - 1);
+                        e.Handled = true;
+                    }
+                    else
+                    {
+                        box.Text = box.Text.ToUpper();
+                        e.Handled = true;
+                    }
+                }
+                else if (length <= 8)
+                {
+                    if (!char.IsDigit(box.Text[length - 1]))
+                    {
+                        box.Text = box.Text.Substring(0, length - 1);
+                        e.Handled = true;
+                    }
+                }
+                else
+                {
+                    box.Text = box.Text.Substring(0, length - 1);
+                    e.Handled = true;
+                }
+            }
+            box.CaretIndex = box.Text.Length;
         }
 
+        private void txtSection_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            TextBox box = (TextBox)sender;
+            //four characters and 4 digits
+            int length = box.Text.Length;
+
+
+            if (length > 0)
+            {
+                if (length <= 1)
+                {
+                    if (!char.IsLetter(box.Text[length - 1]))
+                    {
+                        box.Text = box.Text.Substring(0, length - 1);
+                        e.Handled = true;
+                    }
+                    else
+                    {
+                        box.Text = box.Text.ToUpper();
+                        e.Handled = true;
+                    }
+                }
+                else if (length <= 3)
+                {
+                    if (!char.IsDigit(box.Text[length - 1]))
+                    {
+                        box.Text = box.Text.Substring(0, length - 1);
+                        e.Handled = true;
+                    }
+                }
+                else
+                {
+                    box.Text = box.Text.Substring(0, length - 1);
+                    e.Handled = true;
+                }
+            }
+            box.CaretIndex = box.Text.Length;
+        }
+
+        private void classroomChoice_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ComboBox box = (ComboBox)sender;
+            //1 letter and 4 digits
+            int length = box.Text.Length;
+
+            StringBuilder sb = new StringBuilder();
+
+            if (length > 0)
+            {
+                if (length <= 1)
+                {
+                    if (!char.IsLetter(box.Text[length - 1]))
+                    {
+                        box.Text = box.Text.Substring(0, length - 1);
+                        e.Handled = true;
+                    }
+                    else
+                    {
+                        box.Text = box.Text.ToUpper();
+                        e.Handled = true;
+                    }
+                }
+                else if (length <= 5)
+                {
+                    if (!char.IsDigit(box.Text[length - 1]))
+                    {
+                        box.Text = box.Text.Substring(0, length - 1);
+                        e.Handled = true;
+                    }
+                }
+                else
+                {
+                    box.Text = box.Text.Substring(0, length - 1);
+                    e.Handled = true;
+                }
+            }
+            TextBox txt = box.Template.FindName("PART_EditableTextBox", box) as TextBox;
+            txt.CaretIndex = box.Text.Length;
+        }
     }
 }

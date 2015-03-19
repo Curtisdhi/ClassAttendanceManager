@@ -25,38 +25,15 @@ namespace DrKCrazyAttendance_Instructor
     {
         private SettingsForm settingsForm;
         private About about;
-        private CourseEditor editor;
+        private List<CourseEditor> editors = new List<CourseEditor>();
         private AttendanceReport attendanceReport;
+        private List<Course> courses = new List<Course>();
 
         public MainWindow()
         {
             InitializeComponent();
             Instance = this;
-            List<string> classrooms = Course.GetClassrooms();
-            foreach (string classroom in classrooms)
-            {
-                classroomCombo.Items.Add(classroom);
-            }
-
-           string query = @"SELECT DISTINCT days FROM Courses ORDER BY days";
-           MySqlDataReader rdr = null;
-           using (rdr = DatabaseManager.GetDataReaderFromQuery(query))
-           {
-               if (rdr != null)
-               {
-                   try
-                   {
-                       while (rdr.Read())
-                       {
-                           daysCombo.Items.Add(rdr.GetString(0));
-                       }
-                   }
-                   catch (MySqlException ex)
-                   {
-                       Console.WriteLine("Mysql Error {0}", ex);
-                   }
-               }
-           }
+            OriginalTitle = Title;
         }
 
         #region Properties
@@ -67,47 +44,175 @@ namespace DrKCrazyAttendance_Instructor
             private set;
         }
 
+        public string OriginalTitle
+        {
+            get;
+            private set;
+        }
         #endregion
 
         public void LoadCourses()
         {
             lstCourses.Items.Clear();
-            List<Course> courses = Course.GetCoursesByInstructor(Settings.Default.Instructor);
+            classroomCombo.Items.Clear();
+            daysCombo.Items.Clear();
+
+            classroomCombo.Items.Add("Classrooms");
+            classroomCombo.SelectedIndex = 0;
+            daysCombo.Items.Add("Days");
+            daysCombo.SelectedIndex = 0;
+
+            if (DatabaseManager.TestConnection())
+            {
+                Title = OriginalTitle + " - Connected";
+
+                List<string> classrooms = Course.GetClassrooms();
+                foreach (string classroom in classrooms)
+                {
+                    classroomCombo.Items.Add(classroom);
+                }
+
+                
+                string query = @"SELECT DISTINCT days FROM Courses ORDER BY days";
+                MySqlDataReader rdr = null;
+                using (rdr = DatabaseManager.GetDataReaderFromQuery(query))
+                {
+                    if (rdr != null)
+                    {
+                        try
+                        {
+                            while (rdr.Read())
+                            {
+                                daysCombo.Items.Add(rdr.GetString(0));
+                            }
+                        }
+                        catch (MySqlException ex)
+                        {
+                            Console.WriteLine("Mysql Error {0}", ex);
+                        }
+                    }
+                }
+
+                courses = Course.GetCoursesByInstructor(Settings.Default.Instructor);
+                SetCourseList(courses);
+
+                btnAdd.IsEnabled = true;
+            }
+            else
+            {
+                Title = OriginalTitle + " - Disconnected";
+                btnAdd.IsEnabled = false;
+
+                MessageBox.Show("Error! Could not connect to database. Please confirm settings are correct. If problem persists, please contact IT.",
+                        "Database Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void CreateCourseEditor(Course course)
+        {
+            CourseEditor ce = null;
+            if (course == null)
+            {
+                ce = new CourseEditor();
+            }
+            else
+            {
+                bool cExists = false;
+                //make sure we aren't already editing a course
+                foreach (CourseEditor c in editors) {
+                    if (course.Id != 0 && course.Id == c.Course.Id)
+                    {
+                        c.Focus();
+                        c.WindowState = WindowState.Normal;
+                        cExists = true;
+                        break;
+                    }
+                }
+                if (!cExists)
+                {
+                    ce = new CourseEditor(course);
+                }
+            }
+
+            if (ce != null)
+            {
+                ce.Show();
+                ce.Closed += OnCourseEditorClose;
+                editors.Add(ce);
+            }
+        }
+
+        private void Filter(string classroom, string days)
+        {
+            IQueryable<Course> cs = courses.AsQueryable();
+
+            if (days != null)
+                cs = cs.Where(course => course.FriendlyDays.Equals(days));
+            if (classroom != null)
+                cs = cs.Where(course => course.Classroom.Equals(classroom));
+
+            SetCourseList(cs.ToList<Course>());
+        }
+
+        private void SetCourseList(List<Course> courses)
+        {
+            lstCourses.Items.Clear();
             foreach (Course c in courses)
             {
                 lstCourses.Items.Add(c);
             }
         }
 
+        #region events
         private void menuSettings_Click(object sender, RoutedEventArgs e)
         {
             settingsForm = new SettingsForm();
             settingsForm.Show();
+            this.Hide();
         }
-
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            if (lstCourses.SelectedItem != null)
+            var confirmDelete = MessageBox.Show("Are you sure you want to delete this Course?",
+                                    "Confirm", MessageBoxButton.OKCancel);
+
+            if (confirmDelete == MessageBoxResult.OK && lstCourses.SelectedItem != null)
             {
                 Course course = (Course)lstCourses.SelectedItem;
                 Course.Remove(course);
                 lstCourses.Items.Remove(course);
             }
+
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            editor = new CourseEditor();
-            editor.Show();
+            CreateCourseEditor(null);
         }
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
             if (lstCourses.SelectedItem != null)
             {
-                editor = new CourseEditor((Course)lstCourses.SelectedItem);
-                editor.Show();
+                CreateCourseEditor((Course)lstCourses.SelectedItem);
+            }
+        }
+
+        private void ListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (lstCourses.SelectedItem != null)
+            {
+                CreateCourseEditor((Course)lstCourses.SelectedItem);
+            }
+        }
+
+        private void btnClone_Click(object sender, RoutedEventArgs e)
+        {
+            if (lstCourses.SelectedItem != null)
+            {
+                Course course = (Course)lstCourses.SelectedItem;
+                Course cloneCourse = new Course(course);
+                CreateCourseEditor(cloneCourse);
             }
         }
 
@@ -116,32 +221,62 @@ namespace DrKCrazyAttendance_Instructor
             Close();
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private void Window_ContentRendered(object sender, EventArgs e)
         {
             LoadCourses();
+        }
 
-            //Attendance.GetAttendancesByInstructor(Settings.Default.Instructor);
+        private void OnCourseEditorClose(object sender, EventArgs e)
+        {
+            CourseEditor ce = (CourseEditor)sender;
+            ce.Course.ResetEventsInAction();
+            editors.Remove(ce);
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (settingsForm != null && settingsForm.IsVisible)
+            var confirmResult = MessageBox.Show("Are you sure you want to close the program?",
+                                            "Confirm", MessageBoxButton.YesNo);
+            if (confirmResult == MessageBoxResult.Yes)
             {
-                var confirmResult = MessageBox.Show("Are you sure to close the program without saving the settings?",
-                                        "Confirm", MessageBoxButton.YesNo);
-                if (confirmResult == MessageBoxResult.Yes)
+                if (settingsForm != null && settingsForm.IsLoaded)
                 {
-                    settingsForm.Close();
+                    confirmResult = MessageBox.Show("Are you sure you close without saving the settings?",
+                                            "Confirm", MessageBoxButton.YesNo);
+                    if (confirmResult == MessageBoxResult.Yes)
+                    {
+                        settingsForm.Close();
+                    }
+                    else
+                    {
+                        //cancel if the user doesn't confirm
+                        e.Cancel = true;
+                    }
                 }
-                else
+                if (about != null && about.IsLoaded)
                 {
-                    //cancel if the user doesn't confirm
-                    e.Cancel = true;
+                    about.Close();
                 }
+
+                if (attendanceReport != null && attendanceReport.IsVisible)
+                {
+                    attendanceReport.Close();
+                }
+
+                //close every opened course editor
+                for (int i = editors.Count-1; i >= 0; i--)
+                {
+                    if (editors[i] != null && editors[i].IsLoaded)
+                    {
+                        editors[i].Close();
+                    }
+                }
+
             }
-            if (about != null)
+            else
             {
-                about.Close();
+                //cancel if the user doesn't confirm
+                e.Cancel = true;
             }
         }
 
@@ -149,10 +284,17 @@ namespace DrKCrazyAttendance_Instructor
         {
             if (about != null)
             {
-                about.Close();
+                if (about.IsLoaded)
+                {
+                    about.Focus();
+                    about.WindowState = WindowState.Normal;
+                }
             }
-            about = new About();
-            about.Show();
+            else
+            {
+                about = new About();
+                about.Show();
+            }
         }
 
         private void btnReport_Click(object sender, RoutedEventArgs e)
@@ -165,30 +307,17 @@ namespace DrKCrazyAttendance_Instructor
             }
         }
 
-        private void btnClone_Click(object sender, RoutedEventArgs e)
-        {
-            if (lstCourses.SelectedItem != null)
-            {
-                Course course = (Course)lstCourses.SelectedItem;
-                Course cloneCourse = new Course(course);
-
-                editor = new CourseEditor(cloneCourse);
-                editor.Show();
-            }
-        }
-
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
+            string classroom = classroomCombo.SelectedItem as string;
+            if (classroomCombo.SelectedIndex == 0)
+                classroom = null;
 
-        }
+            string days = daysCombo.SelectedItem as string;
+            if (daysCombo.SelectedIndex == 0)
+                days = null;
 
-        private void ListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            if (lstCourses.SelectedItem != null)
-            {
-                editor = new CourseEditor((Course)lstCourses.SelectedItem);
-                editor.Show();
-            }
+            Filter(classroom, days);
         }
 
         private void lstCourses_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -199,6 +328,7 @@ namespace DrKCrazyAttendance_Instructor
             btnEdit.IsEnabled = enable;
             btnReport.IsEnabled = enable;
         }
+        #endregion
 
     }
 }

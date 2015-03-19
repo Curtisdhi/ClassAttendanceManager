@@ -9,11 +9,24 @@ using System.Threading.Tasks;
 
 namespace DrKCrazyAttendance
 {
-    public class Course : IDataErrorInfo
+    public class Course : IDataErrorInfo, INotifyPropertyChanged
     {
+        private Dictionary<string, bool> propertiesValid = new Dictionary<string, bool>();
+
         public Course()
         {
+            this.Id = 0;
             Days = new List<DayOfWeek>();
+            this.Classroom = "";
+            this.CourseName = "";
+            this.Section = "";
+            this.Instructor = "";
+            this.StartDate = DateTime.Now;
+            this.EndDate = DateTime.Now;
+            this.StartTime = DateTime.MinValue;
+            this.EndTime = DateTime.MinValue;
+            this.GracePeriod = TimeSpan.Zero;
+            this.LogTardy = false;
         }
 
         public Course(string instructor) : this()
@@ -53,6 +66,15 @@ namespace DrKCrazyAttendance
         }
 
         #region Properties
+        public bool IsValid
+        {
+            get
+            {
+                //if if this doesn't contain true, the object isn't valid
+                return !propertiesValid.ContainsValue(false);
+            }
+        }
+
         public long Id
         {
             get;
@@ -170,6 +192,11 @@ namespace DrKCrazyAttendance
         #endregion
 
         #region Methods
+        public bool IsTardy(DateTime now) {
+            //if now is greater than class starting time plus graceperiod, then student is tardy.
+            return now.TimeOfDay > (StartTime + GracePeriod).TimeOfDay;
+        }
+
         //gets every datetime with in the range of start and end dates
         public DateTime[] GetClassMeetings()
         {
@@ -443,49 +470,135 @@ namespace DrKCrazyAttendance
         {
             get
             {
-                string result = null;
-                switch (propertyName.ToLower()) { 
-                    case "classroom":
-                        if (string.IsNullOrWhiteSpace(Classroom))
+                TimeSpan timeValidation = new TimeSpan(0, 30, 0);
+                string result = "";
+                switch (propertyName) { 
+                    case "Classroom":
+                        if (Classroom.Length != 5)
                         {
-                            result = "Classroom is required";
+                            result = "Requires 5 characters.";
                         }
                         break;
-                    case "coursename":
-                        if (string.IsNullOrWhiteSpace(CourseName))
+                    case "CourseName":
+                        if (CourseName.Length != 8)
                         {
-                            result = "Course name is required";
+                            result = "Requires 8 characters.";
                         }
                         break;
-                    case "section":
-                        if (string.IsNullOrWhiteSpace(Section))
+                    case "Section":
+                        if (Section.Length != 3)
                         {
-                            result = "Section is required";
+                            result = "Requires 3 characters.";
                         }
                         break;
-                    case "startdate":
+                    case "StartDate":
                         if (StartDate == DateTime.MinValue)
                         {
-                            result = "Start Date is required";
+                            result = "Required";
                         }
+                        else if (StartDate > EndDate)
+                        {
+                            result = "Start date can't be after end date.";
+                        }
+                        RaisePropertyChanged("EndDate");
+                        eventsInAction[propertyName] = false;
                         break;
-                    case "enddate":
+                    case "EndDate":
                         if (EndDate == DateTime.MinValue)
                         {
-                            result = "End Date is required";
+                            result = "Required";
                         }
+                        else if (StartDate > EndDate)
+                        {
+                            result = "\t";//"End date can't be before start date.";
+                        }
+                        //validate start date
+                        RaisePropertyChanged("StartDate");
+                        eventsInAction[propertyName] = false;
                         break;
-                    case "graceperiod":
+                    case "StartTime":
+                        if (StartTime.TimeOfDay > EndTime.TimeOfDay)
+                        {
+                            result = "Start time can not be after end time.";
+                        }
+                        else if ((EndTime.TimeOfDay - StartTime.TimeOfDay) < timeValidation)
+                        {
+                            result = "Class must be atleast 30 minutes long.";
+                        }
+
+                        RaisePropertyChanged("EndTime");
+                        eventsInAction[propertyName] = false;
+                        
+                        break;
+                    case "EndTime":
+                        if (StartTime.TimeOfDay > EndTime.TimeOfDay)
+                        {
+                            result = "\t";//"End time can't come before start time.";
+                        }
+                        else if ((EndTime.TimeOfDay - StartTime.TimeOfDay) < timeValidation)
+                        {
+                            result = "\t";//"Class must be atleast 30 minutes long.";
+                        }
+                        //validate start time
+                        RaisePropertyChanged("StartTime");
+                        eventsInAction[propertyName] = false;
+                        break;
+                    case "GracePeriod":
                         if (LogTardy && GracePeriod == TimeSpan.MinValue)
                         {
-                            result = "Grace Peroid is required";
+                            result = "Required";
                         }
                         break;
+                    case "LogTardy":
+                        //validate grace period
+                        RaisePropertyChanged("GracePeriod");
+                        break;
                 }
+
+                propertiesValid[propertyName] = string.IsNullOrEmpty(result);
 
                 return result;
             }
         }
+        #endregion
+
+        #region INotifyPropertyChanged Members
+        private Dictionary<string, bool> eventsInAction = new Dictionary<string, bool>();
+
+        public void ResetEventsInAction()
+        {
+            eventsInAction.Clear();
+        }
+
+        private void RaisePropertyChanged(string propName)
+        {
+            if (propertyChangedDelegate != null) 
+            {
+                if (!eventsInAction.ContainsKey(propName) || !eventsInAction[propName]) 
+                {
+                    eventsInAction[propName] = true;
+                    propertyChangedDelegate(this, new PropertyChangedEventArgs(propName));
+                }
+                else {
+                    eventsInAction[propName] = false;
+                }
+            }
+        }
+
+        private PropertyChangedEventHandler propertyChangedDelegate;
+
+        event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
+        {
+            add
+            {
+                propertyChangedDelegate = (PropertyChangedEventHandler)Delegate.Combine(propertyChangedDelegate, value);
+            }
+            remove
+            {
+                propertyChangedDelegate = (PropertyChangedEventHandler)Delegate.Remove(propertyChangedDelegate, value);
+            }
+        }
+
         #endregion
     }
 }
