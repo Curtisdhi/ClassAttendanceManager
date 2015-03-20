@@ -3,7 +3,7 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Attendance Manager" Height="350" Width="530" MinHeight="350" MinWidth="530"
-        WindowStartupLocation="CenterScreen" Icon="icon.ico" Closing="Window_Closing" Background="White" ContentRendered="Window_ContentRendered">
+        WindowStartupLocation="CenterScreen" Icon="drkicon.ico" Closing="Window_Closing" Background="White" ContentRendered="Window_ContentRendered">
     <Grid Margin="0,0,2,0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="7*"/>

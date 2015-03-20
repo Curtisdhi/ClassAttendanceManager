@@ -50,7 +50,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>icon.ico</ApplicationIcon>
+    <ApplicationIcon>drkicon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="MySql.Data, Version=6.9.5.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
@@ -152,6 +152,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="capstone.sql" />
+    <Resource Include="drkicon.ico" />
     <Resource Include="images\checkmark.png" />
     <Resource Include="images\floppy.png" />
     <Resource Include="images\delete.png" />
