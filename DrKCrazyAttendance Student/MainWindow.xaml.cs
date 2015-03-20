@@ -61,9 +61,20 @@ namespace DrKCrazyAttendance_Student
                 lblInstructor.Content = Course.Instructor;
             }
             if (Student != null)
-            {
+        {
                 lblStudentId.Content = Student.Id;
                 lblUsername.Content = Student.Username;
+            }
+        }
+
+        private void RefreshInfo()
+        {
+            if (course != null && student != null)
+            {
+                lblCourse.Content = course.CourseName + " " + course.Section;
+                lblInstructor.Content = course.Instructor;
+                lblStudentId.Content = student.Id;
+                lblUsername.Content = student.Username;
             }
         }
 
@@ -84,11 +95,15 @@ namespace DrKCrazyAttendance_Student
                     }
                     else
                     {
-                        MessageBox.Show("Successfully changed your id");
-                    }
+                    MessageBox.Show("Successfully changed your id");
                 }
                 else
                 {
+                    MessageBox.Show("Your id did not change.");
+                }
+            }
+                else
+            {
                     MessageBox.Show("Your id did not change.");
                 }
             }

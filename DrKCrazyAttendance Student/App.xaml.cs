@@ -48,7 +48,7 @@ namespace DrKCrazyAttendance_Student
                     }
                 }
             }
-           
+            
             if (student != null && RegisterAttendance(course, student, now))
             {
                 ((MainWindow)MainWindow).Course = course;
@@ -61,7 +61,7 @@ namespace DrKCrazyAttendance_Student
                 //Shutdown();
                 MainWindow.Close();
             }
-       }
+        }
 
         private bool RegisterAttendance(Course course, Student student, DateTime now)
         {

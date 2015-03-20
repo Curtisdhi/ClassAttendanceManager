@@ -16,6 +16,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace DrKCrazyAttendance_Instructor
 {
@@ -96,6 +97,17 @@ namespace DrKCrazyAttendance_Instructor
        
         private void btnPrint_Click(object sender, RoutedEventArgs e)
         {
+            StackPanel page = new StackPanel();
+            PrintDialog dialog = new PrintDialog();
+
+bool? result = dialog.ShowDialog();
+if (result.HasValue && result.Value)
+{
+    System.Windows.Size pageSize = new System.Windows.Size { Height = dialog.PrintableAreaHeight, Width = dialog.PrintableAreaWidth };
+    page.Measure(pageSize);
+    page.UpdateLayout();
+    dialog.PrintVisual(this.attendanceDataGrid, "");
+}
             
         }
 
@@ -106,9 +118,14 @@ namespace DrKCrazyAttendance_Instructor
 
         //datagrid delete button event
         private void Delete_Button_Click(object sender, RoutedEventArgs e)
+            
+            //Attendance obj = ((FrameworkElement)sender).DataContext as Attendance;
+             {
+            var  result = MessageBox.Show("Are you sure you want to delete this student?", "Validation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if ( result == MessageBoxResult.Yes && attendanceDataGrid.SelectedItem != null)
         {
-            Attendance obj = ((FrameworkElement)sender).DataContext as Attendance;
-            if (true) { }
+                attendanceDataGrid.Items.Remove(attendanceDataGrid.SelectedItem);
+            }
         }
 
         //Save this object into a CSV file
@@ -166,6 +183,6 @@ namespace DrKCrazyAttendance_Instructor
             }
 
         }
-       
+
     }
 }
