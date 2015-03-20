@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -42,7 +43,7 @@ namespace DrKCrazyAttendance_Instructor
                 CustomBoundColumn col = new CustomBoundColumn()
                 {
                     Header = date,
-                    HeaderStringFormat = "MMM d",
+                    HeaderStringFormat = "M/ d",
                     TemplateName = "attendanceCheckmark",
                     Binding = binding
                 };
@@ -57,6 +58,20 @@ namespace DrKCrazyAttendance_Instructor
                     attendanceVms.Add(avm);
                     attendanceDataGrid.Items.Add(avm);
                 }
+            }
+
+            PrintRenderer render = new PrintRenderer(attendanceVms);
+
+            Bitmap bitmap = render.GenerateGrid();
+            MemoryStream ms;
+            using (ms = new MemoryStream()) {
+                bitmap.Save(ms, ImageFormat.Bmp);
+                ms.Position = 0;
+                BitmapImage bmpi = new BitmapImage(); 
+                bmpi.BeginInit();
+                bmpi.StreamSource = ms;
+                bmpi.EndInit();
+                testImage.Source = bmpi;
             }
 
         }

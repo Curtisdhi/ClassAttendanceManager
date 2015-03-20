@@ -107,7 +107,7 @@
     </Compile>
     <Compile Include="AttendanceViewModel.cs" />
     <Compile Include="CustomBoundColumn.cs" />
-    <Compile Include="i.cs" />
+    <Compile Include="PrintRenderer.cs" />
     <Compile Include="Property.cs" />
     <Compile Include="SettingsForm.xaml.cs">
       <DependentUpon>SettingsForm.xaml</DependentUpon>
