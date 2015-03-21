@@ -27,7 +27,7 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTextColumn Binding="{Binding Path=Student.Username}" Header="Username" CanUserSort="False" CanUserReorder="False" CanUserResize="False"/>
-                <DataGridTextColumn Binding="{Binding Path=Student.Id}" Header="Student Id" CanUserReorder="False"/>
+                <DataGridTextColumn Binding="{Binding Path=Student.Id}" Header="Student Id" CanUserReorder="False" CanUserSort="False" CanUserResize="False"/>
 
             </DataGrid.Columns>
         </DataGrid>
