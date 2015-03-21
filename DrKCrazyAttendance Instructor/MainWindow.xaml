@@ -3,7 +3,7 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="DrkCrazyAttendance Manager" Height="350" Width="530" MinHeight="350" MinWidth="530"
-        WindowStartupLocation="CenterScreen" Icon="icon.ico" Loaded="Window_Loaded" Closing="Window_Closing" Background="White">
+        WindowStartupLocation="CenterScreen" Icon="icon.ico" Loaded="Window_Loaded" Closing="Window_Closing" Background="White" >
     <Grid Margin="0,0,2,0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="7*"/>

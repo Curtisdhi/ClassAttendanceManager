@@ -1,7 +1,7 @@
 ﻿<Window x:Class="DrKCrazyAttendance_Student.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="DrKCrazyAttendance Manager" Height="176.872" Width="344.604" Loaded="Window_Loaded" ResizeMode="NoResize" Icon="icon.ico" Visibility="Visible">
+        Title="DrKCrazyAttendance Manager" Height="176.872" Width="344.604" Loaded="Window_Loaded" ResizeMode="NoResize" Icon="icon.ico" Visibility="Visible" WindowStartupLocation="CenterScreen"  >
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="22*"/>
