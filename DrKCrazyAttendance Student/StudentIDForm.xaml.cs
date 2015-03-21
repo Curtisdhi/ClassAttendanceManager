@@ -83,9 +83,6 @@ namespace DrKCrazyAttendance_Student
                             }
                             DialogResult = true;
                                    
-                            MainWindow mnw = new MainWindow();
-                            mnw.Show();
-                            Close();
                         }
                         else
                         {
@@ -156,8 +153,8 @@ namespace DrKCrazyAttendance_Student
             }
             //window has never been open
             else {
-                studentHelpForm = new Student_ID_Help();
-                studentHelpForm.Show();
+            studentHelpForm = new Student_ID_Help();
+            studentHelpForm.Show();
             }
             
         }

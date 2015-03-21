@@ -22,19 +22,49 @@ namespace DrKCrazyAttendance_Student
     /// </summary>
     public partial class MainWindow : Window
     {
-        private Student student = null;
-        private Course course = null;
+        private Course course;
+        private Student student;
 
         public MainWindow()
         {
             InitializeComponent();
         }
 
-        public MainWindow(Course course, Student student)
+        #region Properties
+        public Course Course
         {
-            InitializeComponent();
-            this.course = course;
-            this.student = student;
+            set {
+                course = value;
+                RefreshInfo();
+            }
+            get {
+                return course;
+            }
+        }
+
+        public Student Student
+        {
+            set {
+                student = value;
+                RefreshInfo();
+            }
+            get {
+                return student;  
+            }
+        }
+        #endregion
+
+        private void RefreshInfo()
+        {
+            if (Course != null) {
+                lblCourse.Content = Course.CourseName + " " + Course.Section;
+                lblInstructor.Content = Course.Instructor;
+            }
+            if (Student != null)
+        {
+                lblStudentId.Content = Student.Id;
+                lblUsername.Content = Student.Username;
+            }
         }
 
         private void RefreshInfo()
@@ -50,15 +80,21 @@ namespace DrKCrazyAttendance_Student
 
         private void Hyperlink_Click(object sender, RoutedEventArgs e)
         {
-            Student stu = new Student();
-            if (student != null)
+            if (Student != null)
             {
-                bool? success = new StudentIDForm(student).ShowDialog();
+                long id = Student.Id;
+                bool? success = new StudentIDForm(Student).ShowDialog();
                 if (success != null && (bool)success)
                 {
                     //fetch the new student
-                    student = Student.GetStudent(student.Username);
+                    Student = Student.GetStudent(Student.Username);
                     RefreshInfo();
+                    
+                    if (Student.Id == id) {
+                        MessageBox.Show("User ID matched the previously entered ID no edits will take place ", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                    else
+                    {
                     MessageBox.Show("Successfully changed your id");
                 }
                 else
@@ -66,9 +102,10 @@ namespace DrKCrazyAttendance_Student
                     MessageBox.Show("Your id did not change.");
                 }
             }
-            if (student == stu)
+                else
             {
-                MessageBox.Show("User ID matched the previously entered ID no edits will take place ", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show("Your id did not change.");
+                }
             }
 
         }

@@ -22,6 +22,7 @@ namespace DrKCrazyAttendance_Instructor
             var content = new ContentControl();
             content.ContentTemplate = (DataTemplate)cell.FindResource(TemplateName);
             content.SetBinding(ContentControl.ContentProperty, binding);
+            
             return content;
         }
 
