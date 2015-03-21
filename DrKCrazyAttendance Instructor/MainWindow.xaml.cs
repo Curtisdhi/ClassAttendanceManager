@@ -115,6 +115,7 @@ namespace DrKCrazyAttendance_Instructor
             {
                 editor = new CourseEditor((Course)lstCourses.SelectedItem);
                 editor.Show();
+                this.Hide();
             }
         }
 
@@ -183,6 +184,7 @@ namespace DrKCrazyAttendance_Instructor
                 Course course = (Course)lstCourses.SelectedItem;
                 attendanceReport = new AttendanceReport(course);
                 attendanceReport.Show();
+                this.Hide();
             }
         }
 
@@ -194,7 +196,8 @@ namespace DrKCrazyAttendance_Instructor
                 Course cloneCourse = new Course(course);
 
                 editor = new CourseEditor(cloneCourse);
-                editor.Show();
+                editor.Show(); 
+                this.Hide();
             }
         }
 

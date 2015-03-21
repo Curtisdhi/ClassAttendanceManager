@@ -108,6 +108,7 @@ if (result.HasValue && result.Value)
     page.Measure(pageSize);
     page.UpdateLayout();
     dialog.PrintVisual(this.attendanceDataGrid, "");
+
 }
            
         }

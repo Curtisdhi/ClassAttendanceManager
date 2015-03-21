@@ -84,6 +84,7 @@ namespace DrKCrazyAttendance_Student
             {
                 long id = Student.Id;
                 bool? success = new StudentIDForm(Student).ShowDialog();
+               
                 if (success != null && (bool)success)
                 {
                     //fetch the new student
@@ -97,6 +98,7 @@ namespace DrKCrazyAttendance_Student
                     {
                     MessageBox.Show("Successfully changed your id");
                 }
+                }
                 else
                 {
                     MessageBox.Show("Your id did not change.");
@@ -108,7 +110,7 @@ namespace DrKCrazyAttendance_Student
                 }
             }
 
-        }
+        
 
         private void btnOk_Click(object sender, RoutedEventArgs e)
         {
