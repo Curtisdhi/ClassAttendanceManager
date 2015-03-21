@@ -42,7 +42,7 @@ namespace DrKCrazyAttendance_Instructor
                 CustomBoundColumn col = new CustomBoundColumn()
                 {
                     Header = date,
-                    HeaderStringFormat = "MMM d",
+                    HeaderStringFormat = "M/d",
                     TemplateName = "attendanceCheckmark",
                     Binding = binding
                 };
@@ -103,6 +103,7 @@ namespace DrKCrazyAttendance_Instructor
 bool? result = dialog.ShowDialog();
 if (result.HasValue && result.Value)
 {
+   
     System.Windows.Size pageSize = new System.Windows.Size { Height = dialog.PrintableAreaHeight, Width = dialog.PrintableAreaWidth };
     page.Measure(pageSize);
     page.UpdateLayout();
@@ -110,7 +111,7 @@ if (result.HasValue && result.Value)
 }
            
         }
-
+       
         private void menuClose_Click(object sender, RoutedEventArgs e)
         {
             Close();

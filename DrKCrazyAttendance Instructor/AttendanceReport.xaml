@@ -14,9 +14,9 @@
                 <Image Source="images/printer.png" ToolTip="Print out the report"/>
             </Button>
         </Menu>
-        <DataGrid x:Name="attendanceDataGrid" Margin="10,33,10,10" ItemsSource="{Binding}" CanUserAddRows="false" AutoGenerateColumns="False">
+        <DataGrid x:Name="attendanceDataGrid" Margin="10,33,10,10" ItemsSource="{Binding}" CanUserAddRows="false" AutoGenerateColumns="False" FontSize="9">
             <DataGrid.Columns>
-                <DataGridTemplateColumn>
+                <DataGridTemplateColumn Width="10" CanUserSort="True" CanUserReorder="False" CanUserResize="False">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button Click="Delete_Button_Click"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
@@ -26,8 +26,8 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Binding="{Binding Path=Student.Username}" Header="Username"/>
-                <DataGridTextColumn Binding="{Binding Path=Student.Id}" Header="Student Id"/>
+                <DataGridTextColumn Binding="{Binding Path=Student.Username}" Header="Username" CanUserSort="False" CanUserReorder="False" CanUserResize="False"/>
+                <DataGridTextColumn Binding="{Binding Path=Student.Id}" Header="Student Id" CanUserReorder="False"/>
 
             </DataGrid.Columns>
         </DataGrid>
