@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DrKCrazyAttendance_Instructor
+namespace DrKCrazyAttendance_Instructor.ViewModels
 {
     public class AttendanceViewModel
     {
