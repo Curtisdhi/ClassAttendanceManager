@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Input;
 
 namespace DrKCrazyAttendance_Instructor
 {
@@ -20,6 +21,8 @@ namespace DrKCrazyAttendance_Instructor
     {
         private Course course;
         private List<AttendanceViewModel> attendanceVms = new List<AttendanceViewModel>();
+
+        public ICommand ToggleAttendanceCommand { get; private set; }
 
         public AttendanceReport(Course course)
         {
@@ -147,12 +150,23 @@ namespace DrKCrazyAttendance_Instructor
                         foreach (object a in avm.AttendsToCourse)
                         {
                             Property prop = (Property)a;
-                            bool b = Convert.ToBoolean(prop.Value);
-                            Console.Write(a.GetType());
-                       
-                            //place an X where the student attended on that date
-                            sb.Append(b ? "X" : "");
+                            bool[] attendeds = ((bool[])prop.Value);
+
+                            //if student has attended
+                            if (attendeds[0])
+                            {
+                                sb.Append("X");
+                                //if student is tardy, surround "X" with square brackets
+                                if (attendeds[1])
+                                {
+                                    sb.Insert(sb.Length - 1, "[");
+                                    sb.Append("]");
+                                }
+                                
+                            }
+                            //append the trailing comma
                             sb.Append(",");
+                   
                         }
                         //remove the last comma
                         sb.Remove(sb.Length - 1, 1);

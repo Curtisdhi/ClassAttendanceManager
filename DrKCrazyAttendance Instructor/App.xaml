@@ -5,10 +5,15 @@
     <Application.Resources>
 
         <DataTemplate x:Key="attendanceCheckmark">
-            <Image x:Name="image" Width="12" Height="12" Visibility="Hidden" Source="images/checkmark.png"/>
+            <Button x:Name="button" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Image x:Name="image" Width="12" Height="12" Visibility="Hidden" Source="images/checkmark.png"/>
+            </Button>
             <DataTemplate.Triggers>
-                <DataTrigger Binding="{Binding Path=Value}" Value="True">
+                <DataTrigger Binding="{Binding Path=Value[0]}" Value="True">
                     <Setter TargetName="image" Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=Value[1]}" Value="True">
+                    <Setter TargetName="button" Property="Background" Value="#FFEA00"/>
                 </DataTrigger>
             </DataTemplate.Triggers>
         </DataTemplate>

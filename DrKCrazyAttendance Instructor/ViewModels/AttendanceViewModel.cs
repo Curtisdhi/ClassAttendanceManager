@@ -6,17 +6,22 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
 
 namespace DrKCrazyAttendance_Instructor.ViewModels
 {
     public class AttendanceViewModel
     {
+        public ICommand ToggleAttendanceCommand { get; set; }
+
         public AttendanceViewModel(Course course, Student student, List<Attendance> attendances)
         {
             this.Attendances = attendances;
             this.Course = course;
             this.Student = student;
             this.AttendsToCourse = GetAttendsToCourse();
+            this.ToggleAttendanceCommand = new RelayCommand(new Action<object>(ToggleAttendance));
         }
 
         #region properties
@@ -61,25 +66,30 @@ namespace DrKCrazyAttendance_Instructor.ViewModels
             DateTime[] meetings = Course.GetClassMeetings();
             //this array is assumed to be in order, but is never be assumed
             //to be the same length as classmeetings.
-            DateTime[] attends = GetAttendedDateTimes();
+            //DateTime[] attends = GetAttendedDateTimes();
             
             for (int i = 0, a = 0; i < meetings.Length; i++)
             {
-                bool attended = false;
-                if (a < attends.Length)
+                bool[] attended = new bool[2];
+                if (a < Attendances.Count)
                 {
                     //Compare only the dates
-                    attended = meetings[i].Date.Equals(attends[a].Date);
-                    if (attended)
+                    attended[0] = meetings[i].Date.Equals(Attendances[a].TimeLog.Date);
+                    if (attended[0])
                     {
                         //if true, the student attended this date, so advance.
+                        attended[1] = Attendances[a].IsTardy;
                         a++;
                     }
                 }
-                attendance.Add(new Property(meetings[i].ToString(), attended));
+                attendance.Add(new Property(meetings[i].ToString(), attended, this));
             }
             return attendance;
         }
 
+        private void ToggleAttendance(object sender)
+        {
+            Console.WriteLine(sender.GetType());
+        }
     }
 }
