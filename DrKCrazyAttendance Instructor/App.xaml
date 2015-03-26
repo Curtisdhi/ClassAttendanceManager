@@ -5,7 +5,8 @@
     <Application.Resources>
 
         <DataTemplate x:Key="attendanceCheckmark">
-            <Button x:Name="button" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Button x:Name="button" Command="{Binding Path=Owner.ToggleAttendanceCommand}" CommandParameter="{Binding}"
+                    Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                 <Image x:Name="image" Width="12" Height="12" Visibility="Hidden" Source="images/checkmark.png"/>
             </Button>
             <DataTemplate.Triggers>

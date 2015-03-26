@@ -173,8 +173,6 @@ namespace DrKCrazyAttendance_Instructor
                         sw.WriteLine(sb.ToString());
                     }
 
-
-
                 }
 
             }

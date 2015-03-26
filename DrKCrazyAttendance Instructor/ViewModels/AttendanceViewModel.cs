@@ -89,7 +89,16 @@ namespace DrKCrazyAttendance_Instructor.ViewModels
 
         private void ToggleAttendance(object sender)
         {
-            Console.WriteLine(sender.GetType());
+            //WARNING: This is a hack to make this shit work........
+            //This code COULD and WILL break if VALUE is not a BOOL array
+            Property prop = (Property)sender;
+            bool[] values = (bool[])prop.Value;
+            values[0] = !values[0];
+            prop.Value = values;
+
+            DateTime date = DateTime.Parse(prop.Name);
+            Console.WriteLine(Student.Username);
+
         }
     }
 }

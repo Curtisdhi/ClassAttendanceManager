@@ -14,7 +14,18 @@
                 <Image Source="images/printer.png" ToolTip="Print out the report"/>
             </Button>
         </Menu>
-        <DataGrid x:Name="attendanceDataGrid" Margin="10,33,10,10" ItemsSource="{Binding}" CanUserAddRows="false" AutoGenerateColumns="False">
+        <DataGrid x:Name="attendanceDataGrid" Margin="10,33,10,10" ItemsSource="{Binding}" CanUserAddRows="false" AutoGenerateColumns="False" IsReadOnly="True">
+            <DataGrid.CellStyle>
+                <Style TargetType="{x:Type DataGridCell}">
+                    <Setter Property="Foreground" Value="Black" />
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="{x:Null}" />
+                            <Setter Property="BorderBrush" Value="{x:Null}" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.CellStyle>
             <DataGrid.Columns>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
