@@ -14,7 +14,8 @@
                 <Image Source="images/printer.png" ToolTip="Print out the report"/>
             </Button>
         </Menu>
-        <DataGrid x:Name="attendanceDataGrid" Margin="10,33,10,10" ItemsSource="{Binding}" CanUserAddRows="false" AutoGenerateColumns="False" IsReadOnly="True">
+        <DataGrid x:Name="attendanceDataGrid" Margin="10,33,10,10" ItemsSource="{Binding}" CanUserAddRows="false" AutoGenerateColumns="False" IsReadOnly="True"
+                  Sorting="attendanceDataGrid_Sorting">
             <DataGrid.CellStyle>
                 <Style TargetType="{x:Type DataGridCell}">
                     <Setter Property="Foreground" Value="Black" />

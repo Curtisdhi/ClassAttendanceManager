@@ -151,13 +151,8 @@ namespace DrKCrazyAttendance_Instructor
                             //if student has attended
                             if (attendeds[0])
                             {
-                                sb.Append("X");
-                                //if student is tardy, surround "X" with square brackets
-                                if (attendeds[1])
-                                {
-                                    sb.Insert(sb.Length - 1, "[");
-                                    sb.Append("]");
-                                }
+                                //If tardy put T otherwise X
+                                sb.Append(attendeds[1] ? "X" : "T");
                                 
                             }
                             //append the trailing comma
@@ -177,6 +172,11 @@ namespace DrKCrazyAttendance_Instructor
                 Console.WriteLine(ex);
             }
 
+        }
+
+        private void attendanceDataGrid_Sorting(object sender, DataGridSortingEventArgs e)
+        {
+            e.Handled = true;
         }
 
     }
