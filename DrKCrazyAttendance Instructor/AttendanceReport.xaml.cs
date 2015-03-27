@@ -3,6 +3,9 @@ using DrKCrazyAttendance_Instructor.ViewModels;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -11,6 +14,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 
 namespace DrKCrazyAttendance_Instructor
 {
@@ -21,6 +25,8 @@ namespace DrKCrazyAttendance_Instructor
     {
         private Course course;
         private List<AttendanceViewModel> attendanceVms = new List<AttendanceViewModel>();
+
+        private Bitmap bitmap;
 
         public ICommand ToggleAttendanceCommand { get; private set; }
 
@@ -89,8 +95,39 @@ namespace DrKCrazyAttendance_Instructor
        
         private void btnPrint_Click(object sender, RoutedEventArgs e)
         {
+            PrintRenderer render = new PrintRenderer(attendanceVms, course);
+
+            bitmap = render.GenerateGrid();
+            using (MemoryStream memory = new MemoryStream())
+            {
+                bitmap.Save(memory, ImageFormat.Png);
+                memory.Seek(0, SeekOrigin.Begin);
+                BitmapImage bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.StreamSource = memory;
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapImage.EndInit();
+            }
+
             PrintDialog dialog = new PrintDialog();
-            dialog.PrintVisual(this.attendanceDataGrid, "");
+            PrintDocument doc = new PrintDocument();
+            doc.PrintPage += this.Doc_PrintPage;
+
+            doc.DefaultPageSettings.Landscape = true;
+
+            bool? result = dialog.ShowDialog();
+            if (result.HasValue == result == true)
+            {
+                doc.PrinterSettings.PrinterName = dialog.PrintQueue.FullName;
+                doc.Print();
+            }
+        }
+
+        private void Doc_PrintPage(object sender, PrintPageEventArgs e)
+        {
+            e.Graphics.DrawImage(bitmap, 0, 0);
+            bitmap.Dispose();
+            bitmap = null;
         }
 
         private void menuClose_Click(object sender, RoutedEventArgs e)
