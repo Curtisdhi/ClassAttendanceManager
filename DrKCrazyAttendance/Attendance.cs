@@ -53,13 +53,13 @@ namespace DrKCrazyAttendance
         public DateTime TimeLog
         {
             get;
-            private set;
+            set;
         }
 
         public bool IsTardy
         {
             get;
-            private set;
+            set;
         }
         #endregion
 
@@ -95,7 +95,26 @@ namespace DrKCrazyAttendance
         {
             string query = @"INSERT INTO Attendances (courseId, studentId, computerIPv4, timeLog, isTardy)
                 VALUES (@courseId, @studentId, @ip, @timeLog, @isTardy)";
-            DatabaseManager.ExecuteQuery(query, attendance.GetQueryParameters());
+            attendance.Id = DatabaseManager.ExecuteQuery(query, attendance.GetQueryParameters());
+        }
+
+        public static void Update(Attendance attendance)
+        {
+            List<Attendance> attendances = new List<Attendance>();
+            attendances.Add(attendance);
+            Update(attendances);
+        }
+
+        public static void Update(List<Attendance> attendances)
+        {
+            List<Dictionary<string, object>> parameters = new List<Dictionary<string, object>>();
+            string query = @"UPDATE Attendances SET courseId=@courseId, studentId=@studentId, computerIPv4=@ip,
+                timeLog=@timeLog, isTardy=@isTardy WHERE id=@id";
+            foreach (Attendance attendance in attendances)
+            {
+                parameters.Add(attendance.GetQueryParameters());
+            }
+            DatabaseManager.ExecuteQuery(query, parameters);
         }
 
         public static void Remove(Attendance attendance)
@@ -125,7 +144,8 @@ namespace DrKCrazyAttendance
                     ON a.courseId = c.id
                 INNER JOIN Students AS s
                     ON a.studentId = s.id
-                WHERE c.classroom = @classroom";
+                WHERE c.classroom = @classroom
+                ORDER BY a.TimeLog";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("@classroom", classroom);
             DataTable table = DatabaseManager.GetDataTableFromQuery(query, parameters);
@@ -140,7 +160,8 @@ namespace DrKCrazyAttendance
                     ON a.courseId = c.id
                 INNER JOIN Students AS s
                     ON a.studentId = s.id
-                WHERE c.instructor = @instructor";
+                WHERE c.instructor = @instructor
+                ORDER BY a.TimeLog";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("@instructor", instructor);
             DataTable table = DatabaseManager.GetDataTableFromQuery(query, parameters);
@@ -154,7 +175,8 @@ namespace DrKCrazyAttendance
                     ON a.courseId = c.id
                 INNER JOIN Students AS s
                     ON a.studentId = s.id
-                WHERE c.id = @id";
+                WHERE c.id = @id
+                ORDER BY a.TimeLog";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("@id", courseId);
             DataTable table = DatabaseManager.GetDataTableFromQuery(query, parameters);
@@ -169,7 +191,8 @@ namespace DrKCrazyAttendance
                     ON a.courseId = c.id
                 INNER JOIN Students AS s
                     ON a.studentId = s.id
-                WHERE s.id = @id";
+                WHERE s.id = @id
+                ORDER BY a.TimeLog";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("@id", studentId);
             DataTable table = DatabaseManager.GetDataTableFromQuery(query, parameters);
