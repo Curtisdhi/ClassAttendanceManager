@@ -1,7 +1,6 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -9,10 +8,9 @@ using System.Threading.Tasks;
 
 namespace DrKCrazyAttendance
 {
-    public class Course : IDataErrorInfo, INotifyPropertyChanged
+    public class Course
     {
-        private Dictionary<string, bool> propertiesValid = new Dictionary<string, bool>();
-
+        
         public Course()
         {
             this.Id = 0;
@@ -66,14 +64,7 @@ namespace DrKCrazyAttendance
         }
 
         #region Properties
-        public bool IsValid
-        {
-            get
-            {
-                //if if this doesn't contain true, the object isn't valid
-                return !propertiesValid.ContainsValue(false);
-            }
-        }
+        
 
         public long Id
         {
@@ -461,144 +452,5 @@ namespace DrKCrazyAttendance
         }
         #endregion
 
-        #region IDataError
-        string IDataErrorInfo.Error { 
-            get { throw new NotImplementedException(); } 
-        }
-
-        string IDataErrorInfo.this[string propertyName]
-        {
-            get
-            {
-                TimeSpan timeValidation = new TimeSpan(0, 30, 0);
-                string result = "";
-                switch (propertyName) { 
-                    case "Classroom":
-                        if (Classroom.Length != 5)
-                        {
-                            result = "Requires 5 characters.";
-                        }
-                        break;
-                    case "CourseName":
-                        if (CourseName.Length != 8)
-                        {
-                            result = "Requires 8 characters.";
-                        }
-                        break;
-                    case "Section":
-                        if (Section.Length != 3)
-                        {
-                            result = "Requires 3 characters.";
-                        }
-                        break;
-                    case "StartDate":
-                        if (StartDate == DateTime.MinValue)
-                        {
-                            result = "Required";
-                        }
-                        else if (StartDate > EndDate)
-                        {
-                            result = "Start date can't be after end date.";
-                        }
-                        RaisePropertyChanged("EndDate");
-                        eventsInAction[propertyName] = false;
-                        break;
-                    case "EndDate":
-                        if (EndDate == DateTime.MinValue)
-                        {
-                            result = "Required";
-                        }
-                        else if (StartDate > EndDate)
-                        {
-                            result = "\t";//"End date can't be before start date.";
-                        }
-                        //validate start date
-                        RaisePropertyChanged("StartDate");
-                        eventsInAction[propertyName] = false;
-                        break;
-                    case "StartTime":
-                        if (StartTime.TimeOfDay > EndTime.TimeOfDay)
-                        {
-                            result = "Start time can not be after end time.";
-                        }
-                        else if ((EndTime.TimeOfDay - StartTime.TimeOfDay) < timeValidation)
-                        {
-                            result = "Class must be atleast 30 minutes long.";
-                        }
-
-                        RaisePropertyChanged("EndTime");
-                        eventsInAction[propertyName] = false;
-                        
-                        break;
-                    case "EndTime":
-                        if (StartTime.TimeOfDay > EndTime.TimeOfDay)
-                        {
-                            result = "\t";//"End time can't come before start time.";
-                        }
-                        else if ((EndTime.TimeOfDay - StartTime.TimeOfDay) < timeValidation)
-                        {
-                            result = "\t";//"Class must be atleast 30 minutes long.";
-                        }
-                        //validate start time
-                        RaisePropertyChanged("StartTime");
-                        eventsInAction[propertyName] = false;
-                        break;
-                    case "GracePeriod":
-                        if (LogTardy && GracePeriod == TimeSpan.MinValue)
-                        {
-                            result = "Required";
-                        }
-                        break;
-                    case "LogTardy":
-                        //validate grace period
-                        RaisePropertyChanged("GracePeriod");
-                        break;
-                }
-
-                propertiesValid[propertyName] = string.IsNullOrEmpty(result);
-
-                return result;
-            }
-        }
-        #endregion
-
-        #region INotifyPropertyChanged Members
-        private Dictionary<string, bool> eventsInAction = new Dictionary<string, bool>();
-
-        public void ResetEventsInAction()
-        {
-            eventsInAction.Clear();
-        }
-
-        private void RaisePropertyChanged(string propName)
-        {
-            if (propertyChangedDelegate != null) 
-            {
-                if (!eventsInAction.ContainsKey(propName) || !eventsInAction[propName]) 
-                {
-                    eventsInAction[propName] = true;
-                    propertyChangedDelegate(this, new PropertyChangedEventArgs(propName));
-                }
-                else {
-                    eventsInAction[propName] = false;
-                }
-            }
-        }
-
-        private PropertyChangedEventHandler propertyChangedDelegate;
-
-        event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
-        {
-            add
-            {
-                propertyChangedDelegate = (PropertyChangedEventHandler)Delegate.Combine(propertyChangedDelegate, value);
-            }
-            remove
-            {
-                propertyChangedDelegate = (PropertyChangedEventHandler)Delegate.Remove(propertyChangedDelegate, value);
-            }
-        }
-
-        #endregion
     }
 }

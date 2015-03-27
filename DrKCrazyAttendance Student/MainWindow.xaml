@@ -30,7 +30,7 @@
             <Label Content="Student Id:" HorizontalAlignment="Left" Margin="0,41,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.368,0" Grid.Column="2" Height="26" Width="68" Grid.ColumnSpan="2"/>
             <Label x:Name="lblUsername" Content="billybob" HorizontalAlignment="Left" Margin="3,41,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.105,0.269" Grid.Column="1" Height="26" Width="86" Background="#FFEEEEEE" BorderBrush="#FF191919" BorderThickness="1,1,0,0" Foreground="#FF707070"/>
             <Label x:Name="lblStudentId" Content="900000000" HorizontalAlignment="Left" Margin="3,41,0,5" Grid.Column="3" Width="106" Background="#FFEEEEEE" BorderBrush="#FF191919" BorderThickness="1,1,0,0" Foreground="#FF707070" Height="26" VerticalAlignment="Top"/>
-            <Label Margin="69,41,13,3" Grid.Column="3" RenderTransformOrigin="3.091,1.269" ToolTip="Change you student id number">
+            <Label Margin="69,41,13,3" Grid.Column="3" RenderTransformOrigin="3.091,1.269" ToolTip="Change your student id number">
                 <Hyperlink Click="Hyperlink_Click" >
                     <Run Text="Edit"/>
                 </Hyperlink>

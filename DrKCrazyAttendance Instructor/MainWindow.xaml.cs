@@ -120,7 +120,7 @@ namespace DrKCrazyAttendance_Instructor
                 bool cExists = false;
                 //make sure we aren't already editing a course
                 foreach (CourseEditor c in editors) {
-                    if (course.Id != 0 && course.Id == c.Course.Id)
+                    if (course.Id != 0 && course.Id == c.CourseViewModel.Id)
                     {
                         c.Focus();
                         c.WindowState = WindowState.Normal;
@@ -229,7 +229,6 @@ namespace DrKCrazyAttendance_Instructor
         private void OnCourseEditorClose(object sender, EventArgs e)
         {
             CourseEditor ce = (CourseEditor)sender;
-            ce.Course.ResetEventsInAction();
             editors.Remove(ce);
         }
 
@@ -282,13 +281,10 @@ namespace DrKCrazyAttendance_Instructor
 
         private void mnuAbout_Click(object sender, RoutedEventArgs e)
         {
-            if (about != null)
+            if (about != null && about.IsLoaded)
             {
-                if (about.IsLoaded)
-                {
-                    about.Focus();
-                    about.WindowState = WindowState.Normal;
-                }
+                about.Focus();
+                about.WindowState = WindowState.Normal;
             }
             else
             {

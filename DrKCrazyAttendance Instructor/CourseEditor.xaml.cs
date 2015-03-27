@@ -1,6 +1,6 @@
-﻿
-using DrKCrazyAttendance;
+﻿using DrKCrazyAttendance;
 using DrKCrazyAttendance.Properties;
+using DrKCrazyAttendance_Instructor.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,14 +23,12 @@ namespace DrKCrazyAttendance_Instructor
     public partial class CourseEditor : Window
     {
         private bool editing;
-        private Course course;
-        private Course originalCourse;
-
+        
         public CourseEditor()
         {
             InitializeComponent();
-            Course = new Course(Settings.Default.Instructor);
-            DataContext = this;
+            CourseViewModel = new CourseViewModel(new Course(Settings.Default.Instructor));
+            DataContext = CourseViewModel;
             editing = false;
             List<string> classrooms = Course.GetClassrooms();
             foreach (string classroom in classrooms)
@@ -42,13 +40,45 @@ namespace DrKCrazyAttendance_Instructor
         public CourseEditor(Course course)
         {
             InitializeComponent();
-            Course = course;
-            DataContext = this;
+            CourseViewModel = new CourseViewModel(course);
+            DataContext = CourseViewModel;
             //if course id is 0, must be not be edited.
-            if (Course.Id != 0)
+            if (CourseViewModel.Id != 0)
                 editing = true;
 
-            foreach (DayOfWeek day in Course.Days)
+            //initalize form
+            ResetForm();
+
+            List<string> classrooms = Course.GetClassrooms();
+            foreach (string classroom in classrooms)
+            {
+                classroomChoice.Items.Add(classroom);
+            }
+
+        }
+
+        #region Properties
+        public CourseViewModel CourseViewModel
+        {
+            get;
+            private set;
+        }
+
+        public bool Persisted
+        {
+            get;
+            private set;
+        }
+        #endregion
+
+        private void ResetForm()
+        {
+            //Note that "originalCourse" will be a empty default if this form is in
+            //non editing mode, but will contain the original values in editing mode.
+            chkEnableTardy.IsChecked = CourseViewModel.OriginalCourse.LogTardy;
+            gracePeriodTS.IsEnabled = CourseViewModel.OriginalCourse.LogTardy;
+
+            foreach (DayOfWeek day in CourseViewModel.OriginalCourse.Days)
             {
                 switch (day)
                 {
@@ -73,55 +103,14 @@ namespace DrKCrazyAttendance_Instructor
                 }
             }
 
-            List<string> classrooms = Course.GetClassrooms();
-            foreach (string classroom in classrooms)
-            {
-                classroomChoice.Items.Add(classroom);
-            }
+            txtCourse.Text = CourseViewModel.OriginalCourse.CourseName;
+            txtSection.Text = CourseViewModel.OriginalCourse.Section;
+            startDatePicker.SelectedDate = CourseViewModel.OriginalCourse.StartDate;
+            endDatePicker.SelectedDate = CourseViewModel.OriginalCourse.EndDate;
+            startTimePicker.Value = CourseViewModel.OriginalCourse.StartTime;
+            endTimePicker.Value = CourseViewModel.OriginalCourse.EndTime;
 
-        }
-
-        #region Properties
-        public Course Course
-        {
-            get { return course; }
-            private set
-            {
-                course = value;
-                //clone the course so we have the original values to
-                //revert back to in the even the user doesn't save.
-                //Note in the event something bad happening, this won't be
-                //explictly persisted to the DB until the user "saves"
-                originalCourse = new Course(value);
-            }
-        }
-
-        public bool Persisted
-        {
-            get;
-            private set;
-        }
-        #endregion
-
-        private void ResetForm()
-        {
-            //Note that "originalCourse" will be a empty default if this form is in
-            //non editing mode, but will contain the original values in editing mode.
-            chkEnableTardy.IsChecked = originalCourse.LogTardy;
-            chkMonday.IsChecked = originalCourse.Days.Contains(DayOfWeek.Monday);
-            chkTuesday.IsChecked = originalCourse.Days.Contains(DayOfWeek.Tuesday);
-            chkWednesday.IsChecked = originalCourse.Days.Contains(DayOfWeek.Wednesday);
-            chkThursday.IsChecked = originalCourse.Days.Contains(DayOfWeek.Thursday);
-            chkFriday.IsChecked = originalCourse.Days.Contains(DayOfWeek.Friday);
-            chkSaturday.IsChecked = originalCourse.Days.Contains(DayOfWeek.Saturday);
-            txtCourse.Text = originalCourse.CourseName;
-            txtSection.Text = originalCourse.Section;
-            startDatePicker.SelectedDate = originalCourse.StartDate;
-            endDatePicker.SelectedDate = originalCourse.EndDate;
-            startTimePicker.Value = originalCourse.StartTime;
-            endTimePicker.Value = originalCourse.EndTime;
-
-            classroomChoice.Text = originalCourse.Classroom;
+            classroomChoice.Text = CourseViewModel.OriginalCourse.Classroom;
 
         }
 
@@ -169,30 +158,30 @@ namespace DrKCrazyAttendance_Instructor
             else
             {
                 //the checkboxes aren't binded, so we must manually deal with it
-                Course.Days.Clear();
+                CourseViewModel.Days.Clear();
                 if (IsChecked(chkMonday))
-                    Course.Days.Add(DayOfWeek.Monday);
+                    CourseViewModel.Days.Add(DayOfWeek.Monday);
                 if (IsChecked(chkTuesday))
-                    Course.Days.Add(DayOfWeek.Tuesday);
+                    CourseViewModel.Days.Add(DayOfWeek.Tuesday);
                 if (IsChecked(chkWednesday))
-                    Course.Days.Add(DayOfWeek.Wednesday);
+                    CourseViewModel.Days.Add(DayOfWeek.Wednesday);
                 if (IsChecked(chkThursday))
-                    Course.Days.Add(DayOfWeek.Thursday);
+                    CourseViewModel.Days.Add(DayOfWeek.Thursday);
                 if (IsChecked(chkFriday))
-                    Course.Days.Add(DayOfWeek.Friday);
+                    CourseViewModel.Days.Add(DayOfWeek.Friday);
                 if (IsChecked(chkSaturday))
-                    Course.Days.Add(DayOfWeek.Saturday);
+                    CourseViewModel.Days.Add(DayOfWeek.Saturday);
                 try
                 {
                     if (editing)
                     {
                         //update in the DB
-                        Course.Update(Course);
+                        Course.Update(CourseViewModel.Course);
                     }
                     else
                     {
-                        Course.Add(Course);
-                        MainWindow.Instance.lstCourses.Items.Add(Course);
+                        Course.Add(CourseViewModel.Course);
+                        MainWindow.Instance.lstCourses.Items.Add(CourseViewModel.Course);
                     }
                     Persisted = true;
                 }
@@ -214,7 +203,7 @@ namespace DrKCrazyAttendance_Instructor
         {
             string errors = "";
 
-            if (!Course.IsValid)
+            if (!CourseViewModel.IsValid)
             {
                 errors += "Please correct the errors before continuing.\n";
             }
