@@ -5,8 +5,15 @@
     <Application.Resources>
 
         <DataTemplate x:Key="attendanceCheckmark">
-            <Button x:Name="button" Command="{Binding Path=Owner.ToggleAttendanceCommand}" CommandParameter="{Binding}"
-                    Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Button x:Name="button" Command="{Binding Path=Owner.ToggleAttendanceCommand}" CommandParameter="{Binding}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Button.Style>
+                    <Style BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" TargetType="Button"></Style>
+                </Button.Style>
+                <Button.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Toggle Tardiness" Command="{Binding Path=Owner.ToggleTardinessCommand}" CommandParameter="{Binding}" />
+                    </ContextMenu>
+                </Button.ContextMenu>
                 <Image x:Name="image" Width="12" Height="12" Visibility="Hidden" Source="images/checkmark.png"/>
             </Button>
             <DataTemplate.Triggers>
@@ -19,6 +26,7 @@
             </DataTemplate.Triggers>
         </DataTemplate>
 
+        
         <Style x:Key="textBoxInError" TargetType="{x:Type Control}">
             <Style.Triggers>
                 <Trigger Property="Validation.HasError" Value="true">

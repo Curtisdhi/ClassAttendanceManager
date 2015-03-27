@@ -14,6 +14,7 @@ namespace DrKCrazyAttendance_Instructor.ViewModels
     public class AttendanceViewModel
     {
         public ICommand ToggleAttendanceCommand { get; set; }
+        public ICommand ToggleTardinessCommand { get; set; }
 
         public AttendanceViewModel(Course course, Student student, List<Attendance> attendances)
         {
@@ -22,6 +23,7 @@ namespace DrKCrazyAttendance_Instructor.ViewModels
             this.Student = student;
             this.AttendsToCourse = GetAttendsToCourse();
             this.ToggleAttendanceCommand = new RelayCommand(new Action<object>(ToggleAttendance));
+            this.ToggleTardinessCommand = new RelayCommand(new Action<object>(ToggleTardiness));
         }
 
         #region properties
@@ -93,12 +95,67 @@ namespace DrKCrazyAttendance_Instructor.ViewModels
             //This code COULD and WILL break if VALUE is not a BOOL array
             Property prop = (Property)sender;
             bool[] values = (bool[])prop.Value;
+            //toggle attendance
             values[0] = !values[0];
+            //set tardiness to false
+            values[1] = false;
             prop.Value = values;
 
-            DateTime date = DateTime.Parse(prop.Name);
-            Console.WriteLine(Student.Username);
+            DateTime date = GetDateWithCourseTime(DateTime.Parse(prop.Name));
+            Console.WriteLine(date);
+
+            //add attendance
+            if (values[0])
+            {
+                Attendance a = new Attendance(Course, Student, "", date, values[1]);
+                Attendances.Add(a);
+                Attendance.Add(a);
+            }
+            //remove attendance
+            else
+            {
+                Attendance a = GetAttendanceByDate(date);
+                Attendances.Remove(a);
+                Attendance.Remove(a);
+            }
 
         }
+
+        private void ToggleTardiness(object sender)
+        {
+            //WARNING: This is a hack to make this shit work........
+            //This code COULD and WILL break if VALUE is not a BOOL array
+            Property prop = (Property)sender;
+            bool[] values = (bool[])prop.Value;
+
+            //update attendance record IF it exists
+            if (values[0])
+            {
+                //toggle tardiness
+                values[1] = !values[1];
+                prop.Value = values;
+
+                DateTime date = GetDateWithCourseTime(DateTime.Parse(prop.Name));
+                Attendance a = GetAttendanceByDate(date);
+                a.IsTardy = values[1];
+                Attendance.Update(a);
+                
+            }
+
+        }
+
+        private Attendance GetAttendanceByDate(DateTime date)
+        {
+            return (from at in Attendances
+                    where at.TimeLog.Date == date.Date
+                    select at).FirstOrDefault();
+        }
+
+        private DateTime GetDateWithCourseTime(DateTime date)
+        {
+            return date.Add(Course.StartTime.TimeOfDay);
+        }
+
+        
     }
 }
