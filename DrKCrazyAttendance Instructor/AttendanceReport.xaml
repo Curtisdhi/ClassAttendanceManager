@@ -1,7 +1,7 @@
 ﻿<Window x:Class="DrKCrazyAttendance_Instructor.AttendanceReport"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="AttendanceReport" Height="500" Width="500" Background="White" WindowStartupLocation="CenterScreen" Icon="icon.ico">
+        Title="AttendanceReport" Height="500" Width="500" Background="White" WindowStartupLocation="CenterOwner" Icon="icon.ico">
     <Grid>
         <Menu Height="28" VerticalAlignment="Top">
             <MenuItem x:Name="menuFile" Header="File">

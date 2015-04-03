@@ -136,6 +136,7 @@ namespace DrKCrazyAttendance_Instructor
 
             if (ce != null)
             {
+                ce.Owner = this;
                 ce.Show();
                 ce.Closed += OnCourseEditorClose;
                 editors.Add(ce);
@@ -167,8 +168,8 @@ namespace DrKCrazyAttendance_Instructor
         private void menuSettings_Click(object sender, RoutedEventArgs e)
         {
             settingsForm = new SettingsForm();
-            settingsForm.Show();
-            this.Hide();
+            settingsForm.Owner = this;
+            settingsForm.ShowDialog();
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
@@ -187,7 +188,18 @@ namespace DrKCrazyAttendance_Instructor
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            CreateCourseEditor(null);
+            if (string.IsNullOrWhiteSpace(Settings.Default.Instructor))
+            {
+                MessageBox.Show("Instructor field can not be empty", "Settings error", MessageBoxButton.OK, MessageBoxImage.Error);
+                settingsForm = new SettingsForm();
+                settingsForm.Owner = this;
+                settingsForm.ShowDialog();
+
+            }
+            else
+            {
+                CreateCourseEditor(null);
+            }
         }
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
@@ -289,6 +301,7 @@ namespace DrKCrazyAttendance_Instructor
             else
             {
                 about = new About();
+                about.Owner = this;
                 about.Show();
             }
         }
@@ -299,6 +312,7 @@ namespace DrKCrazyAttendance_Instructor
             {
                 Course course = (Course)lstCourses.SelectedItem;
                 attendanceReport = new AttendanceReport(course);
+                attendanceReport.Owner = this;
                 attendanceReport.Show();
             }
         }
