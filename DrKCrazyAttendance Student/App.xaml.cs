@@ -18,10 +18,13 @@ namespace DrKCrazyAttendance_Student
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            //Stop the program if classroom isn't defined
             if (string.IsNullOrWhiteSpace(Settings.Default.Classroom))
             {
-                MessageBox.Show("Classroom is missing. Please check the configuration file.s",
-                               "Internal error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Classroom not found. Please check the configuration files.",
+                               "404 error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Shutdown(0);
+                return;
             }
 
             MainWindow = new MainWindow();
