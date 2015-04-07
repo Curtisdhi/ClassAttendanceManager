@@ -29,16 +29,16 @@ if '%errorlevel%' NEQ '0' (
 echo Attendance Manager Installer Script V1 (c) 2015 
 echo Preparing installation...
 
-@SET program=Instructor Attendance Manager
-@SET folder=Instructor.Attendance.Manager
-@SET renFolder=Instructor Attendance Manager
+@SET program=Student Attendance Manager
+@SET folder=Student.Attendance.Manager
+@SET renFolder=Student Attendance Manager
 @SET installPath=C:\Program Files ^(x86^)
 
 IF NOT EXIST %~dp0%folder% GOTO NOEXIST
 
     @rename "%folder%" "%renFolder%"
 
-    @SET folder=Instructort Attendance Manager
+    @SET folder=Student Attendance Manager
     @SET fullPath=%installPath%\%folder%
 
     echo Moving Directory into %installPath%
