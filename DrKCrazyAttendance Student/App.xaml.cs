@@ -18,6 +18,15 @@ namespace DrKCrazyAttendance_Student
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            //Stop the program if classroom isn't defined
+            if (string.IsNullOrWhiteSpace(Settings.Default.Classroom))
+            {
+                MessageBox.Show("Classroom not found. Please check the configuration files.",
+                               "404 error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Shutdown(0);
+                return;
+            }
+
             MainWindow = new MainWindow();
             ((MainWindow)MainWindow).HideWin();
 
@@ -76,7 +85,7 @@ namespace DrKCrazyAttendance_Student
             bool success = false;
             if (course == null)
             {
-                MessageBox.Show("No course is not found.", "Course Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Course not found.", "404 Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
             else
             {

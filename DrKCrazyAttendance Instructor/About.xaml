@@ -1,7 +1,7 @@
 ﻿<Window x:Class="DrKCrazyAttendance_Instructor.About"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="About" Height="240" Width="500" MinHeight="240" MinWidth="500" WindowStartupLocation="CenterScreen" Icon="drkicon.ico">
+        Title="About" Height="240" Width="500" MinHeight="240" MinWidth="500" WindowStartupLocation="CenterOwner" Icon="drkicon.ico">
     <Grid>
 
         <StackPanel Margin="15,0,221,38">
@@ -26,7 +26,7 @@
             </Grid>
         </StackPanel>
         <Button x:Name="btnClose" Content="Close" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="75" IsDefault="True" Click="btnClose_Click" RenderTransformOrigin="0.147,-0.014"/>
-
+        
         <Border Margin="271,10,10,38" BorderBrush="#FF5D5B5B" BorderThickness="1,1,0,0">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <TextBlock x:Name="textBoxDescription" Margin="0" Padding="5" TextWrapping="Wrap" IsEnabled="False" MinHeight="150" Background="#FFECECEC"/>

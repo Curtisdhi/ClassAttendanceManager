@@ -1,7 +1,7 @@
 ﻿<Window x:Class="DrKCrazyAttendance_Instructor.AttendanceReport"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="AttendanceReport" Height="500" Width="500" Background="White" WindowStartupLocation="CenterScreen" Icon="drkicon.ico">
+        Title="AttendanceReport" Height="500" Width="500" Background="White" WindowStartupLocation="CenterOwner" Icon="drkicon.ico">
     <Grid>
         <Menu Height="28" VerticalAlignment="Top">
             <MenuItem x:Name="menuFile" Header="File">
@@ -14,7 +14,8 @@
                 <Image Source="images/printer.png" ToolTip="Print out the report"/>
             </Button>
         </Menu>
-        <DataGrid x:Name="attendanceDataGrid" Margin="10,33,10,10" ItemsSource="{Binding}" CanUserAddRows="false" AutoGenerateColumns="False" IsReadOnly="True">
+        <DataGrid x:Name="attendanceDataGrid" Margin="10,33,10,10" ItemsSource="{Binding}" CanUserAddRows="false" AutoGenerateColumns="False" IsReadOnly="True"
+                  Sorting="attendanceDataGrid_Sorting">
             <DataGrid.CellStyle>
                 <Style TargetType="{x:Type DataGridCell}">
                     <Setter Property="Foreground" Value="Black" />

@@ -24,7 +24,7 @@ namespace DrKCrazyAttendance
         public long Id
         {
             get;
-            private set;
+            set;
         }
 
         public string Username

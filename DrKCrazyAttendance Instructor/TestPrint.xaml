@@ -1,0 +1,13 @@
+﻿<Window x:Class="DrKCrazyAttendance_Instructor.TestPrint"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="TestPrint" Height="300" Width="300" Loaded="Window_Loaded">
+    <Grid>
+        <Grid>
+        <ScrollViewer HorizontalScrollBarVisibility="Auto">
+        <Image x:Name="image" Stretch="None"/>
+        </ScrollViewer>
+        </Grid>
+        <Button Content="Print" Click="Button_Click" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+    </Grid>
+</Window>

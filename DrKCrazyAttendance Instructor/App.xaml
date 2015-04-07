@@ -21,7 +21,7 @@
                     <Setter TargetName="image" Property="Visibility" Value="Visible"/>
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Path=Value[1]}" Value="True">
-                    <Setter TargetName="button" Property="Background" Value="#FFEA00"/>
+                    <Setter TargetName="button" Property="Background" Value="#F56C6C"/>
                 </DataTrigger>
             </DataTemplate.Triggers>
         </DataTemplate>
