@@ -53,8 +53,14 @@ namespace DrKCrazyAttendance_Instructor
 
                 MainWindow.Instance.LoadCourses();
 
-                MainWindow.Instance.Show();
-                Close();
+                if (string.IsNullOrWhiteSpace(Settings.Default.Instructor))
+                {
+                    MessageBox.Show("A value in the instructor field is recommended", "Validation warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+                else
+                {
+                    Close();
+                }
             }
             else
             {

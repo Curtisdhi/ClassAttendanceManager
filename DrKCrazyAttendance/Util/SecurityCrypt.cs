@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace DrKCrazyAttendance.Util
 {
@@ -95,8 +96,16 @@ namespace DrKCrazyAttendance.Util
             string decrypt = "";
             if (!string.IsNullOrEmpty(data))
             {
-                //Note, we decode from base64 and decrypt the contents and THEN encode using UTF8
-                decrypt = Encoding.UTF8.GetString(AES_Decrypt(Convert.FromBase64String(data)));
+                try {
+                    //Note, we decode from base64 and decrypt the contents and THEN encode using UTF8
+                    decrypt = Encoding.UTF8.GetString(AES_Decrypt(Convert.FromBase64String(data)));
+                }
+                catch (FormatException ex)
+                {
+                    MessageBox.Show("Set Encyrpt to \"False\"\n"+ ex.Message, "Settings error", 
+                        MessageBoxButton.OK, MessageBoxImage.Error);
+                    throw ex;
+                }
             }
             return decrypt;
         }

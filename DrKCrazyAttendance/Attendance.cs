@@ -145,7 +145,7 @@ namespace DrKCrazyAttendance
                 INNER JOIN Students AS s
                     ON a.studentId = s.id
                 WHERE c.classroom = @classroom
-                ORDER BY a.TimeLog";
+                ORDER BY s.id, a.TimeLog";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("@classroom", classroom);
             DataTable table = DatabaseManager.GetDataTableFromQuery(query, parameters);
@@ -161,7 +161,7 @@ namespace DrKCrazyAttendance
                 INNER JOIN Students AS s
                     ON a.studentId = s.id
                 WHERE c.instructor = @instructor
-                ORDER BY a.TimeLog";
+                ORDER BY a.studentId, a.TimeLog";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("@instructor", instructor);
             DataTable table = DatabaseManager.GetDataTableFromQuery(query, parameters);
@@ -176,7 +176,7 @@ namespace DrKCrazyAttendance
                 INNER JOIN Students AS s
                     ON a.studentId = s.id
                 WHERE c.id = @id
-                ORDER BY a.TimeLog";
+                ORDER BY a.studentId, a.TimeLog";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("@id", courseId);
             DataTable table = DatabaseManager.GetDataTableFromQuery(query, parameters);
@@ -192,7 +192,7 @@ namespace DrKCrazyAttendance
                 INNER JOIN Students AS s
                     ON a.studentId = s.id
                 WHERE s.id = @id
-                ORDER BY a.TimeLog";
+                ORDER BY a.studentId, a.TimeLog";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("@id", studentId);
             DataTable table = DatabaseManager.GetDataTableFromQuery(query, parameters);

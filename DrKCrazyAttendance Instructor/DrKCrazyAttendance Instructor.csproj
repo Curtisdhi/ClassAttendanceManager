@@ -60,6 +60,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Printing" />
     <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -93,7 +94,11 @@
     <Compile Include="AttendanceReport.xaml.cs">
       <DependentUpon>AttendanceReport.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PrintRenderer.cs" />
     <Compile Include="RelayCommand.cs" />
+    <Compile Include="TestPrint.xaml.cs">
+      <DependentUpon>TestPrint.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\AttendanceViewModel.cs" />
     <Compile Include="CustomBoundColumn.cs" />
     <Compile Include="Property.cs" />
@@ -132,6 +137,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="TestPrint.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -157,6 +166,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="capstone.sql" />
+    <None Include="README.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Resource Include="images\checkmark.png" />
     <Resource Include="images\floppy.png" />
     <Resource Include="images\delete.png" />

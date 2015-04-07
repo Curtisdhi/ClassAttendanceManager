@@ -74,7 +74,7 @@ namespace DrKCrazyAttendance_Student
                             if (student != null)
                             {
                                 Student.Update(student, newStudent);
-                                student = newStudent;
+                                student.Id = newStudent.Id;
                             }
                             else
                             {

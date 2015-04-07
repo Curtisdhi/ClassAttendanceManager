@@ -229,6 +229,10 @@ namespace DrKCrazyAttendance_Instructor
             {
                 ResetForm();
             }
+            else
+            {
+                MainWindow.Instance.lstCourses.Items.Refresh();
+            }
         }
 
         private void txtCourse_TextChanged(object sender, TextChangedEventArgs e)
