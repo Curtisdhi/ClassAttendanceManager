@@ -4,9 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="DrKCrazyAttendance_Instructor.SettingsForm"
         Title="Settings" Height="280.782" Width="300" Loaded="Window_Loaded" ResizeMode="CanMinimize" Icon="icon.ico" Closing="Window_Closing" WindowStartupLocation="CenterOwner">
     <Grid>
-        <Label Content="Instructor:" HorizontalAlignment="Left" Margin="20,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.445,0.214"/>
-        <TextBox x:Name="txtInstructor" HorizontalAlignment="Left" Height="23" Margin="83,13,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="199" RenderTransformOrigin="0.26,1.132" IsEnabled="False"/>
-        <GroupBox Header="Database" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" Height="141" Width="272">
+        <GroupBox Header="Database" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="142" Width="272">
             <Grid HorizontalAlignment="Left" Height="131" Margin="0,0,-2,-12" VerticalAlignment="Top" Width="262">
                 <Label Content="Database:" HorizontalAlignment="Left" Margin="10,34,0,0" VerticalAlignment="Top"/>
                 <Label Content="Username:" HorizontalAlignment="Left" Margin="6,60,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.154,0.46"/>
@@ -18,9 +16,9 @@
                 <PasswordBox x:Name="txtDbPassword" HorizontalAlignment="Left" Margin="78,90,0,0" VerticalAlignment="Top" Width="174" IsEnabled="False"/>
             </Grid>
         </GroupBox>
-        <Label Content="Security Pin:" HorizontalAlignment="Left" Margin="10,187,0,0" VerticalAlignment="Top"/>
-        <PasswordBox x:Name="txtPin" HorizontalAlignment="Left" Margin="84,191,0,0" VerticalAlignment="Top" Width="68"/>
-        <Button x:Name="btnUnlock" Content="Unlock" HorizontalAlignment="Left" Margin="157,191,0,0" VerticalAlignment="Top" Width="49" Click="btnUnlock_Click"/>
+        <Label Content="Security Pin:" HorizontalAlignment="Left" Margin="10,167,0,0" VerticalAlignment="Top"/>
+        <PasswordBox x:Name="txtPin" HorizontalAlignment="Left" Margin="84,171,0,0" VerticalAlignment="Top" Width="68"/>
+        <Button x:Name="btnUnlock" Content="Unlock" HorizontalAlignment="Left" Margin="157,171,0,0" VerticalAlignment="Top" Width="49" Click="btnUnlock_Click"/>
         <Button x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Left" Margin="110,219,0,0" VerticalAlignment="Top" Width="76" IsCancel="True" Click="btnCancel_Click"/>
         <Button x:Name="btnSave" Margin="191,218,0,0" VerticalAlignment="Top" Width="91" HorizontalAlignment="Left" UseLayoutRounding="False" FontStretch="Condensed" RenderTransformOrigin="0.5,0.5" Height="23" Click="btnSave_Click" Content="Save Settings"/>
 

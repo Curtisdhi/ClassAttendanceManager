@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DrKCrazyAttendance.Properties;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -14,5 +15,9 @@ namespace DrKCrazyAttendance_Instructor
     public partial class App : Application
     {
 
+        private void Application_Startup(object sender, StartupEventArgs e)
+        {
+            Settings.Default.Instructor = Environment.UserName;
+        }
     }
 }
