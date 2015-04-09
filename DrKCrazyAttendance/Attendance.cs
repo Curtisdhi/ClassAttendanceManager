@@ -169,23 +169,41 @@ namespace DrKCrazyAttendance
             return GetAttendancesFromTable(table);
         }
 
+        /*
+         * Datatable doesn't work well with this function for unknown reasons.
+         * We also need to "group by" to eliminate any chance of "dupilicates"
+         * that cause major issues with the data reader.
+         */
         public static List<Attendance> GetAttendancesByCourseId(long courseId) {
-            string query = @"SELECT * FROM Attendances AS a 
+            string query = @"SELECT a.id, a.studentId, a.courseId, a.computerIPv4, a.timeLog, a.isTardy,
+                c.id AS id1, c.name, c.section, c.classroom, c.instructor, c.startDate, 
+                    c.endDate, c.startTime, c.endTime, c.days, c.logTardy, c.gracePeriod,
+                s.id AS id2, s.username 
+                    FROM Attendances AS a 
                 INNER JOIN Courses AS c 
                     ON a.courseId = c.id
                 INNER JOIN Students AS s
                     ON a.studentId = s.id
                 WHERE c.id = @id
-                ORDER BY a.studentId, a.TimeLog";
+                GROUP BY a.TimeLog, a.studentId";
+                //ORDER BY a.TimeLog, a.studentId";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("@id", courseId);
+
+            List<Attendance> attendances;
+            MySqlDataReader rdr;
+            using (rdr = DatabaseManager.GetDataReaderFromQuery(query, parameters))
+            {
+                attendances = GetAttendancesFromReader(rdr);
+            }
             DataTable table = DatabaseManager.GetDataTableFromQuery(query, parameters);
 
-            return GetAttendancesFromTable(table);
+            return attendances;
         }
 
         public static List<Attendance> GetAttendancesByStudentId(long studentId)
         {
+            List<Attendance> attendances;
             string query = @"SELECT * FROM Attendances AS a 
                 INNER JOIN Courses AS c 
                     ON a.courseId = c.id
@@ -195,9 +213,43 @@ namespace DrKCrazyAttendance
                 ORDER BY a.studentId, a.TimeLog";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("@id", studentId);
-            DataTable table = DatabaseManager.GetDataTableFromQuery(query, parameters);
+            MySqlDataReader rdr = null;
+            
+            using (rdr = DatabaseManager.GetDataReaderFromQuery(query, parameters)) {
+                attendances = GetAttendancesFromReader(rdr);
+            }
+            //DataTable table = DatabaseManager.GetDataTableFromQuery(query, parameters);
 
-            return GetAttendancesFromTable(table);
+            return attendances;//GetAttendancesFromTable(table);
+        }
+
+        public static List<Attendance> GetAttendancesFromReader(MySqlDataReader rdr)
+        {
+            List<Attendance> attendances = new List<Attendance>();
+            while (rdr.Read())
+            {
+                List<DayOfWeek> days = Course.GetDaysFromFriendly(rdr["days"].ToString());
+                Course course = new Course(long.Parse(rdr["id1"].ToString()),
+                    rdr["classroom"].ToString(), rdr["name"].ToString(), rdr["section"].ToString(),
+                    rdr["instructor"].ToString(), days,
+                    DateTime.Parse(rdr["startDate"].ToString()), DateTime.Parse(rdr["endDate"].ToString()),
+                    DateTime.Parse(rdr["startTime"].ToString()), DateTime.Parse(rdr["endTime"].ToString()),
+                    bool.Parse(rdr["logTardy"].ToString()), TimeSpan.Parse(rdr["gracePeriod"].ToString())
+                    );
+
+                /* get student from sql query */
+                Student student = new Student(long.Parse(rdr["id2"].ToString()), rdr["username"].ToString());
+                Attendance attendance = new Attendance(long.Parse(rdr["id"].ToString()),
+                    course,
+                    student,
+                    rdr["computerIPv4"].ToString(),
+                    DateTime.Parse(rdr["timeLog"].ToString()),
+                    bool.Parse(rdr["isTardy"].ToString())
+                    );
+
+                attendances.Add(attendance);
+            }
+            return attendances;
         }
 
         public static List<Attendance> GetAttendancesFromTable(DataTable table)
