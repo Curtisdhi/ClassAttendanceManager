@@ -223,6 +223,9 @@ namespace DrKCrazyAttendance
             return attendances;//GetAttendancesFromTable(table);
         }
 
+        /**
+         * WARNING: Make sure you have no dupilicates for "timelog" or this bugs out.
+         */
         public static List<Attendance> GetAttendancesFromReader(MySqlDataReader rdr)
         {
             List<Attendance> attendances = new List<Attendance>();
@@ -239,12 +242,16 @@ namespace DrKCrazyAttendance
 
                 /* get student from sql query */
                 Student student = new Student(long.Parse(rdr["id2"].ToString()), rdr["username"].ToString());
+
                 Attendance attendance = new Attendance(long.Parse(rdr["id"].ToString()),
                     course,
                     student,
                     rdr["computerIPv4"].ToString(),
                     DateTime.Parse(rdr["timeLog"].ToString()),
-                    bool.Parse(rdr["isTardy"].ToString())
+                    //If course doesn't have log tardy set, ignore the student's "tardiness".
+                    course.LogTardy && bool.Parse(rdr["isTardy"].ToString())
+                    //A bug exists in the student's program where it completly ignores if the course is even 
+                    //logging tardiness. This is a fix without having to redeploy the student program....
                     );
 
                 attendances.Add(attendance);
@@ -262,6 +269,10 @@ namespace DrKCrazyAttendance
             return attendances;
         }
 
+        /**
+         *  WARNING: the datatable can bug out and only display a single "item" in it for some reason
+         *  Use the datareader method instead.
+         */
         public static Attendance GetAttendanceFromDataRow(DataRow row) 
         {
             Attendance attendance = null;
