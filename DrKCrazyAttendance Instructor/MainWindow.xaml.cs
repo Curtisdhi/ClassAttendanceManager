@@ -33,6 +33,7 @@ namespace DrKCrazyAttendance_Instructor
         {
             InitializeComponent();
             Instance = this;
+            Title += " Logged in as: "+ Settings.Default.Instructor;
             OriginalTitle = Title;
         }
 
@@ -188,18 +189,7 @@ namespace DrKCrazyAttendance_Instructor
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(Settings.Default.Instructor))
-            {
-                MessageBox.Show("Instructor field can not be empty", "Settings error", MessageBoxButton.OK, MessageBoxImage.Error);
-                settingsForm = new SettingsForm();
-                settingsForm.Owner = this;
-                settingsForm.ShowDialog();
-
-            }
-            else
-            {
-                CreateCourseEditor(null);
-            }
+            CreateCourseEditor(null);
         }
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
