@@ -40,7 +40,6 @@ namespace DrKCrazyAttendance_Instructor
             if (!locked)
             {
                 Settings.Default.Encrypted = false;
-                Settings.Default.Instructor = txtInstructor.Text;
                 Settings.Default.SqlServerAddr = txtDbServerAddr.Text;
                 Settings.Default.SqlDatabase = txtDatabase.Text;
                 Settings.Default.SqlUsername = txtDbUsername.Text;
@@ -53,14 +52,8 @@ namespace DrKCrazyAttendance_Instructor
 
                 MainWindow.Instance.LoadCourses();
 
-                if (string.IsNullOrWhiteSpace(Settings.Default.Instructor))
-                {
-                    MessageBox.Show("A value in the instructor field is recommended", "Validation warning", MessageBoxButton.OK, MessageBoxImage.Warning);
-                }
-                else
-                {
-                    Close();
-                }
+                Close();
+                
             }
             else
             {
@@ -73,7 +66,6 @@ namespace DrKCrazyAttendance_Instructor
             if (txtPin.Password.Equals(Settings.Default.SecurityPin))
             {
                 locked = false;
-                txtInstructor.IsEnabled = true;
                 txtDatabase.IsEnabled = true;
                 txtDbPassword.IsEnabled = true;
                 txtDbUsername.IsEnabled = true;
@@ -94,7 +86,7 @@ namespace DrKCrazyAttendance_Instructor
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            txtInstructor.Text = Settings.Default.Instructor;
+
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
