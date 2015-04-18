@@ -125,6 +125,7 @@ namespace DrKCrazyAttendance_Instructor.ViewModels
         public TimeSpan GracePeriod
         {
             get { return Course.GracePeriod; }
+            set { Course.GracePeriod = value; }
         }
 
         public bool LogTardy
