@@ -12,7 +12,7 @@ using System.Windows;
 @"Icons provided by simpleicon.com and picol.org
 
 Developers: 
-Curtis Hicks, Samuel Gillis, Dylan Nichols
+Curtis Hicks, Dylan Nichols, Felix Manuel, Kevin Jackson, and Samuel Gillis 
 
 Developed for Capstone 2015 for Dr. Kominek at NortheastState Community College."
 )]

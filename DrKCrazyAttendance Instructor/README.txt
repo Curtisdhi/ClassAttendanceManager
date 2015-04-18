@@ -1,7 +1,7 @@
 ----------------------------------------------------------------------------------
 				Attendance Manager v3
 
-	        Developers:  Curtis Hicks, Samuel Gillis, Dylan Nichols
+Developers: Curtis Hicks, Dylan Nichols, Felix Manuel, Kevin Jackson, and Samuel Gillis 
 
 		     Developed for Capstone 2015 for Dr. Kominek 
 		        at Northeast State Community College
