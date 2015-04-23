@@ -114,6 +114,13 @@ namespace DrKCrazyAttendance_Instructor.ViewModels
             set { Course.EndTime = value; }
         }
 
+        public int GracePeriodMinutes
+        {
+            get { return GracePeriod.Minutes; }
+            set {
+                GracePeriod = TimeSpan.FromMinutes(value);
+            }
+        }
 
         public TimeSpan GracePeriod
         {
@@ -212,8 +219,8 @@ namespace DrKCrazyAttendance_Instructor.ViewModels
                         RaisePropertyChanged("StartTime");
                         eventsInAction[propertyName] = false;
                         break;
-                    case "GracePeriod":
-                        if (LogTardy && GracePeriod == TimeSpan.MinValue)
+                    case "GracePeriodMinutes":
+                        if (LogTardy && GracePeriodMinutes == 0)
                         {
                             result = "Required";
                         }

@@ -62,11 +62,10 @@
     <Compile Include="Settings.cs" />
     <Compile Include="Settings\PortableSettingsProvider.cs" />
     <Compile Include="Student.cs" />
-    <Compile Include="Util\NativeMethods.cs" />
-    <Compile Include="Util\UACHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>

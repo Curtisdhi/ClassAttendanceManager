@@ -19,6 +19,7 @@ namespace DrKCrazyAttendance.Properties {
         //Decrypts settings from config file
         private void SettingsLoadingEventHandler(object sender, System.Configuration.SettingsLoadedEventArgs e)
         {
+            Settings.Default.Instructor = Environment.UserName;
             if (!Settings.Default.Encrypted)
             {
                 //Encrypts
