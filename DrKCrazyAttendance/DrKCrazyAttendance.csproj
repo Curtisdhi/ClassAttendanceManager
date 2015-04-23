@@ -62,8 +62,6 @@
     <Compile Include="Settings.cs" />
     <Compile Include="Settings\PortableSettingsProvider.cs" />
     <Compile Include="Student.cs" />
-    <Compile Include="Util\NativeMethods.cs" />
-    <Compile Include="Util\UACHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
